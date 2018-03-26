@@ -104,6 +104,9 @@ public class AnalysisDashboard {
      */
     @RequestMapping("/details")
     String createDetails(final Model model) {
+        model.addAttribute("high", 150);
+        model.addAttribute("normal", 50);
+        model.addAttribute("low", 80);
         return "details";
     }
 

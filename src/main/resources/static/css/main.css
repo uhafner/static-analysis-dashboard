@@ -44,3 +44,40 @@
     color: #d9d8d6;
 }
 
+/* Font awesome icons float right */
+.icon-right {
+    float: right;
+    color: #ddd;
+    position: absolute;
+    right: 25px;
+    top: 10px;
+}
+
+.priority-high {
+    background-color: #f5c6cb;
+}
+
+.priority-high--hover:hover {
+    background-color: #f5929f;
+}
+
+.priority-normal {
+    background-color: #ffeeba;
+}
+
+.priority-normal--hover:hover {
+    background-color: #ffeb75;
+}
+
+.priority-low {
+    background-color: #b8daff;
+}
+
+.priority-low--hover:hover {
+    background-color: #53bdff;
+}
+
+/* Mouse cursor pointer for clicking on doughnut charts */
+.graph-cursor-pointer {
+    cursor: pointer;
+}

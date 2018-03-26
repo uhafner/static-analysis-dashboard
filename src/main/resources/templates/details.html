@@ -1,16 +1,31 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'graph')}">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'details')}">
 <body>
 
 <div class="fluid-container">
 
     <h3>Hallo Welt</h3>
 
-    <canvas id="bar-chart" width="300" height="350"></canvas>
+    <div class="col-sm-6">
+        <div class="card card-marg-bot">
+            <div data-role="page" class="card-body">
+                <!-- data-xxx...: model values for chart -->
+                <h5 id="number-priorities" class="card-title"
+                    th:attr="data-high=${high},data-normal=${normal},data-low=${low}">
+                    Priority Distribution
+                </h5>
+
+                <div class="graph-size">
+                    <canvas id="details-chart" class="graph-cursor-pointer" width="300" height="300"></canvas>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
 
-    <script src="/js/graph.js"></script>
+    <script src="/js/details.js"></script>
 </div>
 
 </body>
