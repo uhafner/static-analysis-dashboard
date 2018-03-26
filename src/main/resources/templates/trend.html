@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'graph')}">
+<body>
+
+<div class="fluid-container">
+
+    <h3>Hallo Welt</h3>
+
+    <canvas id="bar-chart" width="300" height="350"></canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+
+    <script src="/js/graph.js"></script>
+</div>
+
+</body>
+</html>

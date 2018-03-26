@@ -1,0 +1,46 @@
+.jumbotron {
+    background: #80afbf;
+    color: black;
+    padding-bottom: 80px;
+}
+
+.jumbotron .btn-primary {
+    color: #757172
+}
+
+.jumbotron .btn-primary:hover {
+    color: #d24939;
+}
+
+.jumbotron .btn-default {
+    color: #757172
+}
+
+.jumbotron .btn-default:hover {
+    color: #4b758b;
+}
+
+.jumbotron p {
+    color: #757172;
+    max-width: 75%;
+    margin: 1em auto 2em;
+}
+
+.navbar + .jumbotron {
+    margin-top: -20px;
+}
+
+.jumbotron .logo img {
+    max-width: 100%;
+}
+
+.alert-info {
+    background-color: #d24939;
+    border-color: #355654;
+    color: #f7f1da;
+}
+
+.alert-info .alert-link {
+    color: #d9d8d6;
+}
+

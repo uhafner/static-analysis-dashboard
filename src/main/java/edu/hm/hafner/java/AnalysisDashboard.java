@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.example;
+package edu.hm.hafner.java;
 
-import javax.measure.quantity.Mass;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,17 +25,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jscience.physics.amount.Amount;
-import org.jscience.physics.model.RelativisticModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,38 +46,78 @@ import com.zaxxer.hikari.HikariDataSource;
 import edu.hm.hafner.analysis.Issue;
 import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.analysis.parser.checkstyle.CheckStyleParser;
-import static javax.measure.unit.SI.*;
 
+/**
+ * Entry point for all web requests. Also responsible to start the Spring Boot Application.
+ *
+ * @author Ullrich Hafner
+ */
 @Controller
 @SpringBootApplication
-public class Main {
-
+public class AnalysisDashboard {
     @Value("${spring.datasource.url}")
     private String dbUrl;
 
     @Autowired
     private DataSource dataSource;
 
-    public static void main(String[] args) throws Exception {
-        SpringApplication.run(Main.class, args);
+    /**
+     * Starts the application.
+     *
+     * @param args optional commandline arguments
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(AnalysisDashboard.class, args);
     }
 
+    /**
+     * Returns the main page, served as "index.html".
+     *
+     * @return the main page
+     */
     @RequestMapping("/")
     String index() {
         return "index";
     }
 
-    @RequestMapping("/hello")
-    String hello(Map<String, Object> model) {
-        RelativisticModel.select();
-        Amount<Mass> m = Amount.valueOf("12 GeV").to(KILOGRAM);
-        model.put("science", "E=mc^2: 12 GeV = " + m.toString());
-        return "hello";
+    /**
+     * Shows the trend for several static analysis runs.
+     *
+     * @param model UI model
+     * @return the URL for the trend page
+     */
+    @RequestMapping("/trend")
+    String createTrend(final Model model) {
+        return "trend";
     }
 
+    /**
+     * Shows the details for one static analysis run.
+     *
+     * @param model UI model
+     * @return the URL for the details page
+     */
+    @RequestMapping("/details")
+    String createDetails(final Model model) {
+        return "details";
+    }
+
+    /**
+     * Experimental entry point to upload a static analysis report via curl.
+     * <p>
+     * Example:
+     * <pre>
+     *     curl -F "file=@checkstyle-result.xml" -F"tool=checkstyle" https://[id].herokuapp.com/upload
+     * </pre>
+     *
+     * @param file the analysis report
+     * @param tool the ID of the static analysis tool
+     * @return
+     */
     @RequestMapping(path = "/upload", method = RequestMethod.POST)
-    @ResponseBody String upload(@RequestParam(value="file") final MultipartFile file,
-                                @RequestParam(value="tool") final String tool) {
+    @ResponseBody
+    String upload(@RequestParam(value = "file") final MultipartFile file,
+                  @RequestParam(value = "tool") final String tool) {
         if (StringUtils.containsIgnoreCase(tool, "checkstyle")) {
             return parseCheckstyleResults(file);
         }
@@ -100,7 +137,7 @@ public class Main {
     }
 
     @RequestMapping("/db")
-    String db(Map<String, Object> model) {
+    String db(Model model) {
         try (Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
@@ -112,11 +149,11 @@ public class Main {
                 output.add("Read from DB: " + rs.getTimestamp("tick"));
             }
 
-            model.put("records", output);
+            model.addAttribute("records", output);
             return "db";
         }
         catch (Exception e) {
-            model.put("message", e.getMessage());
+            model.addAttribute("message", e.getMessage());
             return "error";
         }
     }
