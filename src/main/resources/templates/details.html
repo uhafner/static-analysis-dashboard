@@ -2,25 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'details')}">
 <body>
 
-<div class="fluid-container">
+<div class="container">
 
-    <div class="col-sm-6">
-        <div class="card card-marg-bot">
-            <div data-role="page" class="card-body">
-                <h3 id="number-priorities" class="card-title">
-                    Priority Distribution
-                    <i class="fa fa-line-chart icon-right fa-2x" aria-hidden="true"></i>
-                </h3>
+    <div class="row py-3">
+        <h2>Details of Static Analysis Run #1234</h2>
+    </div>
 
-                <div class="graph-size">
-                    <canvas id="details-chart" class="graph-cursor-pointer" width="300" height="300"></canvas>
+    <div class="row py-3">
+
+        <div class="col-sm-6">
+            <div class="card card-marg-bot">
+                <div data-role="page" class="card-body">
+                    <h3 class="card-title">
+                        Priority Distribution
+                        <i class="fa fa-line-chart icon-right fa-2x" aria-hidden="true"></i>
+                    </h3>
+
+                    <div class="graph-size">
+                        <canvas id="priority-chart" class="graph-cursor-pointer" width="250" height="250"></canvas>
+                    </div>
+
                 </div>
+            </div>
+        </div>
 
+        <div class="col-sm-6">
+            <div class="card card-marg-bot">
+                <div data-role="page" class="card-body">
+                    <h3 class="card-title">
+                        Category Distribution
+                        <i class="fa fa-bar-chart icon-right fa-2x" aria-hidden="true"></i>
+                    </h3>
+
+                    <div class="graph-size">
+                        <canvas id="categories-chart" class="graph-cursor-pointer" width="250" height="250"></canvas>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
-
-    <button type="button" id="random">Change Values</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
 

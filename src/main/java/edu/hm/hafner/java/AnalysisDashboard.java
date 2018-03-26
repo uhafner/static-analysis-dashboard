@@ -119,9 +119,28 @@ public class AnalysisDashboard {
      *
      * @return the number of issues as priority, e.g. [10, 20, 70]
      */
-    @RequestMapping(path = "/data", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(path = "/priorities", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     ResponseEntity<?> getPriorities(@RequestParam(value = "id") final String id) {
+        Random random = new Random();
+        int[] priorities = {random.nextInt(100), random.nextInt(100), random.nextInt(100)};
+
+        Gson gson = new Gson();
+
+        return ResponseEntity.ok(gson.toJson(priorities));
+    }
+
+    /**
+     * Ajax entry point: returns the number of issues per priority (as a JSON array).
+     *
+     * @param id
+     *         the ID of the issues instance to show the details for
+     *
+     * @return the number of issues as priority, e.g. [10, 20, 70]
+     */
+    @RequestMapping(path = "/categories", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    ResponseEntity<?> getCategories(@RequestParam(value = "id") final String id) {
         Random random = new Random();
         int[] priorities = {random.nextInt(100), random.nextInt(100), random.nextInt(100)};
 
