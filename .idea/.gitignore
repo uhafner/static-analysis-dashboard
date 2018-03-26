@@ -1,0 +1,5 @@
+/*.xml
+!checkstyle-idea.xml
+
+libraries
+scopes

@@ -16,16 +16,11 @@
 
 package edu.hm.hafner.java;
 
-import javax.sql.DataSource;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import edu.hm.hafner.analysis.Issue;
+import edu.hm.hafner.analysis.Issues;
+import edu.hm.hafner.analysis.parser.checkstyle.CheckStyleParser;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,12 +35,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
-import edu.hm.hafner.analysis.Issue;
-import edu.hm.hafner.analysis.Issues;
-import edu.hm.hafner.analysis.parser.checkstyle.CheckStyleParser;
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  * Entry point for all web requests. Also responsible to start the Spring Boot Application.
@@ -66,7 +64,7 @@ public class AnalysisDashboard {
      *
      * @param args optional commandline arguments
      */
-    public static void main(String[] args) {
+    public static void main(final String... args) {
         SpringApplication.run(AnalysisDashboard.class, args);
     }
 
@@ -130,8 +128,7 @@ public class AnalysisDashboard {
             Issues<Issue> issues = parser.parse(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
 
             return String.format("Found %d issues", issues.size());
-        }
-        catch (IOException ignore) {
+        } catch (IOException ignore) {
             return ignore.getLocalizedMessage();
         }
     }
@@ -151,8 +148,7 @@ public class AnalysisDashboard {
 
             model.addAttribute("records", output);
             return "db";
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
             return "error";
         }
@@ -162,8 +158,7 @@ public class AnalysisDashboard {
     public DataSource dataSource() throws SQLException {
         if (dbUrl == null || dbUrl.isEmpty()) {
             return new HikariDataSource();
-        }
-        else {
+        } else {
             HikariConfig config = new HikariConfig();
             config.setJdbcUrl(dbUrl);
             return new HikariDataSource(config);

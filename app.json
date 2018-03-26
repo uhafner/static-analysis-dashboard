@@ -1,5 +1,7 @@
 {
-  "name": "Start on Heroku: Java",
-  "description": "A barebones Java app, which can easily be deployed to Heroku.",
-  "addons": [ "heroku-postgresql" ]
+  "name": "Software Engineering 2 - Static Analysis Dashboard",
+  "description": "This dashboard visualizes results of various static code analysis tools. The tool understands the result files of almost 100 different static code analysis tools.",
+  "addons": [
+    "heroku-postgresql"
+  ]
 }

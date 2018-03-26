@@ -3,9 +3,10 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.example</groupId>
-    <artifactId>java-getting-started</artifactId>
-    <version>1.0</version>
+    <groupId>edu.hm.hafner</groupId>
+    <artifactId>analysis-dashboard</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>Software Engineering 2 - Static Analysis Dashboard</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -13,7 +14,6 @@
         <version>2.0.0.RELEASE</version>
         <relativePath/>
     </parent>
-    <name>java-getting-started</name>
 
     <properties>
         <java.version>1.8</java.version>
