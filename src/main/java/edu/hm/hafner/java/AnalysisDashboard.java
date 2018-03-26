@@ -16,11 +16,16 @@
 
 package edu.hm.hafner.java;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import edu.hm.hafner.analysis.Issue;
-import edu.hm.hafner.analysis.Issues;
-import edu.hm.hafner.analysis.parser.checkstyle.CheckStyleParser;
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,15 +40,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.sql.DataSource;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import edu.hm.hafner.analysis.Issue;
+import edu.hm.hafner.analysis.Issues;
+import edu.hm.hafner.analysis.parser.checkstyle.CheckStyleParser;
 
 /**
  * Entry point for all web requests. Also responsible to start the Spring Boot Application.
@@ -62,7 +64,8 @@ public class AnalysisDashboard {
     /**
      * Starts the application.
      *
-     * @param args optional commandline arguments
+     * @param args
+     *         optional commandline arguments
      */
     public static void main(final String... args) {
         SpringApplication.run(AnalysisDashboard.class, args);
@@ -81,7 +84,9 @@ public class AnalysisDashboard {
     /**
      * Shows the trend for several static analysis runs.
      *
-     * @param model UI model
+     * @param model
+     *         UI model
+     *
      * @return the URL for the trend page
      */
     @RequestMapping("/trend")
@@ -92,7 +97,9 @@ public class AnalysisDashboard {
     /**
      * Shows the details for one static analysis run.
      *
-     * @param model UI model
+     * @param model
+     *         UI model
+     *
      * @return the URL for the details page
      */
     @RequestMapping("/details")
@@ -108,14 +115,15 @@ public class AnalysisDashboard {
      *     curl -F "file=@checkstyle-result.xml" -F"tool=checkstyle" https://[id].herokuapp.com/upload
      * </pre>
      *
-     * @param file the analysis report
-     * @param tool the ID of the static analysis tool
-     * @return
+     * @param file
+     *         the analysis report
+     * @param tool
+     *         the ID of the static analysis tool
      */
     @RequestMapping(path = "/upload", method = RequestMethod.POST)
     @ResponseBody
     String upload(@RequestParam(value = "file") final MultipartFile file,
-                  @RequestParam(value = "tool") final String tool) {
+            @RequestParam(value = "tool") final String tool) {
         if (StringUtils.containsIgnoreCase(tool, "checkstyle")) {
             return parseCheckstyleResults(file);
         }
@@ -128,7 +136,8 @@ public class AnalysisDashboard {
             Issues<Issue> issues = parser.parse(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
 
             return String.format("Found %d issues", issues.size());
-        } catch (IOException ignore) {
+        }
+        catch (IOException ignore) {
             return ignore.getLocalizedMessage();
         }
     }
@@ -148,7 +157,8 @@ public class AnalysisDashboard {
 
             model.addAttribute("records", output);
             return "db";
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             model.addAttribute("message", e.getMessage());
             return "error";
         }
@@ -158,7 +168,8 @@ public class AnalysisDashboard {
     public DataSource dataSource() throws SQLException {
         if (dbUrl == null || dbUrl.isEmpty()) {
             return new HikariDataSource();
-        } else {
+        }
+        else {
             HikariConfig config = new HikariConfig();
             config.setJdbcUrl(dbUrl);
             return new HikariDataSource(config);
