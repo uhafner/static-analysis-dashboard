@@ -44,6 +44,10 @@
     color: #d9d8d6;
 }
 
+.card-title {
+    color: #ddd;
+}
+
 /* Font awesome icons float right */
 .icon-right {
     float: right;

@@ -4,16 +4,13 @@
 
 <div class="fluid-container">
 
-    <h3>Hallo Welt</h3>
-
     <div class="col-sm-6">
         <div class="card card-marg-bot">
             <div data-role="page" class="card-body">
-                <!-- data-xxx...: model values for chart -->
-                <h5 id="number-priorities" class="card-title"
-                    th:attr="data-high=${high},data-normal=${normal},data-low=${low}">
+                <h3 id="number-priorities" class="card-title">
                     Priority Distribution
-                </h5>
+                    <i class="fa fa-line-chart icon-right fa-2x" aria-hidden="true"></i>
+                </h3>
 
                 <div class="graph-size">
                     <canvas id="details-chart" class="graph-cursor-pointer" width="300" height="300"></canvas>
@@ -22,6 +19,8 @@
             </div>
         </div>
     </div>
+
+    <button type="button" id="random">Change Values</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
 
