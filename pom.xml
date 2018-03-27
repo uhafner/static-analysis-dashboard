@@ -69,6 +69,11 @@
       <artifactId>analysis-model</artifactId>
       <version>1.0.0-20180317.170017-25</version>
     </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

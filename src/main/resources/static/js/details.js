@@ -1,66 +1,39 @@
 $(document).ready(
     function () {
         $.get("priorities", {id: "hello-world"},
-            function (data) {
-                console.log(data);
-
-                var summary = document.getElementById("priority-chart");
-                var context = summary.getContext("2d");
-                context.height = 300;
-                context.width = 300;
-                var prioritiesSummaryChart = new Chart(context, {
+            function (priorities) {
+                new Chart($("#priority-chart"), {
                     type: 'doughnut',
                     data: {
                         labels: ["High", "Normal", "Low"],
                         datasets: [{
                             label: 'High priority, Normal priority, Low priority',
-                            data: data,
+                            data: priorities,
                             backgroundColor: [
-                                '#f5c6cb',
-                                '#ffeeba',
-                                '#b8daff'
+                                '#d24939',
+                                '#f7f1da',
+                                '#80afbf'
                             ],
-                            hoverBackgroundColor: [
-                                '#f5929f',
-                                '#ffeb75',
-                                '#53bdff'
-                            ],
-                            hoverBorderColor: [
-                                '#fff', '#fff', '#fff'
+                            borderColor: [
+                                '#355564', '#355564', '#355564'
                             ]
                         }]
                     }
                 });
-            })
+            });
         $.get("categories", {id: "hello-world"},
-            function (data) {
-                console.log(data);
-
-                var summary = document.getElementById("categories-chart");
-                var context = summary.getContext("2d");
-                context.height = 300;
-                context.width = 300;
-                var prioritiesSummaryChart = new Chart(context, {
+            function (categories) {
+                Chart.defaults.global.elements.rectangle.backgroundColor = '#f7f1da';
+                Chart.defaults.global.elements.rectangle.borderColor = '#355564';
+                Chart.defaults.global.elements.rectangle.borderWidth = 1;
+                new Chart($("#categories-chart"), {
                     type: 'horizontalBar',
-                    data: {
-                        labels: ["High", "Normal", "Low"],
-                        datasets: [{
-                            label: 'High priority, Normal priority, Low priority',
-                            data: data,
-                            backgroundColor: [
-                                '#f5c6cb',
-                                '#ffeeba',
-                                '#b8daff'
-                            ],
-                            hoverBackgroundColor: [
-                                '#f5929f',
-                                '#ffeb75',
-                                '#53bdff'
-                            ],
-                            hoverBorderColor: [
-                                '#fff', '#fff', '#fff'
-                            ]
-                        }]
+                    label: 'Categories',
+                    data: categories,
+                    options: {
+                        legend: {
+                            display: false
+                        }
                     }
                 });
             })

@@ -141,12 +141,9 @@ public class AnalysisDashboard {
     @RequestMapping(path = "/categories", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     ResponseEntity<?> getCategories(@RequestParam(value = "id") final String id) {
-        Random random = new Random();
-        int[] priorities = {random.nextInt(100), random.nextInt(100), random.nextInt(100)};
-
         Gson gson = new Gson();
 
-        return ResponseEntity.ok(gson.toJson(priorities));
+        return ResponseEntity.ok(gson.toJson(new IssuesModel().createIssues()));
     }
 
     /**

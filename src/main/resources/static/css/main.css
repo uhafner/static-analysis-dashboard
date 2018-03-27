@@ -45,13 +45,13 @@
 }
 
 .card-title {
-    color: #ddd;
+    color: #757172;
 }
 
 /* Font awesome icons float right */
 .icon-right {
     float: right;
-    color: #ddd;
+    color: #757172;
     position: absolute;
     right: 25px;
     top: 10px;
