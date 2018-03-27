@@ -8,13 +8,12 @@ import edu.hm.hafner.analysis.IssueBuilder;
 
 import edu.hm.hafner.analysis.LineRange;
 import edu.hm.hafner.analysis.LineRangeList;
-import edu.hm.hafner.java.persistence.IssueMapper;
 
 class IssueMapperTest {
 
     @Test
     void mapIssueToIssueEntity() {
-        IssueMapper mapper = new IssueMapper();
+        EntityMapper mapper = new EntityMapper();
 
         Issue issue = new IssueBuilder().build();
 
@@ -27,7 +26,7 @@ class IssueMapperTest {
 
     @Test
     void issueRoundtrip() {
-        IssueMapper mapper = new IssueMapper();
+        EntityMapper mapper = new EntityMapper();
 
         Issue issue = new IssueBuilder().build();
 
@@ -44,7 +43,7 @@ class IssueMapperTest {
 
     @Test
     void issueRoundtripWithLineRangeList() {
-        IssueMapper mapper = new IssueMapper();
+        EntityMapper mapper = new EntityMapper();
         IssueBuilder builder = new IssueBuilder();
 
         builder.setLineStart(1).setLineEnd(2);
@@ -65,7 +64,7 @@ class IssueMapperTest {
         softly.assertAll();
     }
 
-    private void assertRoundTrip(SoftAssertions softly, Issue result, Issue expected) {
+    private void assertRoundTrip(final SoftAssertions softly, final Issue result, final Issue expected) {
         softly.assertThat(result.getCategory()).isEqualTo(expected.getCategory());
         softly.assertThat(result.getType()).isEqualTo(expected.getType());
         softly.assertThat(result.getPriority()).isEqualTo(expected.getPriority());
@@ -85,7 +84,7 @@ class IssueMapperTest {
         softly.assertThat(result.getFingerprint()).isEqualTo(expected.getFingerprint());
     }
 
-    private void assertIssueAndEntityEqual(SoftAssertions softly, IssueEntity entity, Issue issue) {
+    private void assertIssueAndEntityEqual(final SoftAssertions softly, final IssueEntity entity, final Issue issue) {
         softly.assertThat(entity.getCategory()).isEqualTo(issue.getCategory());
         softly.assertThat(entity.getType()).isEqualTo(issue.getType());
         softly.assertThat(entity.getPriority()).isEqualTo(issue.getPriority());

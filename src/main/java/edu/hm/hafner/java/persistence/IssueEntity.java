@@ -2,13 +2,17 @@ package edu.hm.hafner.java.persistence;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.UUID;
 
 import edu.hm.hafner.analysis.Priority;
 
 @Entity
+@Table(name="issue")
 public class IssueEntity {
+
     private String category; // almost final
     private String type;     // almost final
     private Priority priority;
