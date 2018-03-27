@@ -19,8 +19,10 @@ package edu.hm.hafner.java.ui;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +34,8 @@ import org.springframework.web.multipart.MultipartFile;
 import edu.hm.hafner.analysis.Issue;
 import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.analysis.parser.checkstyle.CheckStyleParser;
+import edu.hm.hafner.java.db.IssuesTableGateway;
+import edu.hm.hafner.java.util.TechnicalException;
 
 /**
  * Entry point for all direct web requests. Refer to {@link IssuesDetailController} in order to see the Ajax entry
@@ -41,6 +45,13 @@ import edu.hm.hafner.analysis.parser.checkstyle.CheckStyleParser;
  */
 @Controller
 public class AnalysisDashboardController {
+    private IssuesTableGateway issuesTableGateway;
+
+    @Autowired
+    public void setIssuesTableGateway(final IssuesTableGateway issuesTableGateway) {
+        this.issuesTableGateway = issuesTableGateway;
+    }
+
     /**
      * Returns the main page, served as "index.html".
      *
@@ -108,4 +119,22 @@ public class AnalysisDashboardController {
             return exception.getLocalizedMessage();
         }
     }
+
+    // FIXME: should be removed
+    @RequestMapping("/db")
+    String db(Model model) {
+        try {
+            List<String> output = issuesTableGateway.readTicks();
+
+            model.addAttribute("records", output);
+
+            return "db";
+        }
+        catch (TechnicalException exception) {
+            model.addAttribute("message", exception.getMessage());
+
+            return "error";
+        }
+    }
+
 }
