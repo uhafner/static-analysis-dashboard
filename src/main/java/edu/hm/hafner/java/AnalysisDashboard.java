@@ -163,7 +163,7 @@ public class AnalysisDashboard {
             return "error";
         }
     }
-
+/*
     @Bean
     public DataSource dataSource() throws SQLException {
         if (dbUrl == null || dbUrl.isEmpty()) {
@@ -175,5 +175,5 @@ public class AnalysisDashboard {
             return new HikariDataSource(config);
         }
     }
-
+*/
 }
