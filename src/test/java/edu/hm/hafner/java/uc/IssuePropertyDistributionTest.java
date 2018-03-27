@@ -21,18 +21,18 @@ import static org.assertj.core.api.Assertions.*;
  */
 class IssuePropertyDistributionTest {
     /**
-     * FIXME: write comment.
+     * Verifies that the Json structure for the bar chart is correctly created.
      */
     @Test
-    void should() {
+    void shouldCreateJsonForCategoriesBarChart() {
         IssuePropertyDistribution issuePropertyDistribution = createIssues();
         Gson gson = new Gson();
         String value = gson.toJson(issuePropertyDistribution);
 
-        assertThat(value).isEqualTo("d{\"labels\":[\"Design\",\"Documentation\",\"Best Practices\",\"Performance\",\"Code Style\",\"Error Prone\"],\"datasets\":[{\"data\":[15,3,20,6,53,12]}]}");
+        assertThat(value).isEqualTo("{\"labels\":[\"Design\",\"Documentation\",\"Best Practices\",\"Performance\",\"Code Style\",\"Error Prone\"],\"datasets\":[{\"data\":[15,3,20,6,53,12]}]}");
     }
 
-    public IssuePropertyDistribution createIssues() {
+    private IssuePropertyDistribution createIssues() {
         PmdParser parser = new PmdParser();
         try (InputStreamReader reader = new InputStreamReader(getTestReport())) {
             Issues<Issue> issues = parser.parse(reader);
