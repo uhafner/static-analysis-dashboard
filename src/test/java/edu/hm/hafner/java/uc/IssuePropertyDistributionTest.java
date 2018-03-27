@@ -1,4 +1,4 @@
-package edu.hm.hafner.java;
+package edu.hm.hafner.java.uc;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,32 +12,32 @@ import com.google.gson.Gson;
 import edu.hm.hafner.analysis.Issue;
 import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.analysis.parser.pmd.PmdParser;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 /**
- * Tests the class {@link Categories}.
+ * Tests the class {@link IssuePropertyDistribution}.
  *
  * @author Ullrich Hafner
  */
-class CategoriesTest {
+class IssuePropertyDistributionTest {
     /**
      * FIXME: write comment.
      */
     @Test
     void should() {
-        Categories categories = createIssues();
+        IssuePropertyDistribution issuePropertyDistribution = createIssues();
         Gson gson = new Gson();
-        String value = gson.toJson(categories);
+        String value = gson.toJson(issuePropertyDistribution);
 
-        assertThat(value).isEqualTo("{\"labels\":[\"Design\",\"Documentation\",\"Best Practices\",\"Performance\",\"Code Style\",\"Error Prone\"],\"datasets\":[{\"data\":[15,3,20,6,53,12]}]}");
+        assertThat(value).isEqualTo("d{\"labels\":[\"Design\",\"Documentation\",\"Best Practices\",\"Performance\",\"Code Style\",\"Error Prone\"],\"datasets\":[{\"data\":[15,3,20,6,53,12]}]}");
     }
 
-    public Categories createIssues() {
+    public IssuePropertyDistribution createIssues() {
         PmdParser parser = new PmdParser();
         try (InputStreamReader reader = new InputStreamReader(getTestReport())) {
             Issues<Issue> issues = parser.parse(reader);
             Map<String, Integer> counts = issues.getPropertyCount(Issue::getCategory);
-            return new Categories(counts);
+            return new IssuePropertyDistribution(counts);
         }
         catch (IOException exception) {
             throw new IllegalArgumentException("Can't read test resource.", exception);
@@ -45,6 +45,6 @@ class CategoriesTest {
     }
 
     private InputStream getTestReport() {
-        return IssuesModel.class.getResourceAsStream("/test/pmd.xml");
+        return IssuesService.class.getResourceAsStream("/test/pmd.xml");
     }
 }

@@ -1,6 +1,10 @@
 $(document).ready(
     function () {
-        $.get("priorities", {id: "hello-world"},
+        Chart.defaults.global.elements.rectangle.backgroundColor = '#f7f1da';
+        Chart.defaults.global.elements.rectangle.borderColor = '#355564';
+        Chart.defaults.global.elements.rectangle.borderWidth = 1;
+
+        $.get("ajax/priorities", {id: "hello-world"},
             function (priorities) {
                 new Chart($("#priority-chart"), {
                     type: 'doughnut',
@@ -21,15 +25,25 @@ $(document).ready(
                     }
                 });
             });
-        $.get("categories", {id: "hello-world"},
+        $.get("ajax/categories", {id: "hello-world"},
             function (categories) {
-                Chart.defaults.global.elements.rectangle.backgroundColor = '#f7f1da';
-                Chart.defaults.global.elements.rectangle.borderColor = '#355564';
-                Chart.defaults.global.elements.rectangle.borderWidth = 1;
                 new Chart($("#categories-chart"), {
                     type: 'horizontalBar',
                     label: 'Categories',
                     data: categories,
+                    options: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            })
+        $.get("ajax/types", {id: "hello-world"},
+            function (types) {
+                new Chart($("#types-chart"), {
+                    type: 'horizontalBar',
+                    label: 'Types',
+                    data: types,
                     options: {
                         legend: {
                             display: false

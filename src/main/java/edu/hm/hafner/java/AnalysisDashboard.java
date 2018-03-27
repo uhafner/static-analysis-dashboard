@@ -17,38 +17,23 @@
 package edu.hm.hafner.java;
 
 import javax.sql.DataSource;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Random;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.Gson;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
-import edu.hm.hafner.analysis.Issue;
-import edu.hm.hafner.analysis.Issues;
-import edu.hm.hafner.analysis.parser.checkstyle.CheckStyleParser;
 
 /**
  * Entry point for all web requests. Also responsible to start the Spring Boot Application.
@@ -63,11 +48,6 @@ public class AnalysisDashboard {
 
     private DataSource dataSource;
 
-    @Autowired
-    public void setDataSource(final DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
     /**
      * Starts the application.
      *
@@ -79,106 +59,14 @@ public class AnalysisDashboard {
     }
 
     /**
-     * Returns the main page, served as "index.html".
-     *
-     * @return the main page
+     * ------------------------------------------ DB layer -----------------------------------------
+     * Should be part of the db package
+     * ------------------------------------------ DB layer -----------------------------------------
      */
-    @RequestMapping("/")
-    String index() {
-        return "index";
-    }
 
-    /**
-     * Shows the trend for several static analysis runs.
-     *
-     * @param model
-     *         UI model
-     *
-     * @return the URL for the trend page
-     */
-    @RequestMapping("/trend")
-    String createTrend(final Model model) {
-        return "trend";
-    }
-
-    /**
-     * Shows the details for one static analysis run.
-     *
-     * @return the URL for the details page
-     */
-    @RequestMapping("/details")
-    String createDetails() {
-        return "details";
-    }
-
-    /**
-     * Ajax entry point: returns the number of issues per priority (as a JSON array).
-     *
-     * @param id
-     *         the ID of the issues instance to show the details for
-     *
-     * @return the number of issues as priority, e.g. [10, 20, 70]
-     */
-    @RequestMapping(path = "/priorities", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    ResponseEntity<?> getPriorities(@RequestParam(value = "id") final String id) {
-        Random random = new Random();
-        int[] priorities = {random.nextInt(100), random.nextInt(100), random.nextInt(100)};
-
-        Gson gson = new Gson();
-
-        return ResponseEntity.ok(gson.toJson(priorities));
-    }
-
-    /**
-     * Ajax entry point: returns the number of issues per priority (as a JSON array).
-     *
-     * @param id
-     *         the ID of the issues instance to show the details for
-     *
-     * @return the number of issues as priority, e.g. [10, 20, 70]
-     */
-    @RequestMapping(path = "/categories", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    ResponseEntity<?> getCategories(@RequestParam(value = "id") final String id) {
-        Gson gson = new Gson();
-
-        return ResponseEntity.ok(gson.toJson(new IssuesModel().createIssues()));
-    }
-
-    /**
-     * Experimental entry point to upload a static analysis report via curl.
-     * <p>
-     * Example:
-     * <pre>
-     *     curl -F "file=@checkstyle-result.xml" -F"tool=checkstyle" https://[id].herokuapp.com/upload
-     * </pre>
-     *
-     * @param file
-     *         the analysis report
-     * @param tool
-     *         the ID of the static analysis tool
-     */
-    @RequestMapping(path = "/upload", method = RequestMethod.POST)
-    @ResponseBody
-    String upload(@RequestParam(value = "file") final MultipartFile file,
-            @RequestParam(value = "tool") final String tool) {
-        if (StringUtils.containsIgnoreCase(tool, "checkstyle")) {
-            return parseCheckstyleResults(file);
-        }
-        return String.format("Tool %s not yet supported.", tool);
-    }
-
-    private String parseCheckstyleResults(final MultipartFile file) {
-        try {
-            CheckStyleParser parser = new CheckStyleParser();
-            Issues<Issue> issues = parser.parse(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
-
-            return String.format("Found %d issues", issues.size());
-        }
-        catch (IOException exception) {
-            return exception.getLocalizedMessage();
-        }
+    @Autowired
+    public void setDataSource(final DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @RequestMapping("/db")
