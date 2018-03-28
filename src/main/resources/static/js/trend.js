@@ -1,5 +1,5 @@
 // Return with commas in between
-var numberWithCommas = function(x) {
+var numberWithCommas = function (x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
@@ -41,7 +41,7 @@ var bar_chart = new Chart(bar_ctx, {
             tooltips: {
                 mode: 'label',
                 callbacks: {
-                    label: function(tooltipItem, data) {
+                    label: function (tooltipItem, data) {
                         return data.datasets[tooltipItem.datasetIndex].label + ": " + numberWithCommas(tooltipItem.yLabel);
                     }
                 }
@@ -49,12 +49,14 @@ var bar_chart = new Chart(bar_ctx, {
             scales: {
                 xAxes: [{
                     stacked: true,
-                    gridLines: { display: false },
+                    gridLines: {display: false},
                 }],
                 yAxes: [{
                     stacked: true,
                     ticks: {
-                        callback: function(value) { return numberWithCommas(value); },
+                        callback: function (value) {
+                            return numberWithCommas(value);
+                        },
                     },
                 }],
             }, // scales
