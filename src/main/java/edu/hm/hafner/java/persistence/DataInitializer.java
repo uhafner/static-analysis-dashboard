@@ -2,6 +2,9 @@ package edu.hm.hafner.java.persistence;
 
 import javax.annotation.PostConstruct;
 
+import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,8 +15,12 @@ import edu.hm.hafner.analysis.Priority;
 
 @Component
 public class DataInitializer {
+    private final EntityService service;
+
     @Autowired
-    private EntityService service;
+    public DataInitializer(final EntityService service) {
+        this.service = service;
+    }
 
     @PostConstruct
     public void initData() {
@@ -24,7 +31,28 @@ public class DataInitializer {
         issues.logInfo("World!");
         issues.logError("Boom!");
 
-        service.create(issues);
+        service.insert(issues);
+
+        Set<Issue> issueFromDatabase = service.selectAllIssue();
+        Set<Issues<Issue>> issuesFromDatabase = service.selectAllIssues();
+
+
+        System.out.println("------------------------------------");
+
+        Issue work = issueFromDatabase.iterator().next();
+        System.out.println(work);
+        work.setFileName("FILE");
+        Optional<Issue> result = service.update(work);
+        if(result.isPresent()) {
+            System.out.println(result.get());
+        }
+
+        Issues<Issue> workIssues = issuesFromDatabase.iterator().next();
+        Issue newIssue = new IssueBuilder().build();
+        workIssues.add(newIssue);
+        service.update(workIssues);
+
+        System.out.println("------------------------------------");
     }
 
     private static final Issue HIGH = new IssueBuilder().setMessage("issue-1")

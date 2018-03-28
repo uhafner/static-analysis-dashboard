@@ -10,13 +10,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import edu.hm.hafner.analysis.Priority;
-
 @Entity
 @Table(name="issues")
 public class IssuesEntity {
 
-    @OneToMany//(mappedBy="issues")
+    @OneToMany
     private Set<IssueEntity> elements = new LinkedHashSet<>();
     @ElementCollection(targetClass=String.class)
     private List<String> infoMessages = new ArrayList<>();

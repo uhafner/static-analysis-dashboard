@@ -25,24 +25,23 @@ class IssueMapperTest {
     }
 
     @Test
-    void issueRoundtrip() {
+    void issueRoundTrip() {
         EntityMapper mapper = new EntityMapper();
-
         Issue issue = new IssueBuilder().build();
 
-        SoftAssertions softly = new SoftAssertions();
-
         IssueEntity entity = mapper.map(issue);
-        assertIssueAndEntityEqual(softly, entity, issue);
-        Issue result = mapper.map(entity);
 
+        SoftAssertions softly = new SoftAssertions();
+        assertIssueAndEntityEqual(softly, entity, issue);
+
+        Issue result = mapper.map(entity);
 
         assertRoundTrip(softly, result, issue);
         softly.assertAll();
     }
 
     @Test
-    void issueRoundtripWithLineRangeList() {
+    void issueRoundTripWithLineRangeList() {
         EntityMapper mapper = new EntityMapper();
         IssueBuilder builder = new IssueBuilder();
 
@@ -53,11 +52,11 @@ class IssueMapperTest {
         builder.setLineRanges(lineRanges);
 
         Issue issue = builder.build();
+        IssueEntity entity = mapper.map(issue);
 
         SoftAssertions softly = new SoftAssertions();
-
-        IssueEntity entity = mapper.map(issue);
         assertIssueAndEntityEqual(softly, entity, issue);
+
         Issue result = mapper.map(entity);
 
         assertRoundTrip(softly, result, issue);

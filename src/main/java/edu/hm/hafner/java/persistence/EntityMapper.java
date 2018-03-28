@@ -19,7 +19,7 @@ import static java.util.stream.Collectors.toSet;
 @Component
 public class EntityMapper {
 
-    private static final PropertyMap<Issues, IssuesEntity> ISSUES_PROPERTY_MAP = new PropertyMap<Issues, IssuesEntity>() {
+    private static final PropertyMap<Issues<Issue>, IssuesEntity> ISSUES_PROPERTY_MAP = new PropertyMap<Issues<Issue>, IssuesEntity>() {
         @Override
         protected void configure() {
             map().setErrorMessages(source.getErrorMessages().castToList());
@@ -31,20 +31,22 @@ public class EntityMapper {
 
     private final ModelMapper mapper;
 
-
-
     public EntityMapper() {
         mapper = new ModelMapper();
         mapper.typeMap(Issue.class, IssueEntity.class);
         mapper.typeMap(IssueEntity.class, Issue.class);
         mapper.addMappings(ISSUES_PROPERTY_MAP);
+        mapper.typeMap(IssuesEntity.class, Issues.class);
         mapper.validate();
-
-        Function<IssueEntity, Issue> f = this::map;
     }
 
     public IssueEntity map(final Issue issue) {
-        return getMapper().map(issue, IssueEntity.class);
+        return map(issue, new IssueEntity());
+    }
+
+    public IssueEntity map(final Issue issue, final IssueEntity entity) {
+        getMapper().map(issue, entity);
+        return entity;
     }
 
     public Issue map(final IssueEntity entity) {
@@ -59,10 +61,22 @@ public class EntityMapper {
         return result;
     }
 
-    public IssuesEntity map(final Issues issues) {
-        IssuesEntity result = getMapper().map(issues, IssuesEntity.class);
+    public IssuesEntity map(final Issues<Issue> issues) {
+        return map(issues, new IssuesEntity());
+    }
+
+    public IssuesEntity map(final Issues<Issue> issues, final IssuesEntity entity) {
+        getMapper().map(issues, entity);
         Set<IssueEntity> issuesSet = ((Stream<Issue>)issues.stream()).map(this::map).collect(toSet());
-        result.setElements(issuesSet);
+        entity.setElements(issuesSet);
+        return entity;
+    }
+
+    public Issues<Issue> map(final IssuesEntity entity) {
+        Issues<Issue> result = getMapper().map(entity, Issues.class);
+        entity.getInfoMessages().forEach(result::logInfo);
+        entity.getErrorMessages().forEach(result::logError);
+        entity.getElements().stream().map(this::map).forEach(result::add);
         return result;
     }
 
