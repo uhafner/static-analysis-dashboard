@@ -2,6 +2,7 @@ package edu.hm.hafner.java.ui;
 
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,13 @@ import edu.hm.hafner.java.uc.IssuesService;
  */
 @Controller
 public class IssuesDetailController {
+    private IssuesService issuesService;
+
+    @Autowired
+    public void setIssuesService(final IssuesService issuesService) {
+        this.issuesService = issuesService;
+    }
+
     /**
      * Ajax entry point: returns the number of issues per priority (as JSON array).
      *
@@ -64,7 +72,7 @@ public class IssuesDetailController {
     @ResponseBody
     @SuppressWarnings("unused") // called by details.js
     ResponseEntity<?> getCategories(@RequestParam(value = "id") final String id) {
-        IssuePropertyDistribution model = new IssuesService().createDistributionByCategory();
+        IssuePropertyDistribution model = issuesService.createDistributionByCategory();
 
         Gson gson = new Gson();
         return ResponseEntity.ok(gson.toJson(model));
@@ -92,10 +100,9 @@ public class IssuesDetailController {
     @ResponseBody
     @SuppressWarnings("unused") // called by details.js
     ResponseEntity<?> getTypes(@RequestParam(value = "id") final String id) {
-        IssuePropertyDistribution model = new IssuesService().createDistributionByType();
+        IssuePropertyDistribution model = issuesService.createDistributionByType();
 
         Gson gson = new Gson();
         return ResponseEntity.ok(gson.toJson(model));
     }
-
 }

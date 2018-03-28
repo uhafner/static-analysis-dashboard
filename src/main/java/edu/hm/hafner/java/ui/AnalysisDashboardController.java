@@ -136,5 +136,4 @@ public class AnalysisDashboardController {
             return "error";
         }
     }
-
 }
