@@ -4,8 +4,8 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import edu.hm.hafner.analysis.Priority;
@@ -179,5 +179,41 @@ public class IssueEntity {
 
     public void setFingerprint(final String fingerprint) {
         this.fingerprint = fingerprint;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        IssueEntity entity = (IssueEntity) o;
+        return lineStart == entity.lineStart &&
+                lineEnd == entity.lineEnd &&
+                columnStart == entity.columnStart &&
+                columnEnd == entity.columnEnd &&
+                Objects.equals(category, entity.category) &&
+                Objects.equals(type, entity.type) &&
+                priority == entity.priority &&
+                Objects.equals(message, entity.message) &&
+                Objects.equals(lineRanges, entity.lineRanges) &&
+                Objects.equals(id, entity.id) &&
+                Objects.equals(description, entity.description) &&
+                Objects.equals(reference, entity.reference) &&
+                Objects.equals(origin, entity.origin) &&
+                Objects.equals(moduleName, entity.moduleName) &&
+                Objects.equals(packageName, entity.packageName) &&
+                Objects.equals(fileName, entity.fileName) &&
+                Objects.equals(fingerprint, entity.fingerprint);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(category, type, priority, message, lineStart, lineEnd, columnStart, columnEnd, lineRanges,
+                id,
+                description, reference, origin, moduleName, packageName, fileName, fingerprint);
     }
 }

@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -67,5 +68,27 @@ public class IssuesEntity {
 
     public void setId(final String id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        IssuesEntity that = (IssuesEntity) o;
+        return sizeOfDuplicates == that.sizeOfDuplicates &&
+                Objects.equals(elements, that.elements) &&
+                Objects.equals(infoMessages, that.infoMessages) &&
+                Objects.equals(errorMessages, that.errorMessages) &&
+                Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(elements, infoMessages, errorMessages, sizeOfDuplicates, id);
     }
 }

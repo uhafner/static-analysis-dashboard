@@ -30,7 +30,7 @@ public class EntityMapper {
     private static final PropertyMap<IssueEntity, IssueBuilder> ISSUE_ENTITY_PROPERTY_MAP = new PropertyMap<IssueEntity, IssueBuilder>() {
         @Override
         protected void configure() {
-            skip().setLineRanges(null);
+            skip().setLineRanges(new LineRangeList());
         }
     };
 
@@ -83,7 +83,7 @@ public class EntityMapper {
 
     public IssuesEntity map(final Issues<Issue> issues, final IssuesEntity entity) {
         getMapper().map(issues, entity);
-        Set<IssueEntity> issuesSet = ((Stream<Issue>)issues.stream()).map(this::map).collect(toSet());
+        Set<IssueEntity> issuesSet = issues.stream().map(this::map).collect(toSet());
         entity.setElements(issuesSet);
         return entity;
     }

@@ -65,7 +65,7 @@ public class EntityService {
         Optional<Issue> result = Optional.empty();
 
         if(optionalEntity.isPresent()) {
-            optionalEntity.get().getLineRanges().stream().filter(range -> !getRangesRepository().findById(range.getId()).isPresent()).forEach(getRangesRepository()::save);
+            getMapper().map(issue).getLineRanges().stream().filter(range -> !getRangesRepository().findById(range.getId()).isPresent()).forEach(getRangesRepository()::save);
             IssueEntity entity = getMapper().map(issue, optionalEntity.get());
             result = Optional.of(getMapper().map(entity));
         }
@@ -86,19 +86,19 @@ public class EntityService {
 
 
 
-    public EntityMapper getMapper() {
+    private EntityMapper getMapper() {
         return mapper;
     }
 
-    public IssueRepository getIssueRepository() {
+    private IssueRepository getIssueRepository() {
         return issueRepository;
     }
 
-    public IssuesRepository getIssuesRepository() {
+    private IssuesRepository getIssuesRepository() {
         return issuesRepository;
     }
 
-    public LineRangeRepository getRangesRepository() {
+    private LineRangeRepository getRangesRepository() {
         return rangesRepository;
     }
 }
