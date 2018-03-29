@@ -1,9 +1,11 @@
 package edu.hm.hafner.java.persistence;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 import edu.hm.hafner.analysis.Priority;
@@ -21,7 +23,9 @@ public class IssueEntity {
     private int lineEnd;       // fixed
     private int columnStart;   // fixed
     private int columnEnd;     // fixed
-    private Serializable lineRanges; // fixed
+
+    @ElementCollection(targetClass=LineRangeEntity.class)
+    private List<LineRangeEntity> lineRanges; // fixed
 
     @Id
     private UUID id; // fixed
@@ -105,11 +109,11 @@ public class IssueEntity {
         this.columnEnd = columnEnd;
     }
 
-    public Serializable getLineRanges() {
+    public List<LineRangeEntity> getLineRanges() {
         return lineRanges;
     }
 
-    public void setLineRanges(final Serializable lineRanges) {
+    public void setLineRanges(final List<LineRangeEntity> lineRanges) {
         this.lineRanges = lineRanges;
     }
 

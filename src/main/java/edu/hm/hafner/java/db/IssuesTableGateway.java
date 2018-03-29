@@ -26,6 +26,7 @@ import edu.hm.hafner.java.util.TechnicalException;
 // FIXME: should be replaced by entity layer
 @Controller
 public class IssuesTableGateway {
+
     @Value("${spring.datasource.url}")
     private String dbUrl;
 
@@ -36,6 +37,7 @@ public class IssuesTableGateway {
         this.dataSource = dataSource;
     }
 
+    /*
     @Bean
     public DataSource dataSource() throws SQLException {
         if (dbUrl == null || dbUrl.isEmpty()) {
@@ -47,6 +49,7 @@ public class IssuesTableGateway {
             return new HikariDataSource(config);
         }
     }
+    */
 
     public List<String> readTicks() {
         try (Connection connection = dataSource.getConnection()) {

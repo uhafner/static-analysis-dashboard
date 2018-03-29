@@ -19,17 +19,20 @@ public class EntityService {
 
     private final IssueRepository issueRepository;
     private final IssuesRepository issuesRepository;
+    private final LineRangeRepository rangesRepository;
     private final EntityMapper mapper;
 
     @Autowired
-    public EntityService(final IssueRepository issueRepository, final IssuesRepository issuesRepository, final EntityMapper mapper) {
+    public EntityService(final IssueRepository issueRepository, final IssuesRepository issuesRepository, final LineRangeRepository rangesRepository, final EntityMapper mapper) {
         this.issueRepository = issueRepository;
         this.issuesRepository = issuesRepository;
+        this.rangesRepository = rangesRepository;
         this.mapper = mapper;
     }
 
     public Issue insert(final Issue issue) {
         IssueEntity entity = getMapper().map(issue);
+        entity.getLineRanges().stream().filter(range -> !getRangesRepository().findById(range.getId()).isPresent()).forEach(getRangesRepository()::save);
         getIssueRepository().save(entity);
         return getMapper().map(entity);
     }
@@ -62,6 +65,7 @@ public class EntityService {
         Optional<Issue> result = Optional.empty();
 
         if(optionalEntity.isPresent()) {
+            optionalEntity.get().getLineRanges().stream().filter(range -> !getRangesRepository().findById(range.getId()).isPresent()).forEach(getRangesRepository()::save);
             IssueEntity entity = getMapper().map(issue, optionalEntity.get());
             result = Optional.of(getMapper().map(entity));
         }
@@ -92,5 +96,9 @@ public class EntityService {
 
     public IssuesRepository getIssuesRepository() {
         return issuesRepository;
+    }
+
+    public LineRangeRepository getRangesRepository() {
+        return rangesRepository;
     }
 }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import edu.hm.hafner.analysis.Issue;
 import edu.hm.hafner.analysis.IssueBuilder;
 import edu.hm.hafner.analysis.Issues;
+import edu.hm.hafner.analysis.LineRange;
+import edu.hm.hafner.analysis.LineRangeList;
 import edu.hm.hafner.analysis.Priority;
 
 @Component
@@ -24,8 +26,14 @@ public class DataInitializer {
 
     @PostConstruct
     public void initData() {
+        LineRangeList ranges = new LineRangeList();
+        ranges.add(new LineRange(2, 6));
+        ranges.add(new LineRange(30, 40));
+        Issue rangesIssue = new IssueBuilder().setLineRanges(ranges).build();
+
         Issues<Issue> issues = new Issues<>();
         issues.add(HIGH, NORMAL_1, NORMAL_2, LOW_2_A, LOW_2_B, LOW_FILE_3);
+        issues.add(rangesIssue);
         issues.setId(ID);
         issues.logInfo("Hello");
         issues.logInfo("World!");

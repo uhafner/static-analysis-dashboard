@@ -92,7 +92,7 @@ class IssueMapperTest {
         softly.assertThat(entity.getLineEnd()).isEqualTo(issue.getLineEnd());
         softly.assertThat(entity.getColumnStart()).isEqualTo(issue.getColumnStart());
         softly.assertThat(entity.getColumnEnd()).isEqualTo(issue.getColumnEnd());
-        softly.assertThat(entity.getLineRanges()).isEqualTo(issue.getLineRanges());
+        softly.assertThat(entity.getLineRanges().size()).isEqualTo(issue.getLineRanges().size());
         softly.assertThat(entity.getId()).isEqualTo(issue.getId());
         softly.assertThat(entity.getDescription()).isEqualTo(issue.getDescription());
         softly.assertThat(entity.getReference()).isEqualTo(issue.getReference());
