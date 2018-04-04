@@ -39,7 +39,7 @@ public class EntityService {
 
     public Issues<Issue> insert(final Issues<Issue> issues) {
         IssuesEntity entity = getMapper().map(issues);
-        issues.stream().forEach(this::insert);
+        issues.stream().filter(issue -> !getIssueRepository().findById(issue.getId()).isPresent()).forEach(this::insert);
         getIssuesRepository().save(entity);
         return getMapper().map(entity);
     }
