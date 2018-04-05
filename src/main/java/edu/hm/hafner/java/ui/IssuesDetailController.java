@@ -1,9 +1,7 @@
 package edu.hm.hafner.java.ui;
 
-import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.h    ttp.ResponseEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,31 +21,12 @@ import edu.hm.hafner.java.uc.IssuesService;
  */
 @Controller
 public class IssuesDetailController {
+    @SuppressWarnings("InstanceVariableMayNotBeInitialized")
     private IssuesService issuesService;
 
     @Autowired
     public void setIssuesService(final IssuesService issuesService) {
         this.issuesService = issuesService;
-    }
-
-    /**
-     * Ajax entry point: returns the number of issues per priority (as JSON array).
-     *
-     * @param id
-     *         the ID of the issues instance to show the details for
-     *
-     * @return the number of issues per priority, e.g. {@code [10, 20, 70]}
-     */
-    @RequestMapping(path = "/ajax/priorities", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    @SuppressWarnings("unused") // called by details.js
-    ResponseEntity<?> getPriorities(@RequestParam(value = "id") final String id) {
-        Random random = new Random();
-        int[] priorities = {random.nextInt(100), random.nextInt(100), random.nextInt(100)};
-
-        Gson gson = new Gson();
-
-        return ResponseEntity.ok(gson.toJson(priorities));
     }
 
     /**
@@ -72,7 +51,7 @@ public class IssuesDetailController {
     @ResponseBody
     @SuppressWarnings("unused") // called by details.js
     ResponseEntity<?> getCategories(@RequestParam(value = "id") final String id) {
-        IssuePropertyDistribution model = issuesService.createDistributionByCategory();
+        IssuePropertyDistribution model = issuesService.createDistributionByCategory(id);
 
         Gson gson = new Gson();
         return ResponseEntity.ok(gson.toJson(model));
@@ -100,7 +79,7 @@ public class IssuesDetailController {
     @ResponseBody
     @SuppressWarnings("unused") // called by details.js
     ResponseEntity<?> getTypes(@RequestParam(value = "id") final String id) {
-        IssuePropertyDistribution model = issuesService.createDistributionByType();
+        IssuePropertyDistribution model = issuesService.createDistributionByType(id);
 
         Gson gson = new Gson();
         return ResponseEntity.ok(gson.toJson(model));

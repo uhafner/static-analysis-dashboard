@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import edu.hm.hafner.analysis.Issues;
 
 /**
- * Model that provides the sizes of set of {@link Issues}.
+ * Model that provides the sizes of a set of {@link Issues}.
  *
  * @see <a href="http://www.chartjs.org/docs/latest/charts/bar.html#dataset-properties">Bar Chart Dataset</a>
  *

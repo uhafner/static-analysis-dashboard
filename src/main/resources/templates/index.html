@@ -3,28 +3,26 @@
 
 <body>
 
-<div class="jumbotron text-center">
+    <div class="jumbotron text-center">
+        <div class="container">
+            <a href="/" class="logo">
+                <img src="/images/logo.png">
+            </a>
+            <h1>Static Analysis Dashboard</h1>
+            <p>This dashboard visualizes results of various static code analysis tools - it understands the result
+                files of almost 100 different static code analysis tools.
+            </p>
+            <a type="button" class="btn btn-lg btn-default" href="/details">
+                <span class="fa fa-search"></span> Analysis Details
+            </a>
+        </div>
+    </div>
     <div class="container">
-        <a href="/" class="logo">
-            <img src="/images/logo.png">
-        </a>
-        <h1>Static Analysis Dashboard</h1>
-        <p>This dashboard visualizes results of various static code analysis tools. The tool understands the result
-            files of almost 100 different static code analysis tools.
-        </p>
-        <a type="button" class="btn btn-lg btn-default" href="/details">
-            <span class="fa fa-search"></span> Analysis Details
-        </a>
-        <a type="button" class="btn btn-lg btn-primary" href="/trend">
-            <span class="fa fa-line-chart"></span> Trend Report</a>
+        <div class="alert alert-info text-center" role="alert">
+            For details on how to use the static analysis model please refer to the
+            <a href="https://github.com/jenkinsci/analysis-model" class="alert-link">Analysis Model GitHub page</a>.
+        </div>
     </div>
-</div>
-<div class="container">
-    <div class="alert alert-info text-center" role="alert">
-        For details on how to use the static analysis model please refer to the
-        <a href="https://github.com/jenkinsci/analysis-model" class="alert-link">Analysis Model GitHub page</a>.
-    </div>
-</div>
 
 </body>
 </html>

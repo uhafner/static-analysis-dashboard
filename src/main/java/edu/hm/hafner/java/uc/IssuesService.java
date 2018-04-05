@@ -1,15 +1,13 @@
 package edu.hm.hafner.java.uc;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.hm.hafner.analysis.Issue;
 import edu.hm.hafner.analysis.Issues;
-import edu.hm.hafner.analysis.parser.pmd.PmdParser;
+import edu.hm.hafner.java.db.IssuesTableGateway;
 
 /**
  * Provides services for {@link Issues}.
@@ -18,15 +16,25 @@ import edu.hm.hafner.analysis.parser.pmd.PmdParser;
  */
 @Service
 public class IssuesService {
-    private static final Issues<Issue> TEST_DATA = createTestData();
+    @SuppressWarnings("InstanceVariableMayNotBeInitialized")
+    private IssuesTableGateway issuesTableGateway;
+
+    @Autowired
+    public void setIssuesTableGateway(final IssuesTableGateway issuesTableGateway) {
+        this.issuesTableGateway = issuesTableGateway;
+    }
 
     /**
      * Returns the number of issues per category.
      *
+     * @param id
+     *         the ID of the issues instance to show the details for
+     *
      * @return number of issues per category
      */
-    public IssuePropertyDistribution createDistributionByCategory() {
-        Map<String, Integer> counts = TEST_DATA.getPropertyCount(Issue::getCategory);
+    public IssuePropertyDistribution createDistributionByCategory(final String id) {
+        Issues<Issue> issues = issuesTableGateway.findByPrimaryKey(id);
+        Map<String, Integer> counts = issues.getPropertyCount(Issue::getCategory);
 
         return new IssuePropertyDistribution(counts);
     }
@@ -34,25 +42,15 @@ public class IssuesService {
     /**
      * Returns the number of issues per type.
      *
+     * @param id
+     *         the ID of the issues instance to show the details for
+     *
      * @return number of issues per type
      */
-    public IssuePropertyDistribution createDistributionByType() {
-        Map<String, Integer> counts = TEST_DATA.getPropertyCount(Issue::getType);
+    public IssuePropertyDistribution createDistributionByType(final String id) {
+        Issues<Issue> issues = issuesTableGateway.findByPrimaryKey(id);
+        Map<String, Integer> counts = issues.getPropertyCount(Issue::getType);
 
         return new IssuePropertyDistribution(counts);
-    }
-
-    private static Issues<Issue> createTestData() {
-        PmdParser parser = new PmdParser();
-        try (InputStreamReader reader = new InputStreamReader(getTestReport())) {
-            return parser.parse(reader);
-        }
-        catch (IOException ignored) {
-            return new Issues<>();
-        }
-    }
-
-    private static InputStream getTestReport() {
-        return IssuesService.class.getResourceAsStream("/test/pmd.xml");
     }
 }

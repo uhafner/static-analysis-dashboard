@@ -1,69 +1,51 @@
 package edu.hm.hafner.java.db;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.NoSuchElementException;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
-import edu.hm.hafner.java.util.TechnicalException;
+import edu.hm.hafner.analysis.Issue;
+import edu.hm.hafner.analysis.Issues;
+import edu.hm.hafner.analysis.parser.pmd.PmdParser;
+import edu.hm.hafner.java.uc.IssuesService;
 
 /**
- * Acts as gateway to the ticks table.
+ * Acts as gateway to the issues table.
  *
  * @author Ullrich Hafner
  */
-// FIXME: should be replaced by entity layer
 @Controller
 public class IssuesTableGateway {
-    @Value("${spring.datasource.url}")
-    private String dbUrl;
+    private static final Issues<Issue> TEST_DATA = createTestData();
 
-    private DataSource dataSource;
-
-    @Autowired
-    public void setDataSource(final DataSource dataSource) {
-        this.dataSource = dataSource;
+    /**
+     * Finds the set of issues with the specified ID.
+     *
+     * @param id
+     *         the ID of the issues
+     *
+     * @return the set of issues
+     * @throws NoSuchElementException
+     *         if the set of issues with the specified ID does not exist
+     */
+    public Issues<Issue> findByPrimaryKey(final String id) {
+        return TEST_DATA; // TODO: will be replaced with actual database call later on
     }
 
-    @Bean
-    public DataSource dataSource() throws SQLException {
-        if (dbUrl == null || dbUrl.isEmpty()) {
-            return new HikariDataSource();
+    private static Issues<Issue> createTestData() {
+        PmdParser parser = new PmdParser();
+        try (InputStreamReader reader = new InputStreamReader(getTestReport())) {
+            return parser.parse(reader);
         }
-        else {
-            HikariConfig config = new HikariConfig();
-            config.setJdbcUrl(dbUrl);
-            return new HikariDataSource(config);
+        catch (IOException ignored) {
+            return new Issues<>();
         }
     }
 
-    public List<String> readTicks() {
-        try (Connection connection = dataSource.getConnection()) {
-            Statement stmt = connection.createStatement();
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-            stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-            ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
-
-            List<String> output = new ArrayList<String>();
-            while (rs.next()) {
-                output.add("Read from DB: " + rs.getTimestamp("tick"));
-            }
-
-            return output;
-        }
-        catch (SQLException exception) {
-            throw new TechnicalException("Can't read from table", exception);
-        }
+    private static InputStream getTestReport() {
+        return IssuesService.class.getResourceAsStream("/test/pmd.xml");
     }
 }
