@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import edu.hm.hafner.analysis.Issue;
 import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.analysis.parser.pmd.PmdParser;
-import edu.hm.hafner.java.uc.IssuesService;
 
 /**
  * Acts as gateway to the issues table.
@@ -46,6 +45,6 @@ public class IssuesTableGateway {
     }
 
     private static InputStream getTestReport() {
-        return IssuesService.class.getResourceAsStream("/test/pmd.xml");
+        return IssuesTableGateway.class.getResourceAsStream("/test/pmd.xml");
     }
 }

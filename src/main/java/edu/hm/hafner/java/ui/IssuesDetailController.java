@@ -50,7 +50,7 @@ public class IssuesDetailController {
     @RequestMapping(path = "/ajax/categories", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     @SuppressWarnings("unused") // called by details.js
-    ResponseEntity<?> getCategories(@RequestParam(value = "id") final String id) {
+    ResponseEntity<?> getCategories(@RequestParam("id") final String id) {
         IssuePropertyDistribution model = issuesService.createDistributionByCategory(id);
 
         Gson gson = new Gson();
@@ -78,7 +78,7 @@ public class IssuesDetailController {
     @RequestMapping(path = "/ajax/types", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     @SuppressWarnings("unused") // called by details.js
-    ResponseEntity<?> getTypes(@RequestParam(value = "id") final String id) {
+    ResponseEntity<?> getTypes(@RequestParam("id") final String id) {
         IssuePropertyDistribution model = issuesService.createDistributionByType(id);
 
         Gson gson = new Gson();

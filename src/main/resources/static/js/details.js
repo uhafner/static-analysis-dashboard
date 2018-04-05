@@ -16,7 +16,7 @@ $(document).ready(
                         }
                     }
                 });
-            })
+            });
         $.get("ajax/types", {id: "id-is-not-available-yet"},
             function (types) {
                 new Chart($("#types-chart"), {
@@ -29,7 +29,6 @@ $(document).ready(
                         }
                     }
                 });
-            })
-
+            });
     });
 
