@@ -10,40 +10,36 @@ import java.util.UUID;
 
 import edu.hm.hafner.analysis.Priority;
 
+/**
+ * Entity of a Issue object to store in a database.
+ *
+ * @author Michael Schmid
+ */
 @Entity
 @Table(name="issue")
 public class IssueEntity {
 
-    private String category; // almost final
-    private String type;     // almost final
+    private String category;
+    private String type;
     private Priority priority;
     private String message;
 
-    private int lineStart;     // fixed
-    private int lineEnd;       // fixed
-    private int columnStart;   // fixed
-    private int columnEnd;     // fixed
+    private int lineStart;
+    private int lineEnd;
+    private int columnStart;
+    private int columnEnd;
 
     @ElementCollection(targetClass=LineRangeEntity.class)
-    private List<LineRangeEntity> lineRanges; // fixed
-
+    private List<LineRangeEntity> lineRanges;
     @Id
-    private UUID id; // fixed
-
+    private UUID id;
     private String description;
-
-    private String reference;       // mutable, not part of equals
-    private String origin;          // mutable
-    private String moduleName;      // mutable
-    private String packageName; // mutable
-    private String fileName;    // mutable
-
-    private String fingerprint;     // mutable, not part of equals
-
-
-    public IssueEntity() {
-        // JPA
-    }
+    private String reference;       // not part of equals
+    private String origin;
+    private String moduleName;
+    private String packageName;
+    private String fileName;
+    private String fingerprint;     // not part of equals
 
     public String getCategory() {
         return category;
@@ -201,12 +197,10 @@ public class IssueEntity {
                 Objects.equals(lineRanges, entity.lineRanges) &&
                 Objects.equals(id, entity.id) &&
                 Objects.equals(description, entity.description) &&
-                Objects.equals(reference, entity.reference) &&
                 Objects.equals(origin, entity.origin) &&
                 Objects.equals(moduleName, entity.moduleName) &&
                 Objects.equals(packageName, entity.packageName) &&
-                Objects.equals(fileName, entity.fileName) &&
-                Objects.equals(fingerprint, entity.fingerprint);
+                Objects.equals(fileName, entity.fileName);
     }
 
     @Override

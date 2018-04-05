@@ -2,15 +2,38 @@ package edu.hm.hafner.java.persistence;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
+/**
+ * Entity of a LineRange object to store in a database.
+ * Entity of a LineRange object to store in a database.
+ *
+ * @author Michael Schmid
+ */
 @Entity
+@Table(name="linerange")
 public class LineRangeEntity {
+
+    /**
+     * Id of the entity build of start and end of the range (start-end).
+     */
     @Id
     private String id;
+
+    /**
+     * Line number of the start of the range.
+     */
     private int start;
+
+    /**
+     * Line number of the end of the range.
+     */
     private int end;
 
+    /**
+     * The no-argument constructor is required to use JPA.
+     */
     public LineRangeEntity() {
         // JPA
     }
@@ -47,6 +70,10 @@ public class LineRangeEntity {
         this.id = id;
     }
 
+    /**
+     * Calculate the id of a LineRangeEntity by concatenate the start, a minus and the end (start-end).
+     * @return if of the LineRangeEntity
+     */
     private String calculateId() {
         return getStart() + "-" + getEnd();
     }

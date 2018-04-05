@@ -11,24 +11,37 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Entity of a Issues object to store in a database.
+ *
+ * @author Michael Schmid
+ */
 @Entity
 @Table(name="issues")
 public class IssuesEntity {
 
+    /**
+     * Set of issue objects related to this issues object.
+     */
     @OneToMany
     private Set<IssueEntity> elements = new LinkedHashSet<>();
+
+    /**
+     * List of info messages stored as a table of strings.
+     */
     @ElementCollection(targetClass=String.class)
     private List<String> infoMessages = new ArrayList<>();
+
+    /**
+     * List of error messages stored as a table of strings.
+     */
     @ElementCollection(targetClass=String.class)
     private List<String> errorMessages = new ArrayList<>();
 
     private int sizeOfDuplicates = 0;
+
     @Id
     private String id;
-
-    public IssuesEntity() {
-        // JPA
-    }
 
     public Set<IssueEntity> getElements() {
         return elements;
