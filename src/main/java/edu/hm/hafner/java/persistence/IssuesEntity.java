@@ -4,6 +4,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -24,18 +25,21 @@ public class IssuesEntity {
      * Set of issue objects related to this issues object.
      */
     @OneToMany
-    private Set<IssueEntity> elements = new LinkedHashSet<>();
+    @OrderColumn
+    private List<IssueEntity> elements = new ArrayList<>();
 
     /**
      * List of info messages stored as a table of strings.
      */
     @ElementCollection(targetClass=String.class)
+    @OrderColumn
     private List<String> infoMessages = new ArrayList<>();
 
     /**
      * List of error messages stored as a table of strings.
      */
     @ElementCollection(targetClass=String.class)
+    @OrderColumn
     private List<String> errorMessages = new ArrayList<>();
 
     private int sizeOfDuplicates = 0;
@@ -43,11 +47,11 @@ public class IssuesEntity {
     @Id
     private String id;
 
-    public Set<IssueEntity> getElements() {
+    public List<IssueEntity> getElements() {
         return elements;
     }
 
-    public void setElements(final Set<IssueEntity> elements) {
+    public void setElements(final List<IssueEntity> elements) {
         this.elements = elements;
     }
 
