@@ -1,6 +1,7 @@
 package edu.hm.hafner.java.persistence;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -11,7 +12,7 @@ import edu.hm.hafner.analysis.IssueBuilder;
 import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.analysis.LineRange;
 import edu.hm.hafner.analysis.LineRangeList;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class EntityServiceTest {
@@ -113,12 +114,10 @@ class EntityServiceTest {
     }
 
     @Test
-    void selectNotExistingIssueaShouldReturnAnEmptyOptional() {
+    void selectNotExistingIssuesShouldThrowException() {
         EntityService sut = new EntityService(mock(IssueRepository.class), mock(IssuesRepository.class), mock(LineRangeRepository.class), MAPPER);
 
-        Optional<Issues<Issue>> issue = sut.select(EXAMPLE_ID);
-
-        assertThat(issue.isPresent()).isFalse();
+        assertThatThrownBy(() -> sut.select(EXAMPLE_ID)).isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
@@ -128,11 +127,10 @@ class EntityServiceTest {
         EntityService sut = new EntityService(issueRepository, issuesRepository, mock(LineRangeRepository.class), MAPPER);
         when(issuesRepository.findById(EXAMPLE_ID)).thenReturn(Optional.of(MAPPER.map(ISSUES)));
 
-        Optional<Issues<Issue>> optionalResult = sut.select(EXAMPLE_ID);
+        Issues<Issue> optionalResult = sut.select(EXAMPLE_ID);
 
-        assertThat(optionalResult.isPresent()).isTrue();
-        assertThat(optionalResult.get().getId()).isEqualTo(EXAMPLE_ID);
-        assertThat(optionalResult.get().iterator()).containsExactly(FIRST_ISSUE, SECOND_ISSUE);
+        assertThat(optionalResult.getId()).isEqualTo(EXAMPLE_ID);
+        assertThat(optionalResult.iterator()).containsExactly(FIRST_ISSUE, SECOND_ISSUE);
     }
 
     @Test

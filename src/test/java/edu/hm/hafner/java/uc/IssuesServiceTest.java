@@ -4,8 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
 
-import edu.hm.hafner.java.db.IssuesTableGateway;
-import static org.assertj.core.api.Assertions.assertThat;
+import edu.hm.hafner.java.persistence.EntityService;
+import edu.hm.hafner.java.persistence.IssuesTestData;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests the class {@link IssuesService}.
@@ -43,8 +45,11 @@ class IssuesServiceTest {
     }
 
     private IssuesService createService() {
+        IssuesTestData data = new IssuesTestData();
         IssuesService service = new IssuesService();
-        service.setIssuesTableGateway(new IssuesTableGateway());
+        EntityService entityService = mock(EntityService.class);
+        when(entityService.select(anyString())).thenReturn(data.createTestData());
+        service.setEntityService(entityService);
         return service;
     }
 }
