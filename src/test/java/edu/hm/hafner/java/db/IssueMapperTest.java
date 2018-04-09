@@ -1,4 +1,4 @@
-package edu.hm.hafner.java.persistence;
+package edu.hm.hafner.java.db;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;

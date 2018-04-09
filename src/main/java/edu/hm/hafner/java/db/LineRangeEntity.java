@@ -1,4 +1,4 @@
-package edu.hm.hafner.java.persistence;
+package edu.hm.hafner.java.db;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

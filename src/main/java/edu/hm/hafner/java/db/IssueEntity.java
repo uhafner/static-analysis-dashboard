@@ -1,4 +1,4 @@
-package edu.hm.hafner.java.persistence;
+package edu.hm.hafner.java.db;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -16,10 +16,10 @@ import edu.hm.hafner.analysis.Priority;
  *
  * @author Michael Schmid
  */
+@SuppressWarnings("InstanceVariableMayNotBeInitialized")
 @Entity
-@Table(name="issue")
+@Table(name = "issue")
 public class IssueEntity {
-
     private String category;
     private String type;
     private Priority priority;
@@ -30,7 +30,7 @@ public class IssueEntity {
     private int columnStart;
     private int columnEnd;
 
-    @ElementCollection(targetClass=LineRangeEntity.class)
+    @ElementCollection(targetClass = LineRangeEntity.class)
     @OrderColumn
     private List<LineRangeEntity> lineRanges;
     @Id
@@ -179,6 +179,7 @@ public class IssueEntity {
         this.fingerprint = fingerprint;
     }
 
+    @SuppressWarnings("OverlyComplexBooleanExpression")
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -188,28 +189,26 @@ public class IssueEntity {
             return false;
         }
         IssueEntity entity = (IssueEntity) o;
-        return lineStart == entity.lineStart &&
-                lineEnd == entity.lineEnd &&
-                columnStart == entity.columnStart &&
-                columnEnd == entity.columnEnd &&
-                Objects.equals(category, entity.category) &&
-                Objects.equals(type, entity.type) &&
-                priority == entity.priority &&
-                Objects.equals(message, entity.message) &&
-                Objects.equals(lineRanges, entity.lineRanges) &&
-                Objects.equals(id, entity.id) &&
-                Objects.equals(description, entity.description) &&
-                Objects.equals(origin, entity.origin) &&
-                Objects.equals(moduleName, entity.moduleName) &&
-                Objects.equals(packageName, entity.packageName) &&
-                Objects.equals(fileName, entity.fileName);
+        return lineStart == entity.lineStart
+                && lineEnd == entity.lineEnd
+                && columnStart == entity.columnStart
+                && columnEnd == entity.columnEnd
+                && Objects.equals(category, entity.category)
+                && Objects.equals(type, entity.type)
+                && priority == entity.priority
+                && Objects.equals(message, entity.message)
+                && Objects.equals(lineRanges, entity.lineRanges)
+                && Objects.equals(id, entity.id)
+                && Objects.equals(description, entity.description)
+                && Objects.equals(origin, entity.origin)
+                && Objects.equals(moduleName, entity.moduleName)
+                && Objects.equals(packageName, entity.packageName)
+                && Objects.equals(fileName, entity.fileName);
     }
 
     @Override
     public int hashCode() {
-
         return Objects.hash(category, type, priority, message, lineStart, lineEnd, columnStart, columnEnd, lineRanges,
-                id,
-                description, reference, origin, moduleName, packageName, fileName, fingerprint);
+                id, description, reference, origin, moduleName, packageName, fileName, fingerprint);
     }
 }

@@ -22,10 +22,10 @@ import edu.hm.hafner.java.uc.IssuesService;
 @Controller
 public class IssuesDetailController {
     @SuppressWarnings("InstanceVariableMayNotBeInitialized")
-    private IssuesService issuesService;
+    private final IssuesService issuesService;
 
     @Autowired
-    public void setIssuesService(final IssuesService issuesService) {
+    public IssuesDetailController(final IssuesService issuesService) {
         this.issuesService = issuesService;
     }
 

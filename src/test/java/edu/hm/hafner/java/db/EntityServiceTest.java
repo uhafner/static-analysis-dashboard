@@ -1,4 +1,4 @@
-package edu.hm.hafner.java.persistence;
+package edu.hm.hafner.java.db;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import edu.hm.hafner.analysis.Issue;
 import edu.hm.hafner.analysis.Issues;
-import edu.hm.hafner.java.persistence.EntityService;
+import edu.hm.hafner.java.db.EntityService;
 
 /**
  * Provides services for {@link Issues}.
@@ -20,7 +20,7 @@ public class IssuesService {
     private EntityService entityService;
 
     @Autowired
-    public void setEntityService(final EntityService entityService) {
+    public IssuesService(final EntityService entityService) {
         this.entityService = entityService;
     }
 

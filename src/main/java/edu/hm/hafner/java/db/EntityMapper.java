@@ -1,4 +1,4 @@
-package edu.hm.hafner.java.persistence;
+package edu.hm.hafner.java.db;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -16,7 +16,7 @@ import edu.hm.hafner.analysis.LineRangeList;
 import static java.util.stream.Collectors.*;
 
 /**
- * Mapper to map issue and issues dtos to issue and issues entities which could be stored in a database.
+ * Mapper to map issue and issues DTOs to issue and issues entities which could be stored in a database.
  *
  * @author Michael Schmid
  */
@@ -160,6 +160,7 @@ public class EntityMapper {
      *
      * @return a new issues object with the values of the entity.
      */
+    @SuppressWarnings("unchecked")
     public Issues<Issue> map(final IssuesEntity entity) {
         Issues<Issue> result = getMapper().map(entity, Issues.class);
         entity.getInfoMessages().forEach(result::logInfo);
@@ -181,9 +182,8 @@ public class EntityMapper {
      *         to set
      */
     private void setIssueId(final Issue result, final UUID id) {
-        Field idField = null;
         try {
-            idField = result.getClass().getDeclaredField("id");
+            Field idField = result.getClass().getDeclaredField("id");
             idField.setAccessible(true);
             idField.set(result, id);
         }

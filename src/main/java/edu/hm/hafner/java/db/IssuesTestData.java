@@ -1,4 +1,4 @@
-package edu.hm.hafner.java.persistence;
+package edu.hm.hafner.java.db;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -32,10 +32,17 @@ public class IssuesTestData {
         entityService.insert(createTestData());
     }
 
+    /**
+     * Creates a set of issues. Reads the issues from a predefined PMD file.
+     *
+     * @return the issues
+     */
     public Issues<Issue> createTestData() {
         PmdParser parser = new PmdParser();
         try (InputStreamReader reader = new InputStreamReader(getTestReport())) {
-            return parser.parse(reader);
+            Issues<Issue> issues = parser.parse(reader);
+            issues.setId("id-is-not-available-yet");
+            return issues;
         }
         catch (IOException ignored) {
             return new Issues<>();

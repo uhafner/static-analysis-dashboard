@@ -1,4 +1,4 @@
-package edu.hm.hafner.java.persistence;
+package edu.hm.hafner.java.db;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -18,7 +18,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "issues")
 public class IssuesEntity {
-
     /**
      * Set of issue objects related to this issues object.
      */
@@ -85,25 +84,25 @@ public class IssuesEntity {
         this.id = id;
     }
 
+    @SuppressWarnings("OverlyComplexBooleanExpression")
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        IssuesEntity that = (IssuesEntity) o;
-        return sizeOfDuplicates == that.sizeOfDuplicates &&
-                Objects.equals(elements, that.elements) &&
-                Objects.equals(infoMessages, that.infoMessages) &&
-                Objects.equals(errorMessages, that.errorMessages) &&
-                Objects.equals(id, that.id);
+        IssuesEntity that = (IssuesEntity) obj;
+        return sizeOfDuplicates == that.sizeOfDuplicates
+                && Objects.equals(elements, that.elements)
+                && Objects.equals(infoMessages, that.infoMessages)
+                && Objects.equals(errorMessages, that.errorMessages)
+                && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-
         return Objects.hash(elements, infoMessages, errorMessages, sizeOfDuplicates, id);
     }
 }
