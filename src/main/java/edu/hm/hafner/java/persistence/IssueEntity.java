@@ -3,6 +3,7 @@ package edu.hm.hafner.java.persistence;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +31,7 @@ public class IssueEntity {
     private int columnEnd;
 
     @ElementCollection(targetClass=LineRangeEntity.class)
+    @OrderColumn
     private List<LineRangeEntity> lineRanges;
     @Id
     private UUID id;

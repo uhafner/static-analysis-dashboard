@@ -1,7 +1,7 @@
 package edu.hm.hafner.java.persistence;
 
 import java.lang.reflect.Field;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
@@ -13,7 +13,6 @@ import edu.hm.hafner.analysis.IssueBuilder;
 import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.analysis.LineRange;
 import edu.hm.hafner.analysis.LineRangeList;
-import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -127,7 +126,7 @@ public class EntityMapper {
      */
     public IssuesEntity map(final Issues<Issue> issues, final IssuesEntity entity) {
         getMapper().map(issues, entity);
-        Set<IssueEntity> issuesSet = issues.stream().map(this::map).collect(toSet());
+        List<IssueEntity> issuesSet = issues.stream().map(this::map).collect(toList());
         entity.setElements(issuesSet);
         return entity;
     }

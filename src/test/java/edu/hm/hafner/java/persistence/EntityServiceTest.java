@@ -1,7 +1,10 @@
 package edu.hm.hafner.java.persistence;
 
 import java.util.Arrays;
+<<<<<<< HEAD
 import java.util.NoSuchElementException;
+=======
+>>>>>>> 4771fe98beaf6e59fd249bf25ec5dc2c688d41a7
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,7 +15,11 @@ import edu.hm.hafner.analysis.IssueBuilder;
 import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.analysis.LineRange;
 import edu.hm.hafner.analysis.LineRangeList;
+<<<<<<< HEAD
 import static org.assertj.core.api.Assertions.*;
+=======
+import static org.assertj.core.api.Assertions.assertThat;
+>>>>>>> 4771fe98beaf6e59fd249bf25ec5dc2c688d41a7
 import static org.mockito.Mockito.*;
 
 class EntityServiceTest {
