@@ -1,7 +1,6 @@
 package edu.hm.hafner.java.persistence;
 
 import javax.annotation.PostConstruct;
-
 import java.util.Optional;
 import java.util.Set;
 
@@ -17,8 +16,32 @@ import edu.hm.hafner.analysis.Priority;
 
 @Component
 public class DataInitializer {
+    private static final Issue HIGH = new IssueBuilder().setMessage("issue-1")
+            .setFileName("file-1")
+            .setPriority(Priority.HIGH)
+            .build();
+    private static final Issue NORMAL_1 = new IssueBuilder().setMessage("issue-2")
+            .setFileName("file-1")
+            .setPriority(Priority.NORMAL)
+            .build();
+    private static final Issue NORMAL_2 = new IssueBuilder().setMessage("issue-3")
+            .setFileName("file-1")
+            .setPriority(Priority.NORMAL)
+            .build();
+    private static final Issue LOW_2_A = new IssueBuilder().setMessage("issue-4")
+            .setFileName("file-2")
+            .setPriority(Priority.LOW)
+            .build();
+    private static final Issue LOW_2_B = new IssueBuilder().setMessage("issue-5")
+            .setFileName("file-2")
+            .setPriority(Priority.LOW)
+            .build();
+    private static final Issue LOW_FILE_3 = new IssueBuilder().setMessage("issue-6")
+            .setFileName("file-3")
+            .setPriority(Priority.LOW)
+            .build();
+    private static final String ID = "id";
     private final EntityService service;
-
     @Autowired
     public DataInitializer(final EntityService service) {
         this.service = service;
@@ -44,14 +67,13 @@ public class DataInitializer {
         Set<Issue> issueFromDatabase = service.selectAllIssue();
         Set<Issues<Issue>> issuesFromDatabase = service.selectAllIssues();
 
-
         System.out.println("------------------------------------");
 
         Issue work = issueFromDatabase.iterator().next();
         System.out.println(work);
         work.setFileName("FILE");
         Optional<Issue> result = service.update(work);
-        if(result.isPresent()) {
+        if (result.isPresent()) {
             System.out.println(result.get());
         }
 
@@ -62,31 +84,4 @@ public class DataInitializer {
 
         System.out.println("------------------------------------");
     }
-
-    private static final Issue HIGH = new IssueBuilder().setMessage("issue-1")
-            .setFileName("file-1")
-            .setPriority(Priority.HIGH)
-            .build();
-    private static final Issue NORMAL_1 = new IssueBuilder().setMessage("issue-2")
-            .setFileName("file-1")
-            .setPriority(Priority.NORMAL)
-            .build();
-    private static final Issue NORMAL_2 = new IssueBuilder().setMessage("issue-3")
-            .setFileName("file-1")
-            .setPriority(Priority.NORMAL)
-            .build();
-    private static final Issue LOW_2_A = new IssueBuilder().setMessage("issue-4")
-            .setFileName("file-2")
-            .setPriority(Priority.LOW)
-            .build();
-    private static final Issue LOW_2_B = new IssueBuilder().setMessage("issue-5")
-            .setFileName("file-2")
-            .setPriority(Priority.LOW)
-            .build();
-    private static final Issue LOW_FILE_3 = new IssueBuilder().setMessage("issue-6")
-            .setFileName("file-3")
-            .setPriority(Priority.LOW)
-            .build();
-
-    private static final String ID = "id";
 }

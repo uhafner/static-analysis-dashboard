@@ -7,10 +7,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Entity of a Issues object to store in a database.
@@ -18,7 +16,7 @@ import java.util.Set;
  * @author Michael Schmid
  */
 @Entity
-@Table(name="issues")
+@Table(name = "issues")
 public class IssuesEntity {
 
     /**
@@ -31,14 +29,14 @@ public class IssuesEntity {
     /**
      * List of info messages stored as a table of strings.
      */
-    @ElementCollection(targetClass=String.class)
+    @ElementCollection(targetClass = String.class)
     @OrderColumn
     private List<String> infoMessages = new ArrayList<>();
 
     /**
      * List of error messages stored as a table of strings.
      */
-    @ElementCollection(targetClass=String.class)
+    @ElementCollection(targetClass = String.class)
     @OrderColumn
     private List<String> errorMessages = new ArrayList<>();
 

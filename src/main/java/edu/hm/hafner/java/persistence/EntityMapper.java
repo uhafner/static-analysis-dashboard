@@ -13,7 +13,7 @@ import edu.hm.hafner.analysis.IssueBuilder;
 import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.analysis.LineRange;
 import edu.hm.hafner.analysis.LineRangeList;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 /**
  * Mapper to map issue and issues dtos to issue and issues entities which could be stored in a database.
@@ -22,7 +22,6 @@ import static java.util.stream.Collectors.toList;
  */
 @Component
 public class EntityMapper {
-
     /**
      * Special rules for the ModelMapper to map Issue to IssuesEntity.
      */
@@ -61,7 +60,6 @@ public class EntityMapper {
      */
     private final ModelMapper mapper;
 
-
     public EntityMapper() {
         mapper = new ModelMapper();
         mapper.addMappings(ISSUE_PROPERTY_MAP);
@@ -74,7 +72,10 @@ public class EntityMapper {
 
     /**
      * Map the issue to a new entity object.
-     * @param issue to map to a entity
+     *
+     * @param issue
+     *         to map to a entity
+     *
      * @return a new entity object with the values of the issue.
      */
     public IssueEntity map(final Issue issue) {
@@ -83,25 +84,38 @@ public class EntityMapper {
 
     /**
      * Map the issue to the entity object. This is used to update existing entities in the database.
-     * @param issue to map to a entity
-     * @param entity which should get the values of issue.
+     *
+     * @param issue
+     *         to map to a entity
+     * @param entity
+     *         which should get the values of issue.
+     *
      * @return the entity of the parameters
      */
     public IssueEntity map(final Issue issue, final IssueEntity entity) {
         getMapper().map(issue, entity);
-        entity.setLineRanges(issue.getLineRanges().stream().map(lineRange -> getMapper().map(lineRange, LineRangeEntity.class)).collect(toList()));
+        entity.setLineRanges(issue.getLineRanges()
+                .stream()
+                .map(lineRange -> getMapper().map(lineRange, LineRangeEntity.class))
+                .collect(toList()));
         return entity;
     }
 
     /**
      * Map the entity to a new dto object.
-     * @param entity to map to a dto
+     *
+     * @param entity
+     *         to map to a dto
+     *
      * @return a new issue object with the values of the entity.
      */
     public Issue map(final IssueEntity entity) {
         IssueBuilder builder = getMapper().map(entity, IssueBuilder.class);
         LineRangeList ranges = new LineRangeList();
-        ranges.addAll(entity.getLineRanges().stream().map(lineRangeEntity -> new LineRange(lineRangeEntity.getStart(), lineRangeEntity.getEnd())).collect(toList()));
+        ranges.addAll(entity.getLineRanges()
+                .stream()
+                .map(lineRangeEntity -> new LineRange(lineRangeEntity.getStart(), lineRangeEntity.getEnd()))
+                .collect(toList()));
         builder.setLineRanges(ranges);
 
         Issue result = builder.build();
@@ -111,7 +125,10 @@ public class EntityMapper {
 
     /**
      * Map the issues dto to a new entity object.
-     * @param issues to map to a entity
+     *
+     * @param issues
+     *         to map to a entity
+     *
      * @return a new entity object with the values of the issues.
      */
     public IssuesEntity map(final Issues<Issue> issues) {
@@ -120,8 +137,12 @@ public class EntityMapper {
 
     /**
      * Map the issues dto to the entity object. This is used to update existing entities in the database.
-     * @param issues to map to a entity
-     * @param entity which should get the values of issues.
+     *
+     * @param issues
+     *         to map to a entity
+     * @param entity
+     *         which should get the values of issues.
+     *
      * @return the entity of the parameters
      */
     public IssuesEntity map(final Issues<Issue> issues, final IssuesEntity entity) {
@@ -133,7 +154,10 @@ public class EntityMapper {
 
     /**
      * Map the issues entity to a new issues dto object.
-     * @param entity to map to a dto
+     *
+     * @param entity
+     *         to map to a dto
+     *
      * @return a new issues object with the values of the entity.
      */
     public Issues<Issue> map(final IssuesEntity entity) {
@@ -150,8 +174,11 @@ public class EntityMapper {
 
     /**
      * Set the private final id of a issue object by using reflexions.
-     * @param result issue which should get the id
-     * @param id to set
+     *
+     * @param result
+     *         issue which should get the id
+     * @param id
+     *         to set
      */
     private void setIssueId(final Issue result, final UUID id) {
         Field idField = null;
@@ -160,8 +187,9 @@ public class EntityMapper {
             idField.setAccessible(true);
             idField.set(result, id);
         }
-        catch (NoSuchFieldException|IllegalAccessException exception) {
-            throw new RuntimeException("The implementation of Issue has changed. The Mapper can't map Issue anymore.", exception);
+        catch (NoSuchFieldException | IllegalAccessException exception) {
+            throw new RuntimeException("The implementation of Issue has changed. The Mapper can't map Issue anymore.",
+                    exception);
         }
     }
 }

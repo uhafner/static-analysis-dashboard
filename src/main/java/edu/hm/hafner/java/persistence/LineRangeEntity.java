@@ -6,13 +6,12 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 /**
- * Entity of a LineRange object to store in a database.
- * Entity of a LineRange object to store in a database.
+ * Entity of a LineRange object to store in a database. Entity of a LineRange object to store in a database.
  *
  * @author Michael Schmid
  */
 @Entity
-@Table(name="linerange")
+@Table(name = "linerange")
 public class LineRangeEntity {
 
     /**
@@ -72,6 +71,7 @@ public class LineRangeEntity {
 
     /**
      * Calculate the id of a LineRangeEntity by concatenate the start, a minus and the end (start-end).
+     *
      * @return if of the LineRangeEntity
      */
     private String calculateId() {
