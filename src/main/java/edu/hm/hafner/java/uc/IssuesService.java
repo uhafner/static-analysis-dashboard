@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import edu.hm.hafner.analysis.Issue;
 import edu.hm.hafner.analysis.Issues;
-import edu.hm.hafner.java.db.EntityService;
+import edu.hm.hafner.java.db.IssuesEntityService;
 
 /**
  * Provides services for {@link Issues}.
@@ -17,11 +17,11 @@ import edu.hm.hafner.java.db.EntityService;
 @Service
 public class IssuesService {
     @SuppressWarnings("InstanceVariableMayNotBeInitialized")
-    private EntityService entityService;
+    private IssuesEntityService issuesEntityService;
 
     @Autowired
-    public IssuesService(final EntityService entityService) {
-        this.entityService = entityService;
+    public IssuesService(final IssuesEntityService issuesEntityService) {
+        this.issuesEntityService = issuesEntityService;
     }
 
     /**
@@ -33,7 +33,7 @@ public class IssuesService {
      * @return number of issues per category
      */
     public IssuePropertyDistribution createDistributionByCategory(final String id) {
-        Issues<Issue> issues = entityService.select(id);
+        Issues<Issue> issues = issuesEntityService.findByPrimaryKey(id);
         Map<String, Integer> counts = issues.getPropertyCount(Issue::getCategory);
 
         return new IssuePropertyDistribution(counts);
@@ -48,7 +48,7 @@ public class IssuesService {
      * @return number of issues per type
      */
     public IssuePropertyDistribution createDistributionByType(final String id) {
-        Issues<Issue> issues = entityService.select(id);
+        Issues<Issue> issues = issuesEntityService.findByPrimaryKey(id);
         Map<String, Integer> counts = issues.getPropertyCount(Issue::getType);
 
         return new IssuePropertyDistribution(counts);

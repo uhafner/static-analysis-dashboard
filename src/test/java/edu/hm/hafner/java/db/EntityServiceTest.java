@@ -1,7 +1,6 @@
 package edu.hm.hafner.java.db;
 
-import java.util.Arrays;
-import java.util.NoSuchElementException;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,8 +14,10 @@ import edu.hm.hafner.analysis.LineRangeList;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests the class {@link EntityService}.
+ */
 class EntityServiceTest {
-
     private static final EntityMapper MAPPER = new EntityMapper();
 
     private static final UUID EXAMPLE_UUID = UUID.fromString("ce856855-b91d-4ae7-b77a-7a30a699291e");
@@ -54,7 +55,7 @@ class EntityServiceTest {
 
         IssueEntity entity = new IssueEntity();
         entity.setId(EXAMPLE_UUID);
-        entity.setLineRanges(Arrays.asList(new LineRangeEntity()));
+        entity.setLineRanges(Collections.singletonList(new LineRangeEntity()));
         when(issueRepository.findById(EXAMPLE_UUID)).thenReturn(Optional.of(entity));
 
         Optional<Issue> issue = sut.select(EXAMPLE_UUID);
@@ -86,7 +87,7 @@ class EntityServiceTest {
         issue.setFileName(newFilename);
         IssueEntity entity = new IssueEntity();
         entity.setId(issue.getId());
-        entity.setLineRanges(Arrays.asList(new LineRangeEntity(1, 2)));
+        entity.setLineRanges(Collections.singletonList(new LineRangeEntity(1, 2)));
 
         when(issueRepository.findById(entity.getId())).thenReturn(Optional.of(entity));
         Optional<Issue> result = sut.update(issue);
@@ -117,25 +118,26 @@ class EntityServiceTest {
     }
 
     @Test
-    void selectNotExistingIssuesShouldThrowException() {
-        EntityService sut = new EntityService(mock(IssueRepository.class), mock(IssuesRepository.class),
-                mock(LineRangeRepository.class), MAPPER);
+    void selectNotExistingIssueaShouldReturnAnEmptyOptional() {
+        EntityService sut = new EntityService(mock(IssueRepository.class), mock(IssuesRepository.class), mock(LineRangeRepository.class), MAPPER);
 
-        assertThatThrownBy(() -> sut.select(EXAMPLE_ID)).isInstanceOf(NoSuchElementException.class);
+        Optional<Issues<Issue>> issue = sut.select(EXAMPLE_ID);
+
+        assertThat(issue.isPresent()).isFalse();
     }
 
     @Test
     void selectExistingIssuesShouldReturnTheIssue() {
         IssueRepository issueRepository = mock(IssueRepository.class);
         IssuesRepository issuesRepository = mock(IssuesRepository.class);
-        EntityService sut = new EntityService(issueRepository, issuesRepository, mock(LineRangeRepository.class),
-                MAPPER);
+        EntityService sut = new EntityService(issueRepository, issuesRepository, mock(LineRangeRepository.class), MAPPER);
         when(issuesRepository.findById(EXAMPLE_ID)).thenReturn(Optional.of(MAPPER.map(ISSUES)));
 
-        Issues<Issue> optionalResult = sut.select(EXAMPLE_ID);
+        Optional<Issues<Issue>> optionalResult = sut.select(EXAMPLE_ID);
 
-        assertThat(optionalResult.getId()).isEqualTo(EXAMPLE_ID);
-        assertThat(optionalResult.iterator()).containsExactly(FIRST_ISSUE, SECOND_ISSUE);
+        assertThat(optionalResult.isPresent()).isTrue();
+        assertThat(optionalResult.get().getId()).isEqualTo(EXAMPLE_ID);
+        assertThat(optionalResult.get().iterator()).containsExactly(FIRST_ISSUE, SECOND_ISSUE);
     }
 
     @Test

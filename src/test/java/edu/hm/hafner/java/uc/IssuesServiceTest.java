@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
 
-import edu.hm.hafner.java.db.EntityService;
+import edu.hm.hafner.java.db.IssuesEntityService;
 import edu.hm.hafner.java.db.IssuesTestData;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -46,8 +46,8 @@ class IssuesServiceTest {
 
     private IssuesService createService() {
         IssuesTestData data = new IssuesTestData();
-        EntityService entityService = mock(EntityService.class);
-        when(entityService.select(anyString())).thenReturn(data.createTestData());
+        IssuesEntityService entityService = mock(IssuesEntityService.class);
+        when(entityService.findByPrimaryKey(anyString())).thenReturn(data.createTestData());
         return new IssuesService(entityService);
     }
 }

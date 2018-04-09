@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import edu.hm.hafner.analysis.Issue;
 import edu.hm.hafner.analysis.Issues;
-import edu.hm.hafner.util.NoSuchElementException;
 import static java.util.stream.Collectors.*;
 
 /**
@@ -128,11 +127,8 @@ public class EntityService {
      *
      * @return Optional a new the issues if it is present in the database else an empty optional.
      */
-    public Issues<Issue> select(final String id) {
-        Optional<Issues<Issue>> issues = getIssuesRepository().findById(id).map(getMapper()::map);
-
-        return issues.orElseThrow(
-                () -> new NoSuchElementException("No issues instance found with ID '%s')", id));
+    public Optional<Issues<Issue>> select(final String id) {
+        return getIssuesRepository().findById(id).map(getMapper()::map);
     }
 
     /**
