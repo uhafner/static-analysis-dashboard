@@ -122,14 +122,18 @@ public class EntityService {
     /**
      * Select a single issues identified by the id.
      *
-     * @param id
+     * @param origin
+     *         of the desired issues
+     * @param reference
      *         of the desired issues
      *
      * @return Optional a new the issues if it is present in the database else an empty optional.
      */
-    public Optional<Issues<Issue>> select(final String id) {
-        return getIssuesRepository().findById(id).map(getMapper()::map);
+    public Optional<Issues<Issue>> select(final String origin, final String reference) {
+        return getIssuesRepository().findById(new IssuesEntityId(origin, reference)).map(getMapper()::map);
     }
+
+
 
     /**
      * Update the issue in the database. If the issue is not present in the database an empty optional will be returned
@@ -166,7 +170,7 @@ public class EntityService {
      * @return Optional with a new issue if it is present in the database else an empty optional.
      */
     public Optional<Issues<Issue>> update(final Issues<Issue> issues) {
-        Optional<IssuesEntity> optionalEntity = getIssuesRepository().findById(issues.getId());
+        Optional<IssuesEntity> optionalEntity = getIssuesRepository().findById(new IssuesEntityId(issues));
         Optional<Issues<Issue>> result = Optional.empty();
 
         if (optionalEntity.isPresent()) {

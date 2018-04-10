@@ -41,7 +41,7 @@ public class IssuesTestData {
         PmdParser parser = new PmdParser();
         try (InputStreamReader reader = new InputStreamReader(getTestReport())) {
             Issues<Issue> issues = parser.parse(reader);
-            issues.setId("id-is-not-available-yet");
+            issues.setOrigin("id-is-not-available-yet");
             return issues;
         }
         catch (IOException ignored) {

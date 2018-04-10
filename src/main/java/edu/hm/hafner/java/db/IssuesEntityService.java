@@ -48,15 +48,18 @@ public class IssuesEntityService {
     /**
      * Finds the set of issues with the specified id.
      *
-     * @param id
-     *         ID of the desired issues
+     * @param origin
+     *         of the desired issues
+     * @param reference
+     *         of the desired issues
      *
      * @return the issues
      * @throws NoSuchElementException
      *         if the set of issues with the specified ID has not been found
      */
-    public Issues<Issue> findByPrimaryKey(final String id) {
-        return entityService.select(id).orElseThrow(
-                () -> new NoSuchElementException("No issues with id %s found.", id));
+    public Issues<Issue> findByPrimaryKey(final String origin, final String reference) {
+
+        return entityService.select(origin, reference).orElseThrow(
+                () -> new NoSuchElementException("No issues with origin %s and %reference found.", origin, reference));
     }
 }

@@ -74,7 +74,7 @@
     <dependency>
       <groupId>edu.hm.hafner</groupId>
       <artifactId>analysis-model</artifactId>
-      <version>1.0.0-20180317.170017-25</version>
+      <version>1.0.0-20180409.091351-28</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

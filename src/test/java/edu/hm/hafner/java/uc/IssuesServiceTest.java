@@ -21,7 +21,7 @@ class IssuesServiceTest {
         IssuesService service = createService();
 
         // When
-        IssuePropertyDistribution distribution = service.createDistributionByCategory("dummy-id");
+        IssuePropertyDistribution distribution = service.createDistributionByCategory("dummy-id", "");
 
         // Then
         assertThat(toJson(distribution)).isEqualTo("{\"labels\":[\"Design\",\"Documentation\",\"Best Practices\",\"Performance\",\"Code Style\",\"Error Prone\"],\"datasets\":[{\"data\":[15,3,20,6,53,12]}]}");
@@ -33,7 +33,7 @@ class IssuesServiceTest {
         IssuesService service = createService();
 
         // When
-        IssuePropertyDistribution distribution = service.createDistributionByType("dummy-id");
+        IssuePropertyDistribution distribution = service.createDistributionByType("dummy-id", "");
 
         // Then
         assertThat(toJson(distribution)).isEqualTo("{\"labels\":[\"OptimizableToArrayCall\",\"LooseCoupling\",\"MethodArgumentCouldBeFinal\",\"UncommentedEmptyMethodBody\",\"ConfusingTernary\",\"MissingSerialVersionUID\",\"GuardLogStatement\",\"UnusedFormalParameter\",\"LoggerIsNotStaticFinal\",\"AssignmentInOperand\",\"ImmutableField\",\"CompareObjectsWithEquals\",\"UnnecessaryConstructor\",\"CyclomaticComplexity\",\"UnusedPrivateMethod\",\"ConsecutiveLiteralAppends\",\"CallSuperInConstructor\",\"UnusedPrivateField\",\"AppendCharacterWithChar\",\"ExcessivePublicCount\",\"NPathComplexity\",\"ExcessiveImports\",\"AvoidDeeplyNestedIfStmts\",\"AccessorClassGeneration\",\"UncommentedEmptyConstructor\"],\"datasets\":[{\"data\":[1,1,13,2,9,4,8,2,4,1,2,3,13,3,3,4,18,1,1,2,3,4,1,5,1]}]}");
@@ -47,7 +47,7 @@ class IssuesServiceTest {
     private IssuesService createService() {
         IssuesTestData data = new IssuesTestData();
         IssuesEntityService entityService = mock(IssuesEntityService.class);
-        when(entityService.findByPrimaryKey(anyString())).thenReturn(data.createTestData());
+        when(entityService.findByPrimaryKey(anyString(), anyString())).thenReturn(data.createTestData());
         return new IssuesService(entityService);
     }
 }

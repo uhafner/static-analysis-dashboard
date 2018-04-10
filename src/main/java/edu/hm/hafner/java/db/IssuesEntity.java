@@ -1,8 +1,8 @@
 package edu.hm.hafner.java.db;
 
 import javax.persistence.ElementCollection;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
@@ -39,10 +39,10 @@ public class IssuesEntity {
     @OrderColumn
     private List<String> errorMessages = new ArrayList<>();
 
-    private int sizeOfDuplicates = 0;
+    private int duplicatesSize = 0;
 
-    @Id
-    private String id;
+    @EmbeddedId
+    private IssuesEntityId id = new IssuesEntityId();
 
     public List<IssueEntity> getElements() {
         return elements;
@@ -68,19 +68,35 @@ public class IssuesEntity {
         this.errorMessages = errorMessages;
     }
 
-    public int getSizeOfDuplicates() {
-        return sizeOfDuplicates;
+    public int getDuplicatesSize() {
+        return duplicatesSize;
     }
 
-    public void setSizeOfDuplicates(final int sizeOfDuplicates) {
-        this.sizeOfDuplicates = sizeOfDuplicates;
+    public void setDuplicatesSize(final int duplicatesSize) {
+        this.duplicatesSize = duplicatesSize;
     }
 
-    public String getId() {
+    public String getOrigin() {
+        return getId().getOrigin();
+    }
+
+    public void setOrigin(final String origin) {
+        getId().setOrigin(origin);
+    }
+
+    public String getReference() {
+        return getId().getReference();
+    }
+
+    public void setReference(final String reference) {
+        getId().setReference(reference);
+    }
+
+    public IssuesEntityId getId() {
         return id;
     }
 
-    public void setId(final String id) {
+    private void setId(final IssuesEntityId id) {
         this.id = id;
     }
 
@@ -94,7 +110,7 @@ public class IssuesEntity {
             return false;
         }
         IssuesEntity that = (IssuesEntity) obj;
-        return sizeOfDuplicates == that.sizeOfDuplicates
+        return duplicatesSize == that.duplicatesSize
                 && Objects.equals(elements, that.elements)
                 && Objects.equals(infoMessages, that.infoMessages)
                 && Objects.equals(errorMessages, that.errorMessages)
@@ -103,6 +119,6 @@ public class IssuesEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(elements, infoMessages, errorMessages, sizeOfDuplicates, id);
+        return Objects.hash(elements, infoMessages, errorMessages, duplicatesSize, id);
     }
 }

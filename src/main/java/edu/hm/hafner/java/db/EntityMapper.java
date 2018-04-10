@@ -1,8 +1,6 @@
 package edu.hm.hafner.java.db;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -50,7 +48,7 @@ public class EntityMapper {
         protected void configure() {
             map().setErrorMessages(source.getErrorMessages().castToList());
             map().setInfoMessages(source.getInfoMessages().castToList());
-            map().setSizeOfDuplicates(source.getDuplicatesSize());
+            skip().setDuplicatesSize(0);
             skip().setElements(null);
         }
     };
@@ -118,9 +116,7 @@ public class EntityMapper {
                 .collect(toList()));
         builder.setLineRanges(ranges);
 
-        Issue result = builder.build();
-        setIssueId(result, entity.getId());
-        return result;
+        return builder.build();
     }
 
     /**
@@ -171,25 +167,5 @@ public class EntityMapper {
 
     private ModelMapper getMapper() {
         return mapper;
-    }
-
-    /**
-     * Set the private final id of a issue object by using reflexions.
-     *
-     * @param result
-     *         issue which should get the id
-     * @param id
-     *         to set
-     */
-    private void setIssueId(final Issue result, final UUID id) {
-        try {
-            Field idField = result.getClass().getDeclaredField("id");
-            idField.setAccessible(true);
-            idField.set(result, id);
-        }
-        catch (NoSuchFieldException | IllegalAccessException exception) {
-            throw new RuntimeException("The implementation of Issue has changed. The Mapper can't map Issue anymore.",
-                    exception);
-        }
     }
 }

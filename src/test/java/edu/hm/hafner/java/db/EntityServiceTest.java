@@ -21,7 +21,8 @@ class EntityServiceTest {
     private static final EntityMapper MAPPER = new EntityMapper();
 
     private static final UUID EXAMPLE_UUID = UUID.fromString("ce856855-b91d-4ae7-b77a-7a30a699291e");
-    private static final String EXAMPLE_ID = "id";
+    private static final String EXAMPLE_ORIGIN = "origin";
+    private static final String EXAMPLE_REFERENCE = "reference";
 
     private static final Issues<Issue> ISSUES = new Issues<>();
     private static final Issue FIRST_ISSUE = new IssueBuilder().setLineStart(1).build();
@@ -30,7 +31,8 @@ class EntityServiceTest {
     private static final LineRangeList RANGES = new LineRangeList();
 
     static {
-        ISSUES.setId(EXAMPLE_ID);
+        ISSUES.setOrigin(EXAMPLE_ORIGIN);
+        ISSUES.setReference(EXAMPLE_REFERENCE);
         ISSUES.add(FIRST_ISSUE, SECOND_ISSUE);
 
         RANGES.add(new LineRange(1, 2));
@@ -121,7 +123,7 @@ class EntityServiceTest {
     void selectNotExistingIssueaShouldReturnAnEmptyOptional() {
         EntityService sut = new EntityService(mock(IssueRepository.class), mock(IssuesRepository.class), mock(LineRangeRepository.class), MAPPER);
 
-        Optional<Issues<Issue>> issue = sut.select(EXAMPLE_ID);
+        Optional<Issues<Issue>> issue = sut.select(EXAMPLE_ORIGIN, EXAMPLE_REFERENCE);
 
         assertThat(issue.isPresent()).isFalse();
     }
@@ -131,12 +133,13 @@ class EntityServiceTest {
         IssueRepository issueRepository = mock(IssueRepository.class);
         IssuesRepository issuesRepository = mock(IssuesRepository.class);
         EntityService sut = new EntityService(issueRepository, issuesRepository, mock(LineRangeRepository.class), MAPPER);
-        when(issuesRepository.findById(EXAMPLE_ID)).thenReturn(Optional.of(MAPPER.map(ISSUES)));
+        when(issuesRepository.findById(new IssuesEntityId(EXAMPLE_ORIGIN, EXAMPLE_REFERENCE))).thenReturn(Optional.of(MAPPER.map(ISSUES)));
 
-        Optional<Issues<Issue>> optionalResult = sut.select(EXAMPLE_ID);
+        Optional<Issues<Issue>> optionalResult = sut.select(EXAMPLE_ORIGIN, EXAMPLE_REFERENCE);
 
         assertThat(optionalResult.isPresent()).isTrue();
-        assertThat(optionalResult.get().getId()).isEqualTo(EXAMPLE_ID);
+        assertThat(optionalResult.get().getOrigin()).isEqualTo(EXAMPLE_ORIGIN);
+        assertThat(optionalResult.get().getReference()).isEqualTo(EXAMPLE_REFERENCE);
         assertThat(optionalResult.get().iterator()).containsExactly(FIRST_ISSUE, SECOND_ISSUE);
     }
 
@@ -156,12 +159,12 @@ class EntityServiceTest {
         IssuesRepository issuesRepository = mock(IssuesRepository.class);
         EntityService sut = new EntityService(issueRepository, issuesRepository, mock(LineRangeRepository.class),
                 MAPPER);
-        when(issuesRepository.findById(EXAMPLE_ID)).thenReturn(Optional.of(MAPPER.map(ISSUES)));
+        when(issuesRepository.findById(new IssuesEntityId(EXAMPLE_ORIGIN, EXAMPLE_REFERENCE))).thenReturn(Optional.of(MAPPER.map(ISSUES)));
         when(issueRepository.findById(FIRST_ISSUE.getId())).thenReturn(Optional.of(MAPPER.map(FIRST_ISSUE)));
 
         sut.update(ISSUES);
 
-        verify(issuesRepository, times(1)).findById(EXAMPLE_ID);
+        verify(issuesRepository, times(1)).findById(new IssuesEntityId(EXAMPLE_ORIGIN, EXAMPLE_REFERENCE));
         verify(issueRepository, times(1)).findById(FIRST_ISSUE.getId());
         verify(issueRepository, times(1)).findById(SECOND_ISSUE.getId());
         verify(issueRepository, times(1)).save(MAPPER.map(SECOND_ISSUE));
