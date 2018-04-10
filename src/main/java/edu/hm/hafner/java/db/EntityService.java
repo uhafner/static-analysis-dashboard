@@ -61,13 +61,13 @@ public class EntityService {
      * @return new instance of the issue with the values of the database
      */
     public Issue insert(final Issue issue) {
-        IssueEntity entity = getMapper().map(issue);
+        IssueEntity entity = mapper.map(issue);
         entity.getLineRanges()
                 .stream()
-                .filter(range -> !getRangesRepository().findById(range.getId()).isPresent())
-                .forEach(getRangesRepository()::save);
-        getIssueRepository().save(entity);
-        return getMapper().map(entity);
+                .filter(range -> !rangesRepository.findById(range.getId()).isPresent())
+                .forEach(rangesRepository::save);
+        issueRepository.save(entity);
+        return mapper.map(entity);
     }
 
     /**
@@ -81,12 +81,12 @@ public class EntityService {
      * @return new instance of the issues with the values of the database
      */
     public Issues<Issue> insert(final Issues<Issue> issues) {
-        IssuesEntity entity = getMapper().map(issues);
+        IssuesEntity entity = mapper.map(issues);
         issues.stream()
-                .filter(issue -> !getIssueRepository().findById(issue.getId()).isPresent())
+                .filter(issue -> !issueRepository.findById(issue.getId()).isPresent())
                 .forEach(this::insert);
-        getIssuesRepository().save(entity);
-        return getMapper().map(entity);
+        issuesRepository.save(entity);
+        return mapper.map(entity);
     }
 
     /**
@@ -95,7 +95,7 @@ public class EntityService {
      * @return set of all issue entities in the database.
      */
     public Set<Issue> selectAllIssue() {
-        return getIssueRepository().findAll().stream().map(getMapper()::map).collect(toSet());
+        return issueRepository.findAll().stream().map(mapper::map).collect(toSet());
     }
 
     /**
@@ -104,7 +104,7 @@ public class EntityService {
      * @return set of all issues entities in the database.
      */
     public Set<Issues<Issue>> selectAllIssues() {
-        return getIssuesRepository().findAll().stream().map(getMapper()::map).collect(toSet());
+        return issuesRepository.findAll().stream().map(mapper::map).collect(toSet());
     }
 
     /**
@@ -116,7 +116,7 @@ public class EntityService {
      * @return Optional with a new issue if it is present in the database else an empty optional.
      */
     public Optional<Issue> select(final UUID id) {
-        return getIssueRepository().findById(id).map(getMapper()::map);
+        return issueRepository.findById(id).map(mapper::map);
     }
 
     /**
@@ -128,7 +128,7 @@ public class EntityService {
      * @return Optional a new the issues if it is present in the database else an empty optional.
      */
     public Optional<Issues<Issue>> select(final String id) {
-        return getIssuesRepository().findById(id).map(getMapper()::map);
+        return issuesRepository.findById(id).map(mapper::map);
     }
 
     /**
@@ -141,17 +141,17 @@ public class EntityService {
      * @return Optional with a new issue if it is present in the database else an empty optional.
      */
     public Optional<Issue> update(final Issue issue) {
-        Optional<IssueEntity> optionalEntity = getIssueRepository().findById(issue.getId());
+        Optional<IssueEntity> optionalEntity = issueRepository.findById(issue.getId());
         Optional<Issue> result = Optional.empty();
 
         if (optionalEntity.isPresent()) {
-            getMapper().map(issue)
+            mapper.map(issue)
                     .getLineRanges()
                     .stream()
-                    .filter(range -> !getRangesRepository().findById(range.getId()).isPresent())
-                    .forEach(getRangesRepository()::save);
-            IssueEntity entity = getMapper().map(issue, optionalEntity.get());
-            result = Optional.of(getMapper().map(entity));
+                    .filter(range -> !rangesRepository.findById(range.getId()).isPresent())
+                    .forEach(rangesRepository::save);
+            IssueEntity entity = mapper.map(issue, optionalEntity.get());
+            result = Optional.of(mapper.map(entity));
         }
         return result;
     }
@@ -166,30 +166,14 @@ public class EntityService {
      * @return Optional with a new issue if it is present in the database else an empty optional.
      */
     public Optional<Issues<Issue>> update(final Issues<Issue> issues) {
-        Optional<IssuesEntity> optionalEntity = getIssuesRepository().findById(issues.getId());
+        Optional<IssuesEntity> optionalEntity = issuesRepository.findById(issues.getId());
         Optional<Issues<Issue>> result = Optional.empty();
 
         if (optionalEntity.isPresent()) {
             issues.stream().filter(issue -> !select(issue.getId()).isPresent()).forEach(this::insert);
-            IssuesEntity entity = getMapper().map(issues, optionalEntity.get());
-            result = Optional.of(getMapper().map(entity));
+            IssuesEntity entity = mapper.map(issues, optionalEntity.get());
+            result = Optional.of(mapper.map(entity));
         }
         return result;
-    }
-
-    private EntityMapper getMapper() {
-        return mapper;
-    }
-
-    private IssueRepository getIssueRepository() {
-        return issueRepository;
-    }
-
-    private IssuesRepository getIssuesRepository() {
-        return issuesRepository;
-    }
-
-    private LineRangeRepository getRangesRepository() {
-        return rangesRepository;
     }
 }

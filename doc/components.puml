@@ -1,0 +1,37 @@
+@startuml
+
+' Klassendiagramm der am Aufruf der details.html Seite beteiligten Klassen
+
+actor User
+
+package "User Interface" {
+    boundary details.html
+    control IssuesDetailController
+}
+
+package "Usecase Controller" {
+    control IssuesService
+}
+
+package "Database Access" {
+    control IssuesEntityService
+    control EntityService
+
+    entity IssuesEntity
+    entity IssueEntity
+    entity LineRangeEntity
+}
+
+
+' Dependencies
+
+User .> details.html
+details.html .> IssuesDetailController
+IssuesDetailController .> IssuesService
+IssuesService ..> IssuesEntityService
+IssuesEntityService .> EntityService
+EntityService ..> IssuesEntity
+EntityService ..> IssueEntity
+EntityService ..> LineRangeEntity
+
+@enduml

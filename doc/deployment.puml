@@ -1,0 +1,23 @@
+@startuml
+
+skinparam componentStyle uml2
+
+node Heroku <<server>>  {
+    node Ubuntu <<execution environment>> {
+        node Tomcat <<execution environment>> {
+             artifact "analysis-dashboard.jar"
+        }
+    }
+}
+
+node Laptop <<device>>  {
+    node macOS <<execution environment>> {
+        node Safari <<execution environment>> {
+
+        }
+    }
+    Safari --- Tomcat
+}
+
+
+@enduml
