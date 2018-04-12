@@ -42,16 +42,18 @@ public class IssuesDetailController {
      *      }
      * </pre>
      *
-     * @param id
-     *         the ID of the issues instance to show the details for
+     * @param origin
+     *         the origin of the issues instance to show the details for
+     * @param reference
+     *         the reference of the issues instance to show the details for
      *
      * @return the number of issues per category, e.g. [10, 20, 70]
      */
     @RequestMapping(path = "/ajax/categories", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     @SuppressWarnings("unused") // called by details.js
-    ResponseEntity<?> getCategories(@RequestParam("id") final String id) {
-        IssuePropertyDistribution model = issuesService.createDistributionByCategory(id);
+    ResponseEntity<?> getCategories(@RequestParam("origin") final String origin, @RequestParam("reference") final String reference) {
+        IssuePropertyDistribution model = issuesService.createDistributionByCategory(origin, reference);
 
         Gson gson = new Gson();
         return ResponseEntity.ok(gson.toJson(model));
@@ -70,16 +72,18 @@ public class IssuesDetailController {
      *      }
      * </pre>
      *
-     * @param id
-     *         the ID of the issues instance to show the details for
+     * @param origin
+     *         the origin of the issues instance to show the details for
+     * @param reference
+     *         the reference of the issues instance to show the details for
      *
      * @return the number of issues per category, e.g. [10, 20, 70]
      */
     @RequestMapping(path = "/ajax/types", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     @SuppressWarnings("unused") // called by details.js
-    ResponseEntity<?> getTypes(@RequestParam("id") final String id) {
-        IssuePropertyDistribution model = issuesService.createDistributionByType(id);
+    ResponseEntity<?> getTypes(@RequestParam("origin") final String origin, @RequestParam("reference") final String reference) {
+        IssuePropertyDistribution model = issuesService.createDistributionByType(origin, reference);
 
         Gson gson = new Gson();
         return ResponseEntity.ok(gson.toJson(model));

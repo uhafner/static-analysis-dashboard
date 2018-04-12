@@ -27,13 +27,15 @@ public class IssuesService {
     /**
      * Returns the number of issues per category.
      *
-     * @param id
-     *         the ID of the issues instance to show the details for
+     * @param origin
+     *         the origin of the issues instance to show the details for
+     * @param reference
+     *         the reference of the issues instance to show the details for
      *
      * @return number of issues per category
      */
-    public IssuePropertyDistribution createDistributionByCategory(final String id) {
-        Issues<Issue> issues = issuesEntityService.findByPrimaryKey(id);
+    public IssuePropertyDistribution createDistributionByCategory(final String origin, final String reference) {
+        Issues<Issue> issues = issuesEntityService.findByPrimaryKey(origin, reference);
         Map<String, Integer> counts = issues.getPropertyCount(Issue::getCategory);
 
         return new IssuePropertyDistribution(counts);
@@ -42,13 +44,15 @@ public class IssuesService {
     /**
      * Returns the number of issues per type.
      *
-     * @param id
-     *         the ID of the issues instance to show the details for
+     * @param origin
+     *         the origin of the issues instance to show the details for
+     * @param reference
+     *         the reference of the issues instance to show the details for
      *
      * @return number of issues per type
      */
-    public IssuePropertyDistribution createDistributionByType(final String id) {
-        Issues<Issue> issues = issuesEntityService.findByPrimaryKey(id);
+    public IssuePropertyDistribution createDistributionByType(final String origin, final String reference) {
+        Issues<Issue> issues = issuesEntityService.findByPrimaryKey(origin, reference);
         Map<String, Integer> counts = issues.getPropertyCount(Issue::getType);
 
         return new IssuePropertyDistribution(counts);

@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author Michael Schmid
  */
-public interface IssuesRepository extends JpaRepository<IssuesEntity, String> {
+public interface IssuesRepository extends JpaRepository<IssuesEntity, IssuesEntityId> {
 }

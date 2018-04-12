@@ -10,6 +10,7 @@ import java.util.Objects;
  *
  * @author Michael Schmid
  */
+@SuppressWarnings("InstanceVariableMayNotBeInitialized")
 @Entity
 @Table(name = "linerange")
 public class LineRangeEntity {
@@ -37,7 +38,7 @@ public class LineRangeEntity {
         // JPA
     }
 
-    public LineRangeEntity(int start, int end) {
+    public LineRangeEntity(final int start, final int end) {
         this.start = start;
         this.end = end;
         id = calculateId();
