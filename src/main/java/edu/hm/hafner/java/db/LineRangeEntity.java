@@ -14,21 +14,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "linerange")
 public class LineRangeEntity {
-
-    /**
-     * Id of the entity build of start and end of the range (start-end).
-     */
+    /** Id of the entity build of start and end of the range (start-end). */
     @Id
     private String id;
 
-    /**
-     * Line number of the start of the range.
-     */
+    /** Line number of the start of the range. */
     private int start;
 
-    /**
-     * Line number of the end of the range.
-     */
+    /** Line number of the end of the range. */
     private int end;
 
     /**
@@ -88,14 +81,11 @@ public class LineRangeEntity {
             return false;
         }
         LineRangeEntity that = (LineRangeEntity) o;
-        return start == that.start &&
-                end == that.end &&
-                Objects.equals(id, that.id);
+        return start == that.start && end == that.end && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, start, end);
     }
 }

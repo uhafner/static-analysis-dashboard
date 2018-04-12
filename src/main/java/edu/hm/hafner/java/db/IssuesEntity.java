@@ -18,23 +18,17 @@ import java.util.Objects;
 @Entity
 @Table(name = "issues")
 public class IssuesEntity {
-    /**
-     * Set of issue objects related to this issues object.
-     */
+    /** Set of issue objects related to this issues object. */
     @OneToMany
     @OrderColumn
     private List<IssueEntity> elements = new ArrayList<>();
 
-    /**
-     * List of info messages stored as a table of strings.
-     */
+    /** List of info messages stored as a table of strings. */
     @ElementCollection(targetClass = String.class)
     @OrderColumn
     private List<String> infoMessages = new ArrayList<>();
 
-    /**
-     * List of error messages stored as a table of strings.
-     */
+    /** List of error messages stored as a table of strings. */
     @ElementCollection(targetClass = String.class)
     @OrderColumn
     private List<String> errorMessages = new ArrayList<>();
