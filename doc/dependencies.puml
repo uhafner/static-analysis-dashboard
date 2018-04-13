@@ -6,7 +6,6 @@ RequestHandler - [Analysis Dashboard]
 [Analysis Dashboard] -..> [Spring Context]
 [Analysis Dashboard] ..> [Spring Beans]
 [Analysis Dashboard] ..> [Spring Web]
-[Analysis Dashboard] ..> [Apache Commons]
 
 [Analysis Dashboard] .> [Issues Service]
 [Issues Service] -..> [Spring Context]

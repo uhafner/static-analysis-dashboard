@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'upload')}">
+<body>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="container">
+
+            <div class="row py-3">
+                <h2>Upload a new static analysis report</h2>
+            </div>
+
+            <div class="row py-3">
+
+                <form method="POST" action="/issues" enctype="multipart/form-data">
+                    <input type="file" name="file" /><br/><br/>
+                    <input type="text" /><br/><br/>
+                    <select name="tool">
+                        <option th:each="tool : ${tools}"
+                                th:value="${tool.id}"
+                                th:utext="${tool.name}"></option>
+                    </select>
+                    <input type="submit" value="Submit" />
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
