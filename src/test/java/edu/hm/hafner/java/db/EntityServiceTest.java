@@ -22,7 +22,7 @@ class EntityServiceTest {
 
     private static final UUID EXAMPLE_UUID = UUID.fromString("ce856855-b91d-4ae7-b77a-7a30a699291e");
     private static final String EXAMPLE_ORIGIN = "origin";
-    private static final String EXAMPLE_REFERENCE = "reference";
+    private static final String EXAMPLE_REFERENCE = "1";
 
     private static final Issues<Issue> ISSUES = new Issues<>();
     private static final Issue FIRST_ISSUE = new IssueBuilder().setLineStart(1).build();

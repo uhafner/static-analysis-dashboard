@@ -13,14 +13,24 @@
             <div class="row py-3">
 
                 <form method="POST" action="/issues" enctype="multipart/form-data">
-                    <input type="file" name="file" /><br/><br/>
-                    <input type="text" /><br/><br/>
-                    <select name="tool">
-                        <option th:each="tool : ${tools}"
-                                th:value="${tool.id}"
-                                th:utext="${tool.name}"></option>
-                    </select>
-                    <input type="submit" value="Submit" />
+
+                    <div class="form-group">
+                        <label for="file">Report file</label>
+                        <div class="custom-file">
+                            <input id="file" type="file" class="custom-file-input" name="file">
+                            <label for="file" class="custom-file-label">Choose report file...</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tool">Static Analysis Tool Format</label>
+                        <select class="custom-select custom-select" name="tool" id="tool">
+                            <option th:each="tool : ${tools}"
+                                    th:value="${tool.id}"
+                                    th:utext="${tool.name}"></option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
 
             </div>
@@ -28,5 +38,11 @@
     </div>
 </div>
 
+<script>
+    $('.custom-file-input').on('change', function () {
+        var fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+</script>
 </body>
 </html>

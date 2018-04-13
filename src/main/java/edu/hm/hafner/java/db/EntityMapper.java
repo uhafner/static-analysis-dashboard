@@ -127,7 +127,7 @@ public class EntityMapper {
      *
      * @return a new entity object with the values of the issues.
      */
-    public IssuesEntity map(final Issues<Issue> issues) {
+    public IssuesEntity map(final Issues<?> issues) {
         return map(issues, new IssuesEntity());
     }
 
@@ -141,7 +141,7 @@ public class EntityMapper {
      *
      * @return the entity of the parameters
      */
-    public IssuesEntity map(final Issues<Issue> issues, final IssuesEntity entity) {
+    public IssuesEntity map(final Issues<?> issues, final IssuesEntity entity) {
         getMapper().map(issues, entity);
         List<IssueEntity> issuesSet = issues.stream().map(this::map).collect(toList());
         entity.setElements(issuesSet);
@@ -161,7 +161,7 @@ public class EntityMapper {
         Issues<Issue> result = getMapper().map(entity, Issues.class);
         entity.getInfoMessages().forEach(result::logInfo);
         entity.getErrorMessages().forEach(result::logError);
-        entity.getElements().stream().map(this::map).forEach(result::add);
+        entity.getElements().stream().map(this::map).forEach(issue -> result.add(issue));
         return result;
     }
 

@@ -20,6 +20,8 @@ import static java.util.stream.Collectors.*;
 @Service
 @Transactional
 public class EntityService {
+    private long nextId = 1;
+
     /** Repository to store and load Issue objects. */
     private final IssueRepository issueRepository;
 
@@ -72,7 +74,8 @@ public class EntityService {
      *
      * @return new instance of the issues with the values of the database
      */
-    public Issues<Issue> insert(final Issues<Issue> issues) {
+    public Issues<Issue> insert(final Issues<?> issues) {
+        issues.setReference(String.valueOf(nextId++));
         IssuesEntity entity = mapper.map(issues);
         issues.stream()
                 .filter(issue -> !issueRepository.findById(issue.getId()).isPresent())
@@ -159,7 +162,7 @@ public class EntityService {
      *
      * @return Optional with a new issue if it is present in the database else an empty optional.
      */
-    public Optional<Issues<Issue>> update(final Issues<Issue> issues) {
+    public Optional<Issues<Issue>> update(final Issues<Issue>issues) {
         Optional<IssuesEntity> optionalEntity = issuesRepository.findById(new IssuesEntityId(issues));
         Optional<Issues<Issue>> result = Optional.empty();
 

@@ -4,12 +4,14 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import edu.hm.hafner.analysis.Issue;
+import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.analysis.ParsingException;
 import edu.hm.hafner.java.uc.IssuesService;
 
@@ -41,17 +43,16 @@ public class UploadController {
      * @return A response with the details
      */
     @RequestMapping(path = "/issues", method = RequestMethod.POST)
-    @ResponseBody
     String upload(@RequestParam(value = "file") final MultipartFile file,
-            @RequestParam(value = "tool") final String tool) {
+            @RequestParam(value = "tool") final String tool, final Model model) {
         try {
-            return issuesService.parse(tool, file.getInputStream());
+            Issues<Issue> issues = issuesService.parse(tool, file.getInputStream());
+            model.addAttribute("origin", issues.getOrigin());
+            model.addAttribute("reference", issues.getReference());
+            return "details";
         }
         catch (IOException e) {
-            return "Can't read uploaded file.";
-        }
-        catch (ParsingException e) {
-            return String.format("Can't parse uploaded file.%n%s", e.getMessage());
+            throw new ParsingException(e, "<<uploaded file>>");
         }
     }
 }

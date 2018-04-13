@@ -37,10 +37,10 @@ public class IssuesTestData {
      *
      * @return the issues
      */
-    public Issues<Issue> createTestData() {
+    public Issues<Issue>createTestData() {
         PmdParser parser = new PmdParser();
         try (InputStreamReader reader = new InputStreamReader(getTestReport())) {
-            Issues<Issue> issues = parser.parse(reader);
+            Issues<Issue>issues = parser.parse(reader);
             issues.setOrigin("id-is-not-available-yet");
             return issues;
         }

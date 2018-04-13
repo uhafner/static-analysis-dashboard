@@ -1,5 +1,6 @@
 package edu.hm.hafner.java.db;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -23,6 +24,7 @@ public class IssueEntity {
     private String category;
     private String type;
     private Priority priority;
+    @Column(length=1024)
     private String message;
 
     private int lineStart;

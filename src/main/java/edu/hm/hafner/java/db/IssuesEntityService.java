@@ -33,7 +33,7 @@ public class IssuesEntityService {
      * @throws IllegalArgumentException
      *         if the ID of one of the issues already has been saved in the database
      */
-    public Issues<Issue> save(final Issues<Issue> issues) {
+    public Issues<Issue> save(final Issues<?> issues) {
         long duplicates = issues.stream()
                 .map(issue -> issue.getId())
                 .filter(id -> entityService.select(id).isPresent())
@@ -57,7 +57,7 @@ public class IssuesEntityService {
      * @throws NoSuchElementException
      *         if the set of issues with the specified ID has not been found
      */
-    public Issues<Issue> findByPrimaryKey(final String origin, final String reference) {
+    public Issues<Issue>findByPrimaryKey(final String origin, final String reference) {
         return entityService.select(origin, reference).orElseThrow(
                 () -> new NoSuchElementException("No issues with origin %s and reference %s found.", origin, reference));
     }
