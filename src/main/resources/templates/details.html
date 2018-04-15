@@ -7,10 +7,7 @@
         <div class="container">
 
             <div class="row py-3">
-                <h2>
-                    Details of Static Analysis Run
-                    #<div id="origin" th:text="${origin}"></div><div id="reference" th:text="${reference}"></div>
-                </h2>
+                <h2 th:text="'Details for Static Analysis Run #' + ${origin} + '-' + ${reference}"></h2>
             </div>
 
             <div class="row py-3">
@@ -50,6 +47,13 @@
             </div>
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+
+            <!-- Parameters are read by details.js -->
+            <!--/*@thymesVar id="origin" type="java.lang.String"*/-->
+            <!--/*@thymesVar id="reference" type="java.lang.String"*/-->
+            <div hidden id="origin" th:text="${origin}"></div>
+            <div hidden id="reference" th:text="${reference}"></div>
+            <!-- Parameters are read by details.js -->
 
             <script src="/js/details.js"></script>
         </div>
