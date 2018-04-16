@@ -115,4 +115,8 @@ public class IssuesService {
         }
         return statistics;
     }
+
+    public Issues<Issue> findIssues(final String origin, final String reference) {
+        return issuesEntityService.findByPrimaryKey(origin, reference);
+    }
 }

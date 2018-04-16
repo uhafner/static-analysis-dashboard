@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 
+import edu.hm.hafner.analysis.Issue;
 import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.java.uc.IssuePropertyDistribution;
 import edu.hm.hafner.java.uc.IssuesService;
@@ -115,5 +116,28 @@ public class IssuesDetailController {
 
         Gson gson = new Gson();
         return ResponseEntity.ok(gson.toJson(model));
+    }
+
+    /**
+     * Ajax entry point: returns the number of issues per priority (as JSON array).
+     *
+     * @param origin
+     *         the origin of the issues instance to show the details for
+     * @param reference
+     *         the reference of the issues instance to show the details for
+     *
+     * @return the number of issues per priority, e.g. {@code [10, 20, 70]}
+     */
+    @RequestMapping(path = "/ajax/priorities", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    @SuppressWarnings("unused") // called by details.js
+    ResponseEntity<?> getPriorities(@RequestParam("origin") final String origin,
+            @RequestParam("reference") final String reference) {
+        Issues<Issue> issues = issuesService.findIssues(origin, reference);
+        int[] priorities = {issues.getHighPrioritySize(), issues.getNormalPrioritySize(), issues.getLowPrioritySize()};
+
+        Gson gson = new Gson();
+
+        return ResponseEntity.ok(gson.toJson(priorities));
     }
 }

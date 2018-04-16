@@ -16,6 +16,23 @@
                     <div class="card card-marg-bot">
                         <div data-role="page" class="card-body">
                             <h3 class="card-title">
+                                Priority Distribution
+                                <i class="fa fa-bell icon-right fa-2x" aria-hidden="true"></i>
+                            </h3>
+
+                            <div class="graph-size">
+                                <canvas id="priorities-chart" class="graph-cursor-pointer" width="250"
+                                        height="250"></canvas>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card card-marg-bot">
+                        <div data-role="page" class="card-body">
+                            <h3 class="card-title">
                                 Category Distribution
                                 <i class="fa fa-bar-chart icon-right fa-2x" aria-hidden="true"></i>
                             </h3>
@@ -28,23 +45,63 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="row py-3">
 
                 <div class="col">
-                    <div class="card card-marg-bot">
-                        <div data-role="page" class="card-body">
-                            <h3 class="card-title">
-                                Types Distribution
-                                <i class="fa fa-bar-chart icon-right fa-2x" aria-hidden="true"></i>
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Details
+                                <i class="fa fa-search icon-right fa-2x" aria-hidden="true"></i>
                             </h3>
 
-                            <div class="graph-size">
-                                <canvas id="types-chart" class="graph-cursor-pointer" width="250" height="250"></canvas>
+                            <ul class="nav nav-tabs flex-wrap" role="tablist" id="tab-details">
+
+                                <li class="nav-item">
+                                    <a class="nav-link" role="tab" data-toggle="tab" href="#types">Types</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" role="tab" data-toggle="tab" href="#packages">Packages</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" role="tab" data-toggle="tab" href="#files">Files</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content">
+
+                                <div role="tabpanel" id="types" class="tab-pane fade">
+                                    <div class="graph-size">
+                                        <canvas id="types-chart" class="graph-cursor-pointer" width="250"
+                                                height="250"></canvas>
+                                    </div>
+                                </div>
+
+                                <div role="tabpanel" id="packages" class="tab-pane fade">
+                                    <div class="graph-size">
+                                        <canvas id="packages-chart" class="graph-cursor-pointer" width="250"
+                                                height="250"></canvas>
+                                    </div>
+                                </div>
+
+                                <div role="tabpanel" id="files" class="tab-pane fade">
+                                    <div class="graph-size">
+                                        <canvas id="files-chart" class="graph-cursor-pointer" width="250"
+                                                height="250"></canvas>
+                                    </div>
+                                </div>
+
                             </div>
 
                         </div>
                     </div>
                 </div>
             </div>
+
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
 

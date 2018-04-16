@@ -40,7 +40,7 @@ public class UploadController {
      *
      * @param file the analysis report
      * @param tool the ID of the static analysis tool
-     * @return A response with the details
+     * @return name of the details view
      */
     @RequestMapping(path = "/issues", method = RequestMethod.POST)
     String upload(@RequestParam(value = "file") final MultipartFile file,

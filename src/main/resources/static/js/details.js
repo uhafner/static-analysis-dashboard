@@ -6,6 +6,28 @@ $(document).ready(
 
         var origin = $('#origin').text();
         var reference = $('#reference').text();
+
+        $.get("ajax/priorities", {origin: origin, reference: reference},
+            function (priorities) {
+                new Chart($("#priorities-chart"), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ["High", "Normal", "Low"],
+                        datasets: [{
+                            label: 'High priority, Normal priority, Low priority',
+                            data: priorities,
+                            backgroundColor: [
+                                '#d24939',
+                                '#f7f1da',
+                                '#80afbf'
+                            ],
+                            borderColor: [
+                                '#355564', '#355564', '#355564'
+                            ]
+                        }]
+                    }
+                });
+            });
         $.get("ajax/categories", {origin: origin, reference: reference},
             function (categories) {
                 new Chart($("#categories-chart"), {
@@ -32,5 +54,8 @@ $(document).ready(
                     }
                 });
             });
+
+        var detailsTabs = $('#tab-details');
+        detailsTabs.find('li:first-child a').tab('show');
     });
 
