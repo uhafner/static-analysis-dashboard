@@ -1,5 +1,7 @@
 package edu.hm.hafner.java.db;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,8 +59,12 @@ public class IssuesEntityService {
      * @throws NoSuchElementException
      *         if the set of issues with the specified ID has not been found
      */
-    public Issues<Issue>findByPrimaryKey(final String origin, final String reference) {
+    public Issues<Issue> findByPrimaryKey(final String origin, final String reference) {
         return entityService.select(origin, reference).orElseThrow(
                 () -> new NoSuchElementException("No issues with origin %s and reference %s found.", origin, reference));
+    }
+
+    public Set<Issues<Issue>> findAll() {
+        return entityService.selectAllIssues();
     }
 }

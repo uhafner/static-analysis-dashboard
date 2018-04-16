@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.apache.commons.io.input.BOMInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class IssuesService {
      * @return number of issues per category
      */
     public IssuePropertyDistribution createDistributionByCategory(final String origin, final String reference) {
-        Issues<Issue>issues = issuesEntityService.findByPrimaryKey(origin, reference);
+        Issues<?> issues = issuesEntityService.findByPrimaryKey(origin, reference);
         Map<String, Integer> counts = issues.getPropertyCount(Issue::getCategory);
 
         return new IssuePropertyDistribution(counts);
@@ -63,7 +64,7 @@ public class IssuesService {
      * @return number of issues per type
      */
     public IssuePropertyDistribution createDistributionByType(final String origin, final String reference) {
-        Issues<Issue>issues = issuesEntityService.findByPrimaryKey(origin, reference);
+        Issues<?> issues = issuesEntityService.findByPrimaryKey(origin, reference);
         Map<String, Integer> counts = issues.getPropertyCount(Issue::getType);
 
         return new IssuePropertyDistribution(counts);
@@ -104,5 +105,14 @@ public class IssuesService {
     private Issues<?> parse(final AbstractParser<?> parser, final InputStream file) {
         // FIXME: this should be part of analysis-model
         return parser.parse(new InputStreamReader(new BOMInputStream(file), StandardCharsets.UTF_8));
+    }
+
+    public IssuesTable createIssuesStatistics() {
+        Set<Issues<Issue>> reports = issuesEntityService.findAll();
+        IssuesTable statistics = new IssuesTable();
+        for (Issues<Issue> report : reports) {
+            statistics.add(report);
+        }
+        return statistics;
     }
 }

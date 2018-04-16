@@ -162,7 +162,7 @@ public class EntityService {
      *
      * @return Optional with a new issue if it is present in the database else an empty optional.
      */
-    public Optional<Issues<Issue>> update(final Issues<Issue>issues) {
+    public Optional<Issues<Issue>> update(final Issues<?> issues) {
         Optional<IssuesEntity> optionalEntity = issuesRepository.findById(new IssuesEntityId(issues));
         Optional<Issues<Issue>> result = Optional.empty();
 

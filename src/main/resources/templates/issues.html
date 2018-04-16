@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'details')}">
+<body>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="container">
+
+            <div class="row py-3">
+                <table class="table table-hover table-striped" id="issues">
+                    <thead>
+                        <tr>
+                            <th>Origin</th>
+                            <th>Reference</th>
+                            <th>Total Size</th>
+                            <th>High Priority</th>
+                            <th>Normal Priority</th>
+                            <th>Low Priority</th>
+                        </tr>
+                        </thead>
+                </table>
+            </div>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+
+            <!-- Parameters are read by details.js -->
+            <!--/*@thymesVar id="origin" type="java.lang.String"*/-->
+            <!--/*@thymesVar id="reference" type="java.lang.String"*/-->
+            <div hidden id="origin" th:text="${origin}"></div>
+            <div hidden id="reference" th:text="${reference}"></div>
+            <!-- Parameters are read by details.js -->
+
+            <script src="/js/issues.js"></script>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

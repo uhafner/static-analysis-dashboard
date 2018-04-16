@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.java.uc.IssuePropertyDistribution;
 import edu.hm.hafner.java.uc.IssuesService;
+import edu.hm.hafner.java.uc.IssuesTable;
 
 /**
  * Provides detail information for a specific set of {@link Issues}.
@@ -27,6 +28,31 @@ public class IssuesDetailController {
     @Autowired
     public IssuesDetailController(final IssuesService issuesService) {
         this.issuesService = issuesService;
+    }
+
+    /**
+     * Ajax entry point: returns a tables with statistics of the uploaded reports (as JSON object). The returned JSON object
+     * is in the expected format for the {@code data} property of a bar chart.
+     *
+     * Example:
+     * <pre>
+     *     { "labels" : ["Design","Documentation","Best Practices","Performance","Code Style","Error Prone"],
+     *      "datasets" : [
+     *          {"data" : [15,3,20,6,53,12]}
+      *      ]
+     *      }
+     * </pre>
+     *
+     * @return issues statistics of all uploaded reports
+     */
+    @RequestMapping(path = "/ajax/issues", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    @SuppressWarnings("unused") // called by issues.js
+    ResponseEntity<?> getIssues() {
+        IssuesTable model = issuesService.createIssuesStatistics();
+
+        Gson gson = new Gson();
+        return ResponseEntity.ok(gson.toJson(model));
     }
 
     /**
@@ -52,7 +78,8 @@ public class IssuesDetailController {
     @RequestMapping(path = "/ajax/categories", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     @SuppressWarnings("unused") // called by details.js
-    ResponseEntity<?> getCategories(@RequestParam("origin") final String origin, @RequestParam("reference") final String reference) {
+    ResponseEntity<?> getCategories(@RequestParam("origin") final String origin,
+            @RequestParam("reference") final String reference) {
         IssuePropertyDistribution model = issuesService.createDistributionByCategory(origin, reference);
 
         Gson gson = new Gson();
@@ -82,7 +109,8 @@ public class IssuesDetailController {
     @RequestMapping(path = "/ajax/types", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     @SuppressWarnings("unused") // called by details.js
-    ResponseEntity<?> getTypes(@RequestParam("origin") final String origin, @RequestParam("reference") final String reference) {
+    ResponseEntity<?> getTypes(@RequestParam("origin") final String origin,
+            @RequestParam("reference") final String reference) {
         IssuePropertyDistribution model = issuesService.createDistributionByType(origin, reference);
 
         Gson gson = new Gson();

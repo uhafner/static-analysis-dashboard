@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.hm.hafner.java.uc.IssuesService;
 
@@ -39,8 +40,22 @@ public class AnalysisDashboardController {
      * @return the URL for the details page
      */
     @RequestMapping("/details")
-    String createDetails() {
+    String createDetails(@RequestParam("origin") final String origin,
+            @RequestParam("reference") final String reference, final Model model) {
+        model.addAttribute("origin", origin);
+        model.addAttribute("reference", reference);
+
         return "details";
+    }
+
+    /**
+     * Shows a table with the uploaded reports.
+     *
+     * @return the URL for the reports statistics page
+     */
+    @RequestMapping("/issues")
+    String createIssues() {
+        return "issues";
     }
 
     /**
