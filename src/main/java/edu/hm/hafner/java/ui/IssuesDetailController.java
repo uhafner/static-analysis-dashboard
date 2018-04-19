@@ -32,17 +32,8 @@ public class IssuesDetailController {
     }
 
     /**
-     * Ajax entry point: returns a tables with statistics of the uploaded reports (as JSON object). The returned JSON
-     * object is in the expected format for the {@code data} property of a bar chart.
-     * <p>
-     * Example:
-     * <pre>
-     *     { "labels" : ["Design","Documentation","Best Practices","Performance","Code Style","Error Prone"],
-     *      "datasets" : [
-     *          {"data" : [15,3,20,6,53,12]}
-     *      ]
-     *      }
-     * </pre>
+     * Ajax entry point: returns a table with statistics of the uploaded reports (as JSON object). The returned JSON
+     * object is in the expected format for the {@code data} property of a DataTable.
      *
      * @return issues statistics of all uploaded reports
      */
@@ -75,7 +66,7 @@ public class IssuesDetailController {
      * @param reference
      *         the reference of the issues instance to show the details for
      *
-     * @return the number of issues per category, e.g. [10, 20, 70]
+     * @return the number of issues per category
      */
     @RequestMapping(path = "/ajax/categories", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -90,24 +81,15 @@ public class IssuesDetailController {
     }
 
     /**
-     * Ajax entry point: returns the number of issues per category (as JSON object). The returned JSON object is in the
+     * Ajax entry point: returns the number of issues per type (as JSON object). The returned JSON object is in the
      * expected format for the {@code data} property of a bar chart.
-     * <p>
-     * Example:
-     * <pre>
-     *     { "labels" : ["Design","Documentation","Best Practices","Performance","Code Style","Error Prone"],
-     *      "datasets" : [
-     *          {"data" : [15,3,20,6,53,12]}
-     *      ]
-     *      }
-     * </pre>
      *
      * @param origin
      *         the origin of the issues instance to show the details for
      * @param reference
      *         the reference of the issues instance to show the details for
      *
-     * @return the number of issues per category, e.g. [10, 20, 70]
+     * @return the number of issues per type
      */
     @RequestMapping(path = "/ajax/types", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
