@@ -17,7 +17,7 @@ import edu.hm.hafner.analysis.Priority;
  *
  * @author Michael Schmid
  */
-@SuppressWarnings("InstanceVariableMayNotBeInitialized")
+@SuppressWarnings({"InstanceVariableMayNotBeInitialized", "PMD.TooManyFields"})
 @Entity
 @Table(name = "issue")
 public class IssueEntity {

@@ -36,7 +36,7 @@ public class IssuesEntity {
     private int duplicatesSize = 0;
 
     @EmbeddedId
-    private IssuesEntityId id = new IssuesEntityId();
+    private final IssuesEntityId id = new IssuesEntityId();
 
     public List<IssueEntity> getElements() {
         return elements;
@@ -74,6 +74,12 @@ public class IssuesEntity {
         return getId().getOrigin();
     }
 
+    /**
+     * Sets the origin for this issues instance. Since the origin is part of the ID, actually the ID will be updated.
+     *
+     * @param origin
+     *         the origin
+     */
     public void setOrigin(final String origin) {
         getId().setOrigin(origin);
     }
@@ -82,6 +88,13 @@ public class IssuesEntity {
         return getId().getReference();
     }
 
+    /**
+     * Sets the reference for this issues instance. Since the reference is part of the ID, actually the ID will be
+     * updated.
+     *
+     * @param reference
+     *         the origin
+     */
     public void setReference(final String reference) {
         getId().setReference(reference);
     }

@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  * @author Ullrich Hafner
  */
-@SuppressWarnings({"CheckStyle", "NonFinalUtilityClass"})
+@SuppressWarnings({"CheckStyle", "NonFinalUtilityClass", "HideUtilityClassConstructor"})
 @SpringBootApplication
 public class AnalysisDashboard {
     /**
