@@ -27,7 +27,7 @@ public class IssuesEntityId implements Serializable {
         this.reference = reference;
     }
 
-    public IssuesEntityId(final Issues issues) {
+    public IssuesEntityId(final Issues<?> issues) {
         this(issues.getOrigin(), issues.getReference());
     }
 

@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,10 +18,10 @@ import edu.hm.hafner.analysis.parser.pmd.PmdParser;
  */
 @Component
 public class IssuesTestData {
-    private EntityService entityService;
+    private final EntityService entityService;
 
     @Autowired
-    public void setEntityService(final EntityService entityService) {
+    public IssuesTestData(final EntityService entityService) {
         this.entityService = entityService;
     }
 
@@ -39,7 +40,7 @@ public class IssuesTestData {
      */
     public Issues<Issue> createTestData() {
         PmdParser parser = new PmdParser();
-        try (InputStreamReader reader = new InputStreamReader(getTestReport())) {
+        try (InputStreamReader reader = new InputStreamReader(getTestReport(), StandardCharsets.UTF_8)) {
             Issues<Issue> issues = parser.parse(reader);
             issues.setOrigin("pmd");
             return issues;

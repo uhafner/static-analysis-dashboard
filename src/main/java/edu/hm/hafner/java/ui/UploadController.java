@@ -46,8 +46,8 @@ public class UploadController {
      * @return name of the details view
      */
     @RequestMapping(path = "/issues", method = RequestMethod.POST)
-    String upload(@RequestParam(value = "file") final MultipartFile file,
-            @RequestParam(value = "tool") final String tool, final Model model) {
+    String upload(@RequestParam("file") final MultipartFile file,
+            @RequestParam("tool") final String tool, final Model model) {
         try {
             Issues<Issue> issues = issuesService.parse(tool, file.getInputStream());
             model.addAttribute("origin", issues.getOrigin());

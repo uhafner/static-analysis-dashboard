@@ -90,10 +90,6 @@ public class IssuesEntity {
         return id;
     }
 
-    private void setId(final IssuesEntityId id) {
-        this.id = id;
-    }
-
     @SuppressWarnings("OverlyComplexBooleanExpression")
     @Override
     public boolean equals(final Object obj) {

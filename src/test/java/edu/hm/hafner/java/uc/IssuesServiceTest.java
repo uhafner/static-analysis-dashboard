@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
 
+import edu.hm.hafner.java.db.EntityService;
 import edu.hm.hafner.java.db.IssuesEntityService;
 import edu.hm.hafner.java.db.IssuesTestData;
 import static org.assertj.core.api.Assertions.*;
@@ -45,7 +46,7 @@ class IssuesServiceTest {
     }
 
     private IssuesService createService() {
-        IssuesTestData data = new IssuesTestData();
+        IssuesTestData data = new IssuesTestData(mock(EntityService.class));
         IssuesEntityService entityService = mock(IssuesEntityService.class);
         when(entityService.findByPrimaryKey(anyString(), anyString())).thenReturn(data.createTestData());
         return new IssuesService(entityService);
