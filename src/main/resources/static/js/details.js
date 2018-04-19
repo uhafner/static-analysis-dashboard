@@ -14,7 +14,6 @@ $(document).ready(
                     data: {
                         labels: ["High", "Normal", "Low"],
                         datasets: [{
-                            label: 'High priority, Normal priority, Low priority',
                             data: priorities,
                             backgroundColor: [
                                 '#d24939',
