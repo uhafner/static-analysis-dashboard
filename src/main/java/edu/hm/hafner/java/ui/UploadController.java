@@ -38,8 +38,11 @@ public class UploadController {
      *     curl -F "file=@checkstyle-result.xml" -F"tool=checkstyle" https://[id].herokuapp.com/issues
      * </pre>
      *
-     * @param file the analysis report
-     * @param tool the ID of the static analysis tool
+     * @param file
+     *         the analysis report
+     * @param tool
+     *         the ID of the static analysis tool
+     *
      * @return name of the details view
      */
     @RequestMapping(path = "/issues", method = RequestMethod.POST)

@@ -8,6 +8,11 @@ import edu.hm.hafner.analysis.IssueBuilder;
 import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.analysis.Priority;
 
+/**
+ * Tests the class {@link EntityMapper} for {@link Issues} instances.
+ *
+ * @author Michael Schmid
+ */
 class IssuesMapperTest {
     private static final Issue HIGH = new IssueBuilder().setMessage("issue-1")
             .setFileName("file-1")

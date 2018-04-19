@@ -50,6 +50,6 @@ public class IssuesTestData {
     }
 
     private InputStream getTestReport() {
-        return getClass().getResourceAsStream("/test/pmd.xml");
+        return IssuesTestData.class.getResourceAsStream("/test/pmd.xml");
     }
 }

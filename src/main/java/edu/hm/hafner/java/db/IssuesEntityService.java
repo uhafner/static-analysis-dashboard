@@ -48,7 +48,7 @@ public class IssuesEntityService {
     }
 
     /**
-     * Finds the set of issues with the specified id.
+     * Finds the set of issues with the specified ID.
      *
      * @param origin
      *         of the desired issues
@@ -60,10 +60,16 @@ public class IssuesEntityService {
      *         if the set of issues with the specified ID has not been found
      */
     public Issues<Issue> findByPrimaryKey(final String origin, final String reference) {
-        return entityService.select(origin, reference).orElseThrow(
-                () -> new NoSuchElementException("No issues with origin %s and reference %s found.", origin, reference));
+        return entityService.select(origin, reference)
+                .orElseThrow(() -> new NoSuchElementException(
+                        "No issues with origin %s and reference %s found.", origin, reference));
     }
 
+    /**
+     * Finds all {@link Issues} instances that are stored in the database.
+     *
+     * @return the set of issues
+     */
     public Set<Issues<Issue>> findAll() {
         return entityService.selectAllIssues();
     }

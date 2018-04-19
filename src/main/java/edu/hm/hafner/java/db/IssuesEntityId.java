@@ -13,6 +13,8 @@ import edu.hm.hafner.analysis.Issues;
  */
 @Embeddable
 public class IssuesEntityId implements Serializable {
+    private static final long serialVersionUID = 6578603589347674507L;
+
     private String origin;
     private String reference;
 
@@ -54,8 +56,8 @@ public class IssuesEntityId implements Serializable {
             return false;
         }
         IssuesEntityId that = (IssuesEntityId) o;
-        return Objects.equals(origin, that.origin) &&
-                Objects.equals(reference, that.reference);
+        return Objects.equals(origin, that.origin)
+                && Objects.equals(reference, that.reference);
     }
 
     @Override

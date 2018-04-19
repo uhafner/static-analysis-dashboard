@@ -10,9 +10,8 @@ import edu.hm.hafner.analysis.Issues;
 /**
  * Model that provides the sizes of a set of {@link Issues}.
  *
- * @see <a href="http://www.chartjs.org/docs/latest/charts/bar.html#dataset-properties">Bar Chart Dataset</a>
- *
  * @author Ullrich Hafner
+ * @see <a href="http://www.chartjs.org/docs/latest/charts/bar.html#dataset-properties">Bar Chart Dataset</a>
  */
 @SuppressWarnings({"FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection"}) // Will be converted to Json
 public class IssuePropertyDistribution {

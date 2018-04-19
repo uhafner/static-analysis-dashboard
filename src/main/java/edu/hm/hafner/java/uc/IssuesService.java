@@ -29,7 +29,7 @@ import edu.hm.hafner.util.NoSuchElementException;
 @Service
 public class IssuesService {
     @SuppressWarnings("InstanceVariableMayNotBeInitialized")
-    private IssuesEntityService issuesEntityService;
+    private final IssuesEntityService issuesEntityService;
 
     @Autowired
     public IssuesService(final IssuesEntityService issuesEntityService) {
@@ -70,6 +70,11 @@ public class IssuesService {
         return new IssuePropertyDistribution(counts);
     }
 
+    /**
+     * Returns the available static analysis tools.
+     *
+     * @return all tools
+     */
     public List<AnalysisTool> findAllTools() {
         List<AnalysisTool> tools = new ArrayList<>();
         tools.add(new AnalysisTool("checkstyle", "CheckStyle", new CheckStyleParser()));
@@ -107,15 +112,32 @@ public class IssuesService {
         return parser.parse(new InputStreamReader(new BOMInputStream(file), StandardCharsets.UTF_8));
     }
 
+    /**
+     * Creates a table with the statistics of all issues. Each row shows the statistics of one uploaded report.
+     *
+     * @return a statistics table
+     */
     public IssuesTable createIssuesStatistics() {
         Set<Issues<Issue>> reports = issuesEntityService.findAll();
         IssuesTable statistics = new IssuesTable();
         for (Issues<Issue> report : reports) {
-            statistics.add(report);
+            statistics.addRow(report);
         }
         return statistics;
     }
 
+    /**
+     * Finds the set of issues with the specified ID.
+     *
+     * @param origin
+     *         of the desired issues
+     * @param reference
+     *         of the desired issues
+     *
+     * @return the issues
+     * @throws NoSuchElementException
+     *         if the set of issues with the specified ID has not been found
+     */
     public Issues<Issue> findIssues(final String origin, final String reference) {
         return issuesEntityService.findByPrimaryKey(origin, reference);
     }

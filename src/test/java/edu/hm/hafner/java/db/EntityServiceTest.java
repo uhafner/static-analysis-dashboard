@@ -16,6 +16,8 @@ import static org.mockito.Mockito.*;
 
 /**
  * Tests the class {@link EntityService}.
+ *
+ * @author Michael Schmid
  */
 class EntityServiceTest {
     private static final EntityMapper MAPPER = new EntityMapper();

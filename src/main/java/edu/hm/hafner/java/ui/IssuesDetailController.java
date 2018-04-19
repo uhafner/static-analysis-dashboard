@@ -32,15 +32,15 @@ public class IssuesDetailController {
     }
 
     /**
-     * Ajax entry point: returns a tables with statistics of the uploaded reports (as JSON object). The returned JSON object
-     * is in the expected format for the {@code data} property of a bar chart.
-     *
+     * Ajax entry point: returns a tables with statistics of the uploaded reports (as JSON object). The returned JSON
+     * object is in the expected format for the {@code data} property of a bar chart.
+     * <p>
      * Example:
      * <pre>
      *     { "labels" : ["Design","Documentation","Best Practices","Performance","Code Style","Error Prone"],
      *      "datasets" : [
      *          {"data" : [15,3,20,6,53,12]}
-      *      ]
+     *      ]
      *      }
      * </pre>
      *
@@ -48,7 +48,8 @@ public class IssuesDetailController {
      */
     @RequestMapping(path = "/ajax/issues", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    @SuppressWarnings("unused") // called by issues.js
+    @SuppressWarnings("unused")
+    // called by issues.js
     ResponseEntity<?> getIssues() {
         IssuesTable model = issuesService.createIssuesStatistics();
 
@@ -57,15 +58,15 @@ public class IssuesDetailController {
     }
 
     /**
-     * Ajax entry point: returns the number of issues per category (as JSON object). The returned JSON object
-     * is in the expected format for the {@code data} property of a bar chart.
-     *
+     * Ajax entry point: returns the number of issues per category (as JSON object). The returned JSON object is in the
+     * expected format for the {@code data} property of a bar chart.
+     * <p>
      * Example:
      * <pre>
      *     { "labels" : ["Design","Documentation","Best Practices","Performance","Code Style","Error Prone"],
      *      "datasets" : [
      *          {"data" : [15,3,20,6,53,12]}
-      *      ]
+     *      ]
      *      }
      * </pre>
      *
@@ -78,7 +79,8 @@ public class IssuesDetailController {
      */
     @RequestMapping(path = "/ajax/categories", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    @SuppressWarnings("unused") // called by details.js
+    @SuppressWarnings("unused")
+    // called by details.js
     ResponseEntity<?> getCategories(@RequestParam("origin") final String origin,
             @RequestParam("reference") final String reference) {
         IssuePropertyDistribution model = issuesService.createDistributionByCategory(origin, reference);
@@ -88,15 +90,15 @@ public class IssuesDetailController {
     }
 
     /**
-     * Ajax entry point: returns the number of issues per category (as JSON object). The returned JSON object
-     * is in the expected format for the {@code data} property of a bar chart.
-     *
+     * Ajax entry point: returns the number of issues per category (as JSON object). The returned JSON object is in the
+     * expected format for the {@code data} property of a bar chart.
+     * <p>
      * Example:
      * <pre>
      *     { "labels" : ["Design","Documentation","Best Practices","Performance","Code Style","Error Prone"],
      *      "datasets" : [
      *          {"data" : [15,3,20,6,53,12]}
-      *      ]
+     *      ]
      *      }
      * </pre>
      *
@@ -109,7 +111,8 @@ public class IssuesDetailController {
      */
     @RequestMapping(path = "/ajax/types", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    @SuppressWarnings("unused") // called by details.js
+    @SuppressWarnings("unused")
+    // called by details.js
     ResponseEntity<?> getTypes(@RequestParam("origin") final String origin,
             @RequestParam("reference") final String reference) {
         IssuePropertyDistribution model = issuesService.createDistributionByType(origin, reference);
@@ -130,7 +133,8 @@ public class IssuesDetailController {
      */
     @RequestMapping(path = "/ajax/priorities", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    @SuppressWarnings("unused") // called by details.js
+    @SuppressWarnings("unused")
+    // called by details.js
     ResponseEntity<?> getPriorities(@RequestParam("origin") final String origin,
             @RequestParam("reference") final String reference) {
         Issues<Issue> issues = issuesService.findIssues(origin, reference);

@@ -20,19 +20,15 @@ import static java.util.stream.Collectors.*;
 @Service
 @Transactional
 public class EntityService {
-    private long nextId = 1;
-
     /** Repository to store and load Issue objects. */
     private final IssueRepository issueRepository;
-
     /** Repository to store and load Issues objects. */
     private final IssuesRepository issuesRepository;
-
     /** Repository to store and load LineRange objects. */
     private final LineRangeRepository rangesRepository;
-
     /** Mapper to convert dto-object to entity-object and reverse. */
     private final EntityMapper mapper;
+    private long nextId = 1;
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired

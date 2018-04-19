@@ -5,12 +5,15 @@ import org.junit.jupiter.api.Test;
 
 import edu.hm.hafner.analysis.Issue;
 import edu.hm.hafner.analysis.IssueBuilder;
-
 import edu.hm.hafner.analysis.LineRange;
 import edu.hm.hafner.analysis.LineRangeList;
 
+/**
+ * Tests the class {@link EntityMapper} for {@link Issue} instances.
+ *
+ * @author Michael Schmid
+ */
 class IssueMapperTest {
-
     @Test
     void mapIssueToIssueEntity() {
         EntityMapper mapper = new EntityMapper();

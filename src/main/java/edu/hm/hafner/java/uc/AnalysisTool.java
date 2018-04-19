@@ -11,7 +11,7 @@ import edu.hm.hafner.analysis.Issues;
 public class AnalysisTool {
     private final String id;
     private final String name;
-    private AbstractParser<?> parser;
+    private final AbstractParser<?> parser;
 
     public AnalysisTool(final String id, final String name, final AbstractParser<?> parser) {
         this.id = id;

@@ -24,7 +24,7 @@ public class IssueEntity {
     private String category;
     private String type;
     private Priority priority;
-    @Column(length=1024)
+    @Column(length = 1024)
     private String message;
 
     private int lineStart;

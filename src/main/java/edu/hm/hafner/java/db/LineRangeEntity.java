@@ -13,7 +13,7 @@ import java.util.Objects;
 @SuppressWarnings("InstanceVariableMayNotBeInitialized")
 @Entity
 @Table(name = "linerange")
-public class LineRangeEntity {
+public final class LineRangeEntity {
     /** Id of the entity build of start and end of the range (start-end). */
     @Id
     private String id;
@@ -41,6 +41,11 @@ public class LineRangeEntity {
         return start;
     }
 
+    /**
+     * Sets the first line of this range.
+     *
+     * @param start the first line
+     */
     public void setStart(final int start) {
         this.start = start;
         setId(calculateId());
@@ -50,6 +55,11 @@ public class LineRangeEntity {
         return end;
     }
 
+    /**
+     * Sets the last line of this range.
+     *
+     * @param end the last line
+     */
     public void setEnd(final int end) {
         this.end = end;
         setId(calculateId());
