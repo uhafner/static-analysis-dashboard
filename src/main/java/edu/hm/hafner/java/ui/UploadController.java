@@ -43,6 +43,8 @@ public class UploadController {
      * @param tool
      *         the ID of the static analysis tool
      * @param model
+     *         UI model, will be filled with {@code origin} and {@code  reference}
+     *
      * @return name of the details view
      */
     @RequestMapping(path = "/issues", method = RequestMethod.POST)
@@ -50,8 +52,10 @@ public class UploadController {
             final Model model) {
         try {
             Issues<Issue> issues = issuesService.parse(tool, file.getInputStream());
+
             model.addAttribute("origin", issues.getOrigin());
             model.addAttribute("reference", issues.getReference());
+
             return "details";
         }
         catch (IOException e) {

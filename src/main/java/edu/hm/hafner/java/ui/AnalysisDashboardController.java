@@ -37,6 +37,13 @@ public class AnalysisDashboardController {
     /**
      * Shows the details for one static analysis run.
      *
+     * @param origin
+     *         the origin of the issues instance to show the details for
+     * @param reference
+     *         the reference of the issues instance to show the details for
+     * @param model
+     *         UI model, will be filled with {@code origin} and {@code  reference}
+     *
      * @return the URL for the details page
      */
     @RequestMapping("/details")
@@ -61,11 +68,15 @@ public class AnalysisDashboardController {
     /**
      * Shows a form to upload a new report.
      *
+     * @param model
+     *         UI model, will be filled with {@code origin} and {@code  reference}
+     *
      * @return the URL for the upload page
      */
     @RequestMapping("/upload")
     String createUpload(final Model model) {
         model.addAttribute("tools", issuesService.findAllTools());
+
         return "upload";
     }
 }
