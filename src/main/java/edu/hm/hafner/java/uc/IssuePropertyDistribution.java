@@ -25,11 +25,22 @@ public class IssuePropertyDistribution {
      *         a mapping of properties to number of issues
      */
     public IssuePropertyDistribution(final Map<String, Integer> counts) {
+        List<Integer> values = createValuesAndSetLabels(counts);
+        datasets.add(new IssuesSizeList(values));
+    }
+
+    public IssuePropertyDistribution(final Map<String, Integer> counts, final List<String> backgroundColors,
+            final List<String> hooverBorderColors) {
+        List<Integer> values = createValuesAndSetLabels(counts);
+        datasets.add(new IssuesSizeList(values, backgroundColors, hooverBorderColors));
+    }
+
+    private List<Integer> createValuesAndSetLabels(final Map<String, Integer> counts) {
         List<Integer> values = new ArrayList<>();
         for (Entry<String, Integer> entry : counts.entrySet()) {
             labels.add(entry.getKey());
             values.add(entry.getValue());
         }
-        datasets.add(new IssuesSizeList(values));
+        return values;
     }
 }

@@ -11,14 +11,27 @@ import java.util.List;
 @SuppressWarnings({"FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection"}) // Will be converted to Json
 public class IssuesSizeList {
     private final List<Integer> data = new ArrayList<>();
+    private final List<String> backgroundColor = new ArrayList<>();
+    private final List<String> borderColor = new ArrayList<>();
 
     /**
      * Creates a new instance of {@link IssuesSizeList}.
      *
-     * @param data
+     * @param values
      *         the elements of the list
      */
-    public IssuesSizeList(final List<Integer> data) {
-        this.data.addAll(data);
+    public IssuesSizeList(final List<Integer> values) {
+        data.addAll(values);
+        for (int i = 0; i < values.size(); i++) {
+            backgroundColor.add(i % 2 == 0 ? "#b9b8b6" : "#d9d8d6");
+            borderColor.add(i % 2 == 0 ? "#a9a8a6" : "#c9c8c6");
+        }
+    }
+
+    public IssuesSizeList(final List<Integer> values, final List<String> backgroundColors,
+            final List<String> borderColors) {
+        data.addAll(values);
+        backgroundColor.addAll(backgroundColors);
+        borderColor.addAll(borderColors);
     }
 }

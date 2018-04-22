@@ -1,14 +1,20 @@
 package edu.hm.hafner.java.ui;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.eclipse.collections.impl.factory.Maps;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
+
 import edu.hm.hafner.java.uc.IssuePropertyDistribution;
 import edu.hm.hafner.java.uc.IssuesService;
+import static java.util.Collections.*;
+import net.minidev.json.JSONArray;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -35,32 +41,34 @@ class IssuesDetailControllerTest {
         IssuesDetailController controller = new IssuesDetailController(issuesService);
 
         when(issuesService.createDistributionByCategory(ORIGIN_CATEGORY, REFERENCE_CATEGORY))
-                .thenReturn(EMPTY_DISTRIBUTION);
-        assertThatResponseIsEmpty(controller.getCategories(ORIGIN_CATEGORY, REFERENCE_CATEGORY));
-
-        when(issuesService.createDistributionByType(ORIGIN_TYPE, REFERENCE_TYPE))
-                .thenReturn(EMPTY_DISTRIBUTION);
-        assertThatResponseIsEmpty(controller.getTypes(ORIGIN_TYPE, REFERENCE_TYPE));
-
-        when(issuesService.createDistributionByCategory(ORIGIN_CATEGORY, REFERENCE_CATEGORY))
                 .thenReturn(SINGLETON_DISTRIBUTION);
-        assertThatResponseContainsOneElement(controller.getCategories(ORIGIN_CATEGORY, REFERENCE_CATEGORY));
+        assertThatResponseIsEqualTo(controller.getCategories(ORIGIN_CATEGORY, REFERENCE_CATEGORY),
+                singletonList("label"), singletonList(1));
 
         when(issuesService.createDistributionByType(ORIGIN_TYPE, REFERENCE_TYPE))
                 .thenReturn(SINGLETON_DISTRIBUTION);
-        assertThatResponseContainsOneElement(controller.getTypes(ORIGIN_TYPE, REFERENCE_TYPE));
+        assertThatResponseIsEqualTo(controller.getTypes(ORIGIN_TYPE, REFERENCE_TYPE),
+                singletonList("label"), singletonList(1));
     }
 
-    private void assertThatResponseContainsOneElement(final ResponseEntity<?> categories) {
-        assertThatResponseIsEqualTo(categories, "{\"labels\":[\"label\"],\"datasets\":[{\"data\":[1]}]}");
-    }
+    private void assertThatResponseIsEqualTo(final ResponseEntity<String> response,
+            final List<String> expectedLabels, final List<Integer> expectedSizes) {
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-    private void assertThatResponseIsEmpty(final ResponseEntity<?> empty) {
-        assertThatResponseIsEqualTo(empty, "{\"labels\":[],\"datasets\":[{\"data\":[]}]}");
-    }
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
 
-    private void assertThatResponseIsEqualTo(final ResponseEntity<?> empty, final String s) {
-        assertThat(empty.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(empty.getBody()).isEqualTo(s);
+        JSONArray actualLabels = documentContext.read("$.labels[*]", JSONArray.class);
+        assertThat(actualLabels).containsExactlyElementsOf(expectedLabels);
+
+        assertThat(documentContext.read("$.datasets[*]", JSONArray.class)).hasSize(1);
+
+        JSONArray actualSizes = documentContext.read("$.datasets[0].data", JSONArray.class);
+        assertThat(actualSizes).containsExactlyElementsOf(expectedSizes);
+
+        JSONArray backgroundColors = documentContext.read("$.datasets[0].backgroundColor[*]", JSONArray.class);
+        assertThat(backgroundColors).hasSize(expectedSizes.size());
+
+        JSONArray borderColors = documentContext.read("$.datasets[0].borderColor[*]", JSONArray.class);
+        assertThat(borderColors).hasSize(expectedSizes.size());
     }
 }

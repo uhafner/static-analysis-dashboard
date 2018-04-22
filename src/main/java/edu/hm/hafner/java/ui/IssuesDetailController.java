@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 
-import edu.hm.hafner.analysis.Issue;
 import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.java.uc.IssuePropertyDistribution;
 import edu.hm.hafner.java.uc.IssuesService;
@@ -72,7 +71,7 @@ public class IssuesDetailController {
     @ResponseBody
     @SuppressWarnings("unused")
     // called by details.js
-    ResponseEntity<?> getCategories(@RequestParam("origin") final String origin,
+    ResponseEntity<String> getCategories(@RequestParam("origin") final String origin,
             @RequestParam("reference") final String reference) {
         IssuePropertyDistribution model = issuesService.createDistributionByCategory(origin, reference);
 
@@ -95,7 +94,7 @@ public class IssuesDetailController {
     @ResponseBody
     @SuppressWarnings("unused")
     // called by details.js
-    ResponseEntity<?> getTypes(@RequestParam("origin") final String origin,
+    ResponseEntity<String> getTypes(@RequestParam("origin") final String origin,
             @RequestParam("reference") final String reference) {
         IssuePropertyDistribution model = issuesService.createDistributionByType(origin, reference);
 
@@ -119,11 +118,9 @@ public class IssuesDetailController {
     // called by details.js
     ResponseEntity<?> getPriorities(@RequestParam("origin") final String origin,
             @RequestParam("reference") final String reference) {
-        Issues<Issue> issues = issuesService.findIssues(origin, reference);
-        int[] priorities = {issues.getHighPrioritySize(), issues.getNormalPrioritySize(), issues.getLowPrioritySize()};
+        IssuePropertyDistribution model = issuesService.createDistributionByPriority(origin, reference);
 
         Gson gson = new Gson();
-
-        return ResponseEntity.ok(gson.toJson(priorities));
+        return ResponseEntity.ok(gson.toJson(model));
     }
 }

@@ -4,12 +4,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.io.input.BOMInputStream;
+import org.eclipse.collections.impl.factory.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +70,27 @@ public class IssuesService {
         Map<String, Integer> counts = issues.getPropertyCount(Issue::getType);
 
         return new IssuePropertyDistribution(counts);
+    }
+
+    /**
+     * Returns the number of issues per type.
+     *
+     * @param origin
+     *         the origin of the issues instance to show the details for
+     * @param reference
+     *         the reference of the issues instance to show the details for
+     *
+     * @return number of issues per type
+     */
+    public IssuePropertyDistribution createDistributionByPriority(final String origin, final String reference) {
+        Issues<?> issues = issuesEntityService.findByPrimaryKey(origin, reference);
+        Map<String, Integer> counts = Maps.fixedSize.of("High", issues.getHighPrioritySize(),
+                "Normal", issues.getNormalPrioritySize(),
+                "Low", issues.getLowPrioritySize());
+
+        List<String> backgroundColors = Arrays.asList("#d24939", "#f7f1da", "#80afbf");
+        List<String> borderColors = Arrays.asList("#c23929", "#e7e1ca", "#709faf");
+        return new IssuePropertyDistribution(counts, backgroundColors, borderColors);
     }
 
     /**

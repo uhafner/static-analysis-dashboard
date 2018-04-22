@@ -11,20 +11,7 @@ $(document).ready(
             function (priorities) {
                 new Chart($("#priorities-chart"), {
                     type: 'doughnut',
-                    data: {
-                        labels: ["High", "Normal", "Low"],
-                        datasets: [{
-                            data: priorities,
-                            backgroundColor: [
-                                '#d24939',
-                                '#f7f1da',
-                                '#80afbf'
-                            ],
-                            borderColor: [
-                                '#355564', '#355564', '#355564'
-                            ]
-                        }]
-                    }
+                    data: priorities
                 });
             });
         $.get("ajax/categories", {origin: origin, reference: reference},
