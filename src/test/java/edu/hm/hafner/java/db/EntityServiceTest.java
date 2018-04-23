@@ -11,6 +11,8 @@ import edu.hm.hafner.analysis.IssueBuilder;
 import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.analysis.LineRange;
 import edu.hm.hafner.analysis.LineRangeList;
+import edu.hm.hafner.java.db.IssuesEntity.IssuesEntityId;
+import edu.hm.hafner.java.db.LineRangeEntity.LineRangeEntityId;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -96,8 +98,8 @@ class EntityServiceTest {
 
         assertThat(result.isPresent()).isTrue();
         assertThat(entity.getFileName()).isEqualTo(newFilename);
-        verify(rangesRepository, times(1)).findById("1-2");
-        verify(rangesRepository, times(1)).findById("4-6");
+        verify(rangesRepository, times(1)).findById(new LineRangeEntityId(1, 2));
+        verify(rangesRepository, times(1)).findById(new LineRangeEntityId(4, 6));
         verify(rangesRepository, times(1)).save(new LineRangeEntity(4, 6));
     }
 
@@ -108,14 +110,14 @@ class EntityServiceTest {
         EntityService sut = new EntityService(issueRepository, mock(IssuesRepository.class), rangesRepository, MAPPER);
         Issue issue = new IssueBuilder().setLineRanges(RANGES).build();
 
-        when(rangesRepository.findById("1-2")).thenReturn(Optional.of(new LineRangeEntity(1, 2)));
+        when(rangesRepository.findById(new LineRangeEntityId(1, 2))).thenReturn(Optional.of(new LineRangeEntity(1, 2)));
 
         Issue result = sut.insert(issue);
 
         assertThat(result).isEqualTo(issue);
         verify(issueRepository, times(1)).save(MAPPER.map(issue));
-        verify(rangesRepository, times(1)).findById("1-2");
-        verify(rangesRepository, times(1)).findById("4-6");
+        verify(rangesRepository, times(1)).findById(new LineRangeEntityId(1, 2));
+        verify(rangesRepository, times(1)).findById(new LineRangeEntityId(4, 6));
         verify(rangesRepository, times(1)).save(new LineRangeEntity(4, 6));
     }
 

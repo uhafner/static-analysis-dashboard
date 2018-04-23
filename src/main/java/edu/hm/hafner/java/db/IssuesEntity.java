@@ -1,14 +1,25 @@
 package edu.hm.hafner.java.db;
 
 import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import edu.hm.hafner.analysis.Issues;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Delegate;
 
 /**
  * Entity of a Issues object to store in a database.
@@ -17,7 +28,24 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "issues")
+@Data
+@NoArgsConstructor
 public class IssuesEntity {
+
+    @Embeddable
+    @Data
+    @EqualsAndHashCode
+    @AllArgsConstructor
+    @NoArgsConstructor
+    static class IssuesEntityId implements Serializable {
+        private String origin = "-";
+        private String reference = "-";
+
+        public IssuesEntityId(final Issues issues) {
+            this(issues.getOrigin(), issues.getReference());
+        }
+    }
+
     /** Set of issue objects related to this issues object. */
     @OneToMany
     @OrderColumn
@@ -36,83 +64,8 @@ public class IssuesEntity {
     private int duplicatesSize = 0;
 
     @EmbeddedId
+    @Getter(AccessLevel.PRIVATE)
+    @Setter(AccessLevel.PRIVATE)
+    @Delegate
     private IssuesEntityId id = new IssuesEntityId();
-
-    public List<IssueEntity> getElements() {
-        return elements;
-    }
-
-    public void setElements(final List<IssueEntity> elements) {
-        this.elements = elements;
-    }
-
-    public List<String> getInfoMessages() {
-        return infoMessages;
-    }
-
-    public void setInfoMessages(final List<String> infoMessages) {
-        this.infoMessages = infoMessages;
-    }
-
-    public List<String> getErrorMessages() {
-        return errorMessages;
-    }
-
-    public void setErrorMessages(final List<String> errorMessages) {
-        this.errorMessages = errorMessages;
-    }
-
-    public int getDuplicatesSize() {
-        return duplicatesSize;
-    }
-
-    public void setDuplicatesSize(final int duplicatesSize) {
-        this.duplicatesSize = duplicatesSize;
-    }
-
-    public String getOrigin() {
-        return getId().getOrigin();
-    }
-
-    public void setOrigin(final String origin) {
-        getId().setOrigin(origin);
-    }
-
-    public String getReference() {
-        return getId().getReference();
-    }
-
-    public void setReference(final String reference) {
-        getId().setReference(reference);
-    }
-
-    public IssuesEntityId getId() {
-        return id;
-    }
-
-    private void setId(final IssuesEntityId id) {
-        this.id = id;
-    }
-
-    @SuppressWarnings("OverlyComplexBooleanExpression")
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        IssuesEntity that = (IssuesEntity) obj;
-        return duplicatesSize == that.duplicatesSize
-                && Objects.equals(elements, that.elements)
-                && Objects.equals(infoMessages, that.infoMessages)
-                && Objects.equals(errorMessages, that.errorMessages)
-                && Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(elements, infoMessages, errorMessages, duplicatesSize, id);
-    }
 }

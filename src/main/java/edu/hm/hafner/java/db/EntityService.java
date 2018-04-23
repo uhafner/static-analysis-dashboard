@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import edu.hm.hafner.analysis.Issue;
 import edu.hm.hafner.analysis.Issues;
+import edu.hm.hafner.java.db.IssuesEntity.IssuesEntityId;
 import static java.util.stream.Collectors.*;
 
 /**
