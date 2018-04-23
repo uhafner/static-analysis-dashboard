@@ -94,6 +94,27 @@ class IssuesServiceTest {
                 asList(15, 3, 20, 6, 53, 12));
     }
 
+    @Test
+    void shouldCreateTypeDistribution() {
+        // Given
+        IssuesService service = createService();
+
+        // When
+        IssuePropertyDistribution distribution = service.createDistributionByType("dummy-id", "");
+
+        // Then
+        assertThatJsonContainsElements(distribution,
+                asList("OptimizableToArrayCall", "LooseCoupling", "MethodArgumentCouldBeFinal",
+                        "UncommentedEmptyMethodBody", "ConfusingTernary", "MissingSerialVersionUID",
+                        "GuardLogStatement", "UnusedFormalParameter", "LoggerIsNotStaticFinal", "AssignmentInOperand",
+                        "ImmutableField", "CompareObjectsWithEquals", "UnnecessaryConstructor", "CyclomaticComplexity",
+                        "UnusedPrivateMethod", "ConsecutiveLiteralAppends", "CallSuperInConstructor",
+                        "UnusedPrivateField", "AppendCharacterWithChar", "ExcessivePublicCount", "NPathComplexity",
+                        "ExcessiveImports", "AvoidDeeplyNestedIfStmts", "AccessorClassGeneration",
+                        "UncommentedEmptyConstructor"),
+                asList(1, 1, 13, 2, 9, 4, 8, 2, 4, 1, 2, 3, 13, 3, 3, 4, 18, 1, 1, 2, 3, 4, 1, 5, 1));
+    }
+
     private void assertThatJsonContainsElements(final IssuePropertyDistribution distribution,
             final List<String> expectedLabels, final List<Integer> expectedSizes) {
         DocumentContext documentContext = asJsonContext(distribution);
@@ -118,24 +139,17 @@ class IssuesServiceTest {
     }
 
     @Test
-    void shouldCreateTypeDistribution() {
+    void shouldCreatePriorityDistribution() {
         // Given
         IssuesService service = createService();
 
         // When
-        IssuePropertyDistribution distribution = service.createDistributionByType("dummy-id", "");
+        IssuePropertyDistribution distribution = service.createDistributionByPriority("dummy-id", "");
 
         // Then
         assertThatJsonContainsElements(distribution,
-                asList("OptimizableToArrayCall", "LooseCoupling", "MethodArgumentCouldBeFinal",
-                        "UncommentedEmptyMethodBody", "ConfusingTernary", "MissingSerialVersionUID",
-                        "GuardLogStatement", "UnusedFormalParameter", "LoggerIsNotStaticFinal", "AssignmentInOperand",
-                        "ImmutableField", "CompareObjectsWithEquals", "UnnecessaryConstructor", "CyclomaticComplexity",
-                        "UnusedPrivateMethod", "ConsecutiveLiteralAppends", "CallSuperInConstructor",
-                        "UnusedPrivateField", "AppendCharacterWithChar", "ExcessivePublicCount", "NPathComplexity",
-                        "ExcessiveImports", "AvoidDeeplyNestedIfStmts", "AccessorClassGeneration",
-                        "UncommentedEmptyConstructor"),
-                asList(1, 1, 13, 2, 9, 4, 8, 2, 4, 1, 2, 3, 13, 3, 3, 4, 18, 1, 1, 2, 3, 4, 1, 5, 1));
+                asList("High", "Normal", "Low"),
+                asList(12, 97, 0));
     }
 
     @Test

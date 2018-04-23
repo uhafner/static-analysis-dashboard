@@ -14,7 +14,7 @@ import edu.hm.hafner.analysis.parser.pmd.PmdParser;
 import edu.hm.hafner.java.uc.AnalysisTool;
 
 /**
- * Populates the DB with test data.
+ * Populates the database with test data.
  */
 @Component
 public class IssuesTestData {
@@ -28,7 +28,7 @@ public class IssuesTestData {
     }
 
     /**
-     * Populates the DB with a PMD file.
+     * Populates the database with issues from a dummy PMD file.
      */
     @PostConstruct
     public void storeTestData() {

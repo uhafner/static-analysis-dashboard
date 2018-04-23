@@ -22,6 +22,8 @@ import edu.hm.hafner.java.uc.IssuesService;
  */
 @Controller
 public class UploadController {
+    static final String FILENAME_DUMMY = "<<uploaded file>>";
+
     @SuppressWarnings("InstanceVariableMayNotBeInitialized")
     private final IssuesService issuesService;
 
@@ -59,7 +61,7 @@ public class UploadController {
             return "details";
         }
         catch (IOException e) {
-            throw new ParsingException(e, "<<uploaded file>>");
+            throw new ParsingException(e, FILENAME_DUMMY);
         }
     }
 }

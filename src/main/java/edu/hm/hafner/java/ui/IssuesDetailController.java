@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 
 import edu.hm.hafner.analysis.Issues;
-import edu.hm.hafner.java.uc.IssuePropertyDistribution;
 import edu.hm.hafner.java.uc.IssuesService;
-import edu.hm.hafner.java.uc.IssuesTable;
 
 /**
  * Provides detail information for a specific set of {@link Issues}.
@@ -40,11 +38,8 @@ public class IssuesDetailController {
     @ResponseBody
     @SuppressWarnings("unused")
     // called by issues.js
-    ResponseEntity<?> getIssues() {
-        IssuesTable model = issuesService.createIssuesStatistics();
-
-        Gson gson = new Gson();
-        return ResponseEntity.ok(gson.toJson(model));
+    ResponseEntity<String> getIssues() {
+        return createResponseFrom(issuesService.createIssuesStatistics());
     }
 
     /**
@@ -73,10 +68,7 @@ public class IssuesDetailController {
     // called by details.js
     ResponseEntity<String> getCategories(@RequestParam("origin") final String origin,
             @RequestParam("reference") final String reference) {
-        IssuePropertyDistribution model = issuesService.createDistributionByCategory(origin, reference);
-
-        Gson gson = new Gson();
-        return ResponseEntity.ok(gson.toJson(model));
+        return createResponseFrom(issuesService.createDistributionByCategory(origin, reference));
     }
 
     /**
@@ -96,31 +88,30 @@ public class IssuesDetailController {
     // called by details.js
     ResponseEntity<String> getTypes(@RequestParam("origin") final String origin,
             @RequestParam("reference") final String reference) {
-        IssuePropertyDistribution model = issuesService.createDistributionByType(origin, reference);
-
-        Gson gson = new Gson();
-        return ResponseEntity.ok(gson.toJson(model));
+        return createResponseFrom(issuesService.createDistributionByType(origin, reference));
     }
 
     /**
-     * Ajax entry point: returns the number of issues per priority (as JSON array).
+     * Ajax entry point: returns the number of issues per priority (as JSON array). The returned JSON object is in the
+     *      * expected format for the {@code data} property of a doughnut chart.
      *
      * @param origin
      *         the origin of the issues instance to show the details for
      * @param reference
      *         the reference of the issues instance to show the details for
      *
-     * @return the number of issues per priority, e.g. {@code [10, 20, 70]}
+     * @return the number of issues per priority
      */
     @RequestMapping(path = "/ajax/priorities", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     @SuppressWarnings("unused")
     // called by details.js
-    ResponseEntity<?> getPriorities(@RequestParam("origin") final String origin,
+    ResponseEntity<String> getPriorities(@RequestParam("origin") final String origin,
             @RequestParam("reference") final String reference) {
-        IssuePropertyDistribution model = issuesService.createDistributionByPriority(origin, reference);
+        return createResponseFrom(issuesService.createDistributionByPriority(origin, reference));
+    }
 
-        Gson gson = new Gson();
-        return ResponseEntity.ok(gson.toJson(model));
+    private ResponseEntity<String> createResponseFrom(final Object model) {
+        return ResponseEntity.ok(new Gson().toJson(model));
     }
 }

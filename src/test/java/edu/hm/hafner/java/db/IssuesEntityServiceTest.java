@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 import edu.hm.hafner.analysis.Issue;
+import edu.hm.hafner.analysis.IssueBuilder;
 import edu.hm.hafner.analysis.Issues;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -30,5 +31,36 @@ class IssuesEntityServiceTest {
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("wrong")
                 .hasMessageContaining("key");
+    }
+
+    @Test
+    void shouldSaveIssues() {
+        Issues<Issue> issues = new Issues<>();
+        IssueBuilder builder = new IssueBuilder();
+        issues.add(builder.build());
+        EntityService entityService = mock(EntityService.class);
+        when(entityService.insert(issues)).thenReturn(issues);
+        IssuesEntityService service = new IssuesEntityService(entityService);
+
+        Issues<Issue> savedIssues = service.save(issues);
+
+        assertThat(savedIssues).isEqualTo(issues);
+    }
+
+    @Test
+    void shouldThrowExceptionIsSameIssuesIsAlreadyStored() {
+        Issues<Issue> issues = new Issues<>();
+        IssueBuilder builder = new IssueBuilder();
+        Issue issue = builder.build();
+        issues.add(issue);
+        EntityService entityService = mock(EntityService.class);
+        when(entityService.insert(issues)).thenReturn(issues);
+        when(entityService.select(any())).thenReturn(Optional.of(issue));
+
+        IssuesEntityService service = new IssuesEntityService(entityService);
+
+        assertThatThrownBy(() -> service.save(issues))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("1 issues already stored");
     }
 }
