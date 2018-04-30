@@ -35,6 +35,16 @@ public class AnalysisDashboardController {
     }
 
     /**
+     * Shows a table with the uploaded reports.
+     *
+     * @return the URL for the reports statistics page
+     */
+    @RequestMapping("/issues")
+    String createIssues() {
+        return "issues";
+    }
+
+    /**
      * Shows the details for one static analysis run.
      *
      * @param origin
@@ -53,16 +63,6 @@ public class AnalysisDashboardController {
         model.addAttribute("reference", reference);
 
         return "details";
-    }
-
-    /**
-     * Shows a table with the uploaded reports.
-     *
-     * @return the URL for the reports statistics page
-     */
-    @RequestMapping("/issues")
-    String createIssues() {
-        return "issues";
     }
 
     /**
