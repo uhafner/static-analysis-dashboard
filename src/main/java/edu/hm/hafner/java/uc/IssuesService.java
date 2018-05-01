@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 
 import org.apache.commons.io.input.BOMInputStream;
@@ -163,5 +164,21 @@ public class IssuesService {
      */
     public Issues<Issue> findIssues(final String origin, final String reference) {
         return issuesEntityService.findByPrimaryKey(origin, reference);
+    }
+
+    public IssuePropertyDistribution createAggregation() {
+        List<String> backgroundColors = Arrays.asList("#d24939", "#f7f1da", "#80afbf");
+        List<String> borderColors = Arrays.asList("#c23929", "#e7e1ca", "#709faf");
+
+        IssuePropertyDistribution distribution = new IssuePropertyDistribution(createCounts(), backgroundColors, borderColors);
+        distribution.add(createCounts());
+        return distribution;
+    }
+
+    private Map<String, Integer> createCounts() {
+        Random random = new Random();
+        return Maps.fixedSize.of("#1", random.nextInt(100),
+                    "#2", random.nextInt(100),
+                    "#3", random.nextInt(100));
     }
 }

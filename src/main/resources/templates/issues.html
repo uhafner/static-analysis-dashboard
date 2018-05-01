@@ -7,28 +7,75 @@
         <div class="container">
 
             <div class="row py-3">
-                <table class="table table-hover table-striped" id="issues">
-                    <thead>
-                        <tr>
-                            <th>Origin</th>
-                            <th>Reference</th>
-                            <th>Total Size</th>
-                            <th>High Priority</th>
-                            <th>Normal Priority</th>
-                            <th>Low Priority</th>
-                        </tr>
-                        </thead>
-                </table>
+                <div class="col">
+
+                    <div class="card card-marg-bot">
+                        <div class="card-body">
+                            <h3 class="card-title">
+                                Issues per Build ID
+                                <i class="fa fa-search icon-right fa-2x" aria-hidden="true"></i>
+                            </h3>
+
+                            <div class="mt-8">
+                                <table class="table table-hover table-striped" id="issues">
+                                    <thead>
+                                    <tr>
+                                        <th>Origin</th>
+                                        <th>Reference</th>
+                                        <th>Total Size</th>
+                                        <th>High Priority</th>
+                                        <th>Normal Priority</th>
+                                        <th>Low Priority</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+            <div class="row py-3">
+                <div class="col">
 
-            <!-- Parameters are read by details.js -->
-            <!--/*@thymesVar id="origin" type="java.lang.String"*/-->
-            <!--/*@thymesVar id="reference" type="java.lang.String"*/-->
-            <div hidden id="origin" th:text="${origin}"></div>
-            <div hidden id="reference" th:text="${reference}"></div>
-            <!-- Parameters are read by details.js -->
+                    <div class="card card-marg-bot">
+                        <div class="card-body">
+
+                            <h3 class="card-title">
+                                Distribution by Priority
+                                <i class="fa fa-bell icon-right fa-2x" aria-hidden="true"></i>
+                            </h3>
+
+                            <div class="mt-8">
+                                <canvas id="priority-distribution-chart" class="graph-cursor-pointer" width="250"
+                                        height="250"></canvas>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+
+                    <div class="card card-marg-bot">
+                        <div class="card-body">
+
+                            <h3 class="card-title">
+                                Warnings by Origin
+                                <i class="fa fa-line-chart icon-right fa-2x" aria-hidden="true"></i>
+                            </h3>
+
+                            <div class="mt-8">
+                                <canvas id="origin-chart" class="graph-cursor-pointer" width="250"
+                                        height="250"></canvas>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
 
             <script src="/js/issues.js"></script>
         </div>

@@ -1,6 +1,7 @@
 package edu.hm.hafner.java.uc;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public class IssuesSizeList {
      * @param values
      *         the elements of the list
      */
-    public IssuesSizeList(final List<Integer> values) {
+    public IssuesSizeList(final Collection<Integer> values) {
         data.addAll(values);
         for (int i = 0; i < values.size(); i++) {
             backgroundColor.add(i % 2 == 0 ? "#b9b8b6" : "#d9d8d6");

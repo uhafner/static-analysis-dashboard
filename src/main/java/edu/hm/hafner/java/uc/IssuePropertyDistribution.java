@@ -43,4 +43,8 @@ public class IssuePropertyDistribution {
         }
         return values;
     }
+
+    public void add(final Map<String, Integer> counts) {
+        datasets.add(new IssuesSizeList(counts.values()));
+    }
 }

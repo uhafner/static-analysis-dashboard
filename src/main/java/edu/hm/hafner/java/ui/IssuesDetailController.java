@@ -92,6 +92,16 @@ public class IssuesDetailController {
     }
 
     /**
+     */
+    @RequestMapping(path = "/ajax/aggregation", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    @SuppressWarnings("unused")
+    // called by issues.js
+    ResponseEntity<String> getAggregation() {
+        return createResponseFrom(issuesService.createAggregation());
+    }
+
+    /**
      * Ajax entry point: returns the number of issues per priority (as JSON array). The returned JSON object is in the
      *      * expected format for the {@code data} property of a doughnut chart.
      *

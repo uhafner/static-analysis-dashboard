@@ -37,7 +37,7 @@ public class IssuesEntityService {
      */
     public Issues<Issue> save(final Issues<?> issues) {
         long duplicates = issues.stream()
-                .map(issue -> issue.getId())
+                .map(Issue::getId)
                 .filter(id -> entityService.select(id).isPresent())
                 .count();
         if (duplicates > 0) {

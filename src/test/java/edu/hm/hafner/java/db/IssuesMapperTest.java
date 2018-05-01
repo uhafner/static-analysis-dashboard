@@ -100,8 +100,4 @@ class IssuesMapperTest {
         softly.assertThat(result.stream().count()).isEqualTo((int)expected.stream().count());
         softly.assertThat(result.iterator()).containsAll(expected::iterator);
     }
-
-
-
-
 }
