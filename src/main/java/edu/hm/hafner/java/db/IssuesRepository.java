@@ -1,5 +1,7 @@
 package edu.hm.hafner.java.db;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -8,4 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Michael Schmid
  */
 public interface IssuesRepository extends JpaRepository<IssuesEntity, IssuesEntityId> {
+    List<IssuesEntity> findByIdReferenceOrderByIdOrigin(String reference);
+    List<IssuesEntity> findByIdOriginOrderByIdReference(String origin);
 }

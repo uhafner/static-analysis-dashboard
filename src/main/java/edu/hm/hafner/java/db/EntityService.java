@@ -1,9 +1,11 @@
 package edu.hm.hafner.java.db;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -122,6 +124,17 @@ public class EntityService {
      */
     public Optional<Issues<Issue>> select(final String origin, final String reference) {
         return issuesRepository.findById(new IssuesEntityId(origin, reference)).map(mapper::map);
+    }
+
+
+    public List<Issues<Issue>> selectByReference(final String reference) {
+        return issuesRepository.findByIdReferenceOrderByIdOrigin(reference).stream().map(mapper::map).collect(toList());
+
+    }
+
+    public List<Issues<Issue>> selectByOrigin(final String origin) {
+        return issuesRepository.findByIdOriginOrderByIdReference(origin).stream().map(mapper::map).collect(toList());
+
     }
 
     /**
