@@ -92,16 +92,6 @@ public class IssuesDetailController {
     }
 
     /**
-     */
-    @RequestMapping(path = "/ajax/aggregation", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    @SuppressWarnings("unused")
-    // called by issues.js
-    ResponseEntity<String> getAggregation() {
-        return createResponseFrom(issuesService.createAggregation());
-    }
-
-    /**
      * Ajax entry point: returns the number of issues per priority (as JSON array). The returned JSON object is in the
      *      * expected format for the {@code data} property of a doughnut chart.
      *
@@ -120,6 +110,27 @@ public class IssuesDetailController {
             @RequestParam("reference") final String reference) {
         return createResponseFrom(issuesService.createDistributionByPriority(origin, reference));
     }
+
+    /**
+     */
+    @RequestMapping(path = "/ajax/priorityAggregation", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    @SuppressWarnings("unused")
+    // called by issues.js
+    ResponseEntity<String> getPriorityAggregation() {
+        return createResponseFrom(issuesService.createPriorityAggregation());
+    }
+
+    /**
+     */
+    @RequestMapping(path = "/ajax/originAggregation", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    @SuppressWarnings("unused")
+    // called by issues.js
+    ResponseEntity<String> getOriginAggregation() {
+        return createResponseFrom(issuesService.createOriginAggregation());
+    }
+
 
     private ResponseEntity<String> createResponseFrom(final Object model) {
         return ResponseEntity.ok(new Gson().toJson(model));

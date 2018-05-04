@@ -32,12 +32,12 @@ class UploadControllerTest {
         issues.setOrigin(ORIGIN);
 
         IssuesService service = mock(IssuesService.class);
-        when(service.parse(TOOL, null)).thenReturn(issues);
+        when(service.parse(TOOL, null, REFERENCE)).thenReturn(issues);
 
         UploadController controller = new UploadController(service);
 
         Model model = new ConcurrentModel();
-        String result = controller.upload(mock(MultipartFile.class), TOOL, model);
+        String result = controller.upload(mock(MultipartFile.class), TOOL, REFERENCE, model);
 
         assertThat(model.asMap()).containsOnly(entry(ORIGIN, ORIGIN), entry(REFERENCE, REFERENCE));
         assertThat(result).isEqualTo("details");
@@ -50,7 +50,7 @@ class UploadControllerTest {
 
         MultipartFile file = mock(MultipartFile.class);
         when(file.getInputStream()).thenThrow(new FileNotFoundException(""));
-        assertThatThrownBy(() -> controller.upload(file, TOOL, new ConcurrentModel()))
+        assertThatThrownBy(() -> controller.upload(file, TOOL, REFERENCE, new ConcurrentModel()))
                 .isInstanceOf(ParsingException.class)
                 .hasMessageContaining(UploadController.FILENAME_DUMMY);
     }

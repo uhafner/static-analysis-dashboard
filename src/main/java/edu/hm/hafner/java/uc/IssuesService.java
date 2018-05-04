@@ -5,13 +5,14 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 
 import org.apache.commons.io.input.BOMInputStream;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.analysis.parser.checkstyle.CheckStyleParser;
 import edu.hm.hafner.analysis.parser.pmd.PmdParser;
 import edu.hm.hafner.java.db.IssuesEntityService;
+import edu.hm.hafner.java.db.IssuesTestData;
 import edu.hm.hafner.util.NoSuchElementException;
 
 /**
@@ -114,9 +116,10 @@ public class IssuesService {
      * @param file
      *         the file to parse
      *
+     * @param reference
      * @return the issues of the specified report
      */
-    public Issues<Issue> parse(final String id, final InputStream file) {
+    public Issues<Issue> parse(final String id, final InputStream file, final String reference) {
         Optional<AnalysisTool> analysisTool = findAllTools().stream()
                 .filter(tool -> tool.getId().equals(id))
                 .findFirst();
@@ -124,6 +127,7 @@ public class IssuesService {
             AnalysisTool tool = analysisTool.get();
             Issues<?> issues = parse(tool.getParser(), file);
             issues.setOrigin(tool.getId());
+            issues.setReference(reference);
             return issuesEntityService.save(issues);
         }
         else {
@@ -166,19 +170,35 @@ public class IssuesService {
         return issuesEntityService.findByPrimaryKey(origin, reference);
     }
 
-    public IssuePropertyDistribution createAggregation() {
-        List<String> backgroundColors = Arrays.asList("#d24939", "#f7f1da", "#80afbf");
-        List<String> borderColors = Arrays.asList("#c23929", "#e7e1ca", "#709faf");
-
-        IssuePropertyDistribution distribution = new IssuePropertyDistribution(createCounts(), backgroundColors, borderColors);
-        distribution.add(createCounts());
-        return distribution;
+    public LineChartModel createPriorityAggregation() {
+        Set<Issues<Issue>> all = issuesEntityService.findAll();
+        Map<String, List<Integer>> values = new HashMap<>();
+        for (Issues<Issue> issues : all) {
+            String key = issues.getReference();
+            if (!IssuesTestData.NO_REFERENCE.equalsIgnoreCase(key)) {
+                List<Integer> priorities = values.getOrDefault(key, Lists.fixedSize.of(0, 0, 0));
+                priorities.set(0, priorities.get(0) + issues.getHighPrioritySize());
+                priorities.set(1, priorities.get(1) + issues.getNormalPrioritySize());
+                priorities.set(2, priorities.get(2) + issues.getLowPrioritySize());
+                values.put(key, priorities);
+            }
+        }
+        return new LineChartModel(values);
     }
 
-    private Map<String, Integer> createCounts() {
-        Random random = new Random();
-        return Maps.fixedSize.of("#1", random.nextInt(100),
-                    "#2", random.nextInt(100),
-                    "#3", random.nextInt(100));
+    public LineChartModel createOriginAggregation() {
+        Set<Issues<Issue>> all = issuesEntityService.findAll();
+        Map<String, List<Integer>> values = new HashMap<>();
+        for (Issues<Issue> issues : all) {
+            String key = issues.getReference();
+            if (!IssuesTestData.NO_REFERENCE.equalsIgnoreCase(key)) {
+                List<Integer> origins = values.getOrDefault(key, Lists.fixedSize.of(0, 0));
+                origins.set(0, origins.get(0) + issues.getHighPrioritySize());
+                origins.set(1, origins.get(1) + issues.getNormalPrioritySize());
+                values.put(key, origins);
+            }
+        }
+        return new LineChartModel(values);
     }
+
 }

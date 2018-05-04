@@ -158,7 +158,8 @@ class IssuesServiceTest {
         IssuesService service = createService();
 
         // When
-        Issues<Issue> issues = service.parse("pmd", IssuesServiceTest.class.getResourceAsStream("/test/pmd.xml"));
+        Issues<Issue> issues = service.parse("pmd", IssuesServiceTest.class.getResourceAsStream("/test/pmd.xml"),
+                REFERENCE);
 
         // Then
         assertThat(issues).hasSize(109);
@@ -172,7 +173,7 @@ class IssuesServiceTest {
         // When
         String notExistingId = "notExistingId";
         assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() ->
-                service.parse(notExistingId, IssuesServiceTest.class.getResourceAsStream("/test/pmd.xml")))
+                service.parse(notExistingId, IssuesServiceTest.class.getResourceAsStream("/test/pmd.xml"), REFERENCE))
                 .withMessageContaining(notExistingId);
     }
 
@@ -203,7 +204,7 @@ class IssuesServiceTest {
         issues.addAll(testData);
         when(entityService.findByPrimaryKey(anyString(), anyString())).thenReturn(issues);
         when(entityService.findAll()).thenReturn(Collections.singleton(issues));
-        when(entityService.save(issues)).thenReturn(issues);
+        when(entityService.save(any())).thenReturn(issues);
 
         return new IssuesService(entityService);
     }

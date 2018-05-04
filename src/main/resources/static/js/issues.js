@@ -7,26 +7,11 @@ $(document).ready(
             var data = table.row(this).data();
             window.open("details?origin=" + data[0] + "&reference=" + data[1], "Details Report");
         });
-        $.get("ajax/aggregation",
+        $.get("ajax/priorityAggregation",
             function (aggregation) {
                 new Chart($("#priority-distribution-chart"), {
                     type: 'line',
-                    data: {
-                        "labels": ["#1", "#2", "#3"],
-                        "datasets": [{
-                            label: 'High Priority',
-                            "data": [2, 20, 26],
-                            "backgroundColor": "#f5c6cb",
-                        }, {
-                            label: 'Normal Priority',
-                            "data": [75, 82, 31],
-                            "backgroundColor": "#ffeeba",
-                        }, {
-                            label: 'Low Priority',
-                            "data": [10, 52, 61],
-                            "backgroundColor": "#b8daff",
-                        }]
-                    },
+                    data: aggregation,
                     options: {
                         scales: {
                             xAxes: [{
@@ -47,7 +32,7 @@ $(document).ready(
                     }
                 });
             });
-        $.get("ajax/aggregation",
+        $.get("ajax/originAggregation",
             function (aggregation) {
                 new Chart($("#origin-chart"), {
                     type: 'line',

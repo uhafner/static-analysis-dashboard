@@ -19,6 +19,7 @@ import edu.hm.hafner.java.uc.AnalysisTool;
 @Component
 public class IssuesTestData {
     private static final String TEST_PMD_FILE = "/test/pmd.xml";
+    public static final String NO_REFERENCE = "N/A";
 
     private final EntityService entityService;
 
@@ -61,6 +62,7 @@ public class IssuesTestData {
     private Issues<?> readReport(final AnalysisTool parser, final InputStream report) {
         try (InputStreamReader reader = new InputStreamReader(report, StandardCharsets.UTF_8)) {
             Issues<?> issues = parser.getParser().parse(reader);
+            issues.setReference(NO_REFERENCE);
             issues.setOrigin(parser.getId());
             return issues;
         }

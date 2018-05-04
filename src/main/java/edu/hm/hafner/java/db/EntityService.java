@@ -28,7 +28,6 @@ public class EntityService {
     private final LineRangeRepository rangesRepository;
     /** Mapper to convert dto-object to entity-object and reverse. */
     private final EntityMapper mapper;
-    private long nextId = 1;
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
@@ -71,7 +70,6 @@ public class EntityService {
      * @return new instance of the issues with the values of the database
      */
     public Issues<Issue> insert(final Issues<?> issues) {
-        issues.setReference(String.valueOf(nextId++));
         IssuesEntity entity = mapper.map(issues);
         issues.stream()
                 .filter(issue -> !issueRepository.findById(issue.getId()).isPresent())
