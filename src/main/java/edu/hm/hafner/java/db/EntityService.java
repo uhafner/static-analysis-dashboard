@@ -1,6 +1,10 @@
 package edu.hm.hafner.java.db;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -29,14 +33,19 @@ public class EntityService {
     /** Mapper to convert dto-object to entity-object and reverse. */
     private final EntityMapper mapper;
 
+    @PersistenceContext
+    private final EntityManager manager;
+
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     public EntityService(final IssueRepository issueRepository, final IssuesRepository issuesRepository,
-            final LineRangeRepository rangesRepository, final EntityMapper mapper) {
+            final LineRangeRepository rangesRepository, final EntityMapper mapper,
+            final EntityManager manager) {
         this.issueRepository = issueRepository;
         this.issuesRepository = issuesRepository;
         this.rangesRepository = rangesRepository;
         this.mapper = mapper;
+        this.manager = manager;
     }
 
     /**
@@ -166,5 +175,11 @@ public class EntityService {
             result = Optional.of(mapper.map(entity));
         }
         return result;
+    }
+
+    public List<String> findAllReferences() {
+        TypedQuery<String> query = manager.createQuery(
+                "SELECT i.id.reference FROM IssuesEntity AS i", String.class);
+        return query.getResultList();
     }
 }

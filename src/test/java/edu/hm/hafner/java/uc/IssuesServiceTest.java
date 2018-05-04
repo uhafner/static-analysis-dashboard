@@ -69,15 +69,15 @@ class IssuesServiceTest {
         // When
         IssuesTable oneRow = service.createIssuesStatistics();
         // Then
-        assertThat(asJson(oneRow)).isEqualTo("{\"data\":[[\"pmd\",\"-\",\"109\",\"12\",\"97\",\"0\"]]}");
+        assertThat(asJson(oneRow)).isEqualTo("{\"data\":[[\"pmd\",\"N/A\",\"109\",\"12\",\"97\",\"0\"]]}");
 
         // Given
         when(entityService.findAll()).thenReturn(sets.of(issues, filtered));
         // When
         IssuesTable twoRows = service.createIssuesStatistics();
         // Then
-        assertThat(asJson(twoRows)).isEqualTo("{\"data\":[[\"pmd\",\"-\",\"109\",\"12\",\"97\",\"0\"],"
-                + "[\"pmd\",\"-\",\"12\",\"4\",\"8\",\"0\"]]}");
+        assertThat(asJson(twoRows)).isEqualTo("{\"data\":[[\"pmd\",\"N/A\",\"109\",\"12\",\"97\",\"0\"],"
+                + "[\"pmd\",\"N/A\",\"12\",\"4\",\"8\",\"0\"]]}");
     }
 
     @Test

@@ -171,6 +171,11 @@ public class IssuesService {
     }
 
     public LineChartModel createPriorityAggregation() {
+        List<String> references = issuesEntityService.findAllReferences();
+        for (String reference : references) {
+            if (!IssuesTestData.NO_REFERENCE.equalsIgnoreCase(reference)) {
+            }
+        }
         Set<Issues<Issue>> all = issuesEntityService.findAll();
         Map<String, List<Integer>> values = new HashMap<>();
         for (Issues<Issue> issues : all) {

@@ -1,5 +1,6 @@
 package edu.hm.hafner.java.db;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,5 +73,9 @@ public class IssuesEntityService {
      */
     public Set<Issues<Issue>> findAll() {
         return entityService.selectAllIssues();
+    }
+
+    public List<String> findAllReferences() {
+        return entityService.findAllReferences();
     }
 }
