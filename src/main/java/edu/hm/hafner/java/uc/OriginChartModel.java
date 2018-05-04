@@ -11,16 +11,14 @@ import org.eclipse.collections.api.list.MutableList;
  *
  * @author Ullrich Hafner
  */
-public class LineChartModel {
+public class OriginChartModel {
     private final List<String> labels = new ArrayList<>();
     private final List<LineChartDataSet> datasets = new ArrayList<>();
 
-    public LineChartModel(final Map<String, MutableList<Integer>> values) {
-        datasets.add(new LineChartDataSet(values.get("low"), "Low Priority", true,
+    public OriginChartModel(final Map<String, MutableList<Integer>> values) {
+        datasets.add(new LineChartDataSet(values.get("checkstyle"), "CheckStyle", false,
                 "#b8daff", "#a8caef"));
-        datasets.add(new LineChartDataSet(values.get("normal"), "Normal Priority", true,
-                "#ffeeba", "#efdeaa"));
-        datasets.add(new LineChartDataSet(values.get("high"), "High Priority", true,
+        datasets.add(new LineChartDataSet(values.get("pmd"), "PMD", false,
                 "#f5c6cb", "#e5b6bb"));
     }
 }

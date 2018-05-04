@@ -36,28 +36,7 @@ $(document).ready(
             function (aggregation) {
                 new Chart($("#origin-chart"), {
                     type: 'line',
-                    data: {
-                        "labels": ["#1", "#2", "#3"],
-                        "datasets": [{
-                            label: 'PMD',
-                            fill: false,
-                            "data": [2, 20, 26],
-                            "backgroundColor": "#f5c6cb",
-                            "borderColor": "#e5b6bb",
-                        }, {
-                            label: 'CheckStyle',
-                            fill: false,
-                            "data": [75, 82, 31],
-                            "backgroundColor": "#ffeeba",
-                            "borderColor": "#efdeaa",
-                        }, {
-                            label: 'FindBugs',
-                            fill: false,
-                            "data": [10, 52, 61],
-                            "backgroundColor": "#b8daff",
-                            "borderColor": "#a8caef",
-                        }]
-                    },
+                    data: aggregation,
                     options: {
                         responsive: true,
                         scales: {

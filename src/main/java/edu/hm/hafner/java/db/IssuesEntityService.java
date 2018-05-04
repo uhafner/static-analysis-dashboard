@@ -78,4 +78,8 @@ public class IssuesEntityService {
     public List<String> findAllReferences() {
         return entityService.findAllReferences();
     }
+
+    public List<Issues<Issue>> findByReference(final String reference) {
+        return entityService.selectByReference(reference);
+    }
 }

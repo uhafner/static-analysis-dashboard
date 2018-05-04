@@ -8,10 +8,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.apache.commons.io.input.BOMInputStream;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -170,40 +174,49 @@ public class IssuesService {
         return issuesEntityService.findByPrimaryKey(origin, reference);
     }
 
-    public LineChartModel createPriorityAggregation() {
+    public Map<String, MutableList<Integer>> createPriorityMap(
+            final Function<List<Issues<Issue>>, MutableMap<String, Integer>> mapper) {
         List<String> references = issuesEntityService.findAllReferences();
+        Map<String, MutableList<Integer>> result = new HashMap<>();
         for (String reference : references) {
             if (!IssuesTestData.NO_REFERENCE.equalsIgnoreCase(reference)) {
+                List<Issues<Issue>> issues = issuesEntityService.findByReference(reference);
+                MutableMap<String, Integer> dataSet = mapper.apply(issues);
+                for (Entry<String, Integer> entry : dataSet.entrySet()) {
+                    MutableList<Integer> values = result.getOrDefault(entry.getKey(), Lists.mutable.empty());
+                    values.add(entry.getValue());
+                    result.putIfAbsent(entry.getKey(), values);
+                }
             }
         }
-        Set<Issues<Issue>> all = issuesEntityService.findAll();
-        Map<String, List<Integer>> values = new HashMap<>();
-        for (Issues<Issue> issues : all) {
-            String key = issues.getReference();
-            if (!IssuesTestData.NO_REFERENCE.equalsIgnoreCase(key)) {
-                List<Integer> priorities = values.getOrDefault(key, Lists.fixedSize.of(0, 0, 0));
-                priorities.set(0, priorities.get(0) + issues.getHighPrioritySize());
-                priorities.set(1, priorities.get(1) + issues.getNormalPrioritySize());
-                priorities.set(2, priorities.get(2) + issues.getLowPrioritySize());
-                values.put(key, priorities);
-            }
-        }
-        return new LineChartModel(values);
+
+        return result;
     }
 
-    public LineChartModel createOriginAggregation() {
-        Set<Issues<Issue>> all = issuesEntityService.findAll();
-        Map<String, List<Integer>> values = new HashMap<>();
-        for (Issues<Issue> issues : all) {
-            String key = issues.getReference();
-            if (!IssuesTestData.NO_REFERENCE.equalsIgnoreCase(key)) {
-                List<Integer> origins = values.getOrDefault(key, Lists.fixedSize.of(0, 0));
-                origins.set(0, origins.get(0) + issues.getHighPrioritySize());
-                origins.set(1, origins.get(1) + issues.getNormalPrioritySize());
-                values.put(key, origins);
-            }
+    public OriginChartModel createOriginAggregation() {
+        return new OriginChartModel(createPriorityMap(issues -> createOrigins(issues)));
+    }
+
+    public LineChartModel createPriorityAggregation() {
+        return new LineChartModel(createPriorityMap(issues -> createPriorities(issues)));
+    }
+
+    MutableMap<String, Integer> createPriorities(final List<Issues<Issue>> allReports) {
+        MutableMap<String, Integer> priorities = Maps.mutable.empty();
+        for (Issues<Issue> issues : allReports) {
+            priorities.merge("high", issues.getHighPrioritySize(), Integer::sum);
+            priorities.merge("normal", issues.getNormalPrioritySize(), Integer::sum);
+            priorities.merge("low", issues.getLowPrioritySize(), Integer::sum);
         }
-        return new LineChartModel(values);
+        return priorities;
+    }
+
+    MutableMap<String, Integer> createOrigins(final List<Issues<Issue>> allReports) {
+        MutableMap<String, Integer> origins = Maps.mutable.empty();
+        for (Issues<Issue> issues : allReports) {
+            origins.put(issues.getOrigin(), issues.size());
+        }
+        return origins;
     }
 
 }

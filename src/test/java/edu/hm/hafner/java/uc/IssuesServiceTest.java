@@ -2,9 +2,12 @@ package edu.hm.hafner.java.uc;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.eclipse.collections.api.factory.set.FixedSizeSetFactory;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Sets;
 import org.junit.jupiter.api.Test;
 
@@ -207,6 +210,39 @@ class IssuesServiceTest {
         when(entityService.save(any())).thenReturn(issues);
 
         return new IssuesService(entityService);
+    }
+
+    /**
+     * FIXME: write comment.
+     */
+    // FIXME: Issues should be called Report
+    @Test
+    void shouldCreateMappingOfPriorities() {
+        // Given
+        IssuesEntityService entityService = mock(IssuesEntityService.class);
+        when(entityService.findAllReferences()).thenReturn(Lists.fixedSize.of("1", "2"));
+        Issues<Issue> issuesBuild1 = createReport(1, 2, 3);
+        when(entityService.findByReference("1")).thenReturn(Lists.fixedSize.of(issuesBuild1));
+        Issues<Issue> issuesBuild2 = createReport(6, 5, 4);
+        when(entityService.findByReference("2")).thenReturn(Lists.fixedSize.of(issuesBuild2));
+        IssuesService service = new IssuesService(entityService);
+
+        // When
+        Map<String, MutableList<Integer>> priorityMap = service.createPriorityMap(service::createPriorities);
+
+        // Then
+        assertThat(priorityMap).containsKeys("high", "normal", "low");
+        assertThat(priorityMap).containsEntry("high", Lists.mutable.of(1, 6));
+        assertThat(priorityMap).containsEntry("normal", Lists.mutable.of(2, 5));
+        assertThat(priorityMap).containsEntry("low", Lists.mutable.of(3, 4));
+    }
+
+    private Issues<Issue> createReport(final int highPrioritySize, final int normalPrioritySize, final int lowPrioritySize) {
+        Issues<Issue> report = mock(Issues.class);
+        when(report.getHighPrioritySize()).thenReturn(highPrioritySize);
+        when(report.getNormalPrioritySize()).thenReturn(normalPrioritySize);
+        when(report.getLowPrioritySize()).thenReturn(lowPrioritySize);
+        return report;
     }
 }
 
