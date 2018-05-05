@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -132,15 +131,29 @@ public class EntityService {
         return issuesRepository.findById(new IssuesEntityId(origin, reference)).map(mapper::map);
     }
 
-
+    /**
+     * Selects all issues with the specified reference. The matching issues will be ordered by origin.
+     *
+     * @param reference
+     *         reference of the desired issues
+     *
+     * @return the matching ordered list of issues
+     */
     public List<Issues<Issue>> selectByReference(final String reference) {
         return issuesRepository.findByIdReferenceOrderByIdOrigin(reference).stream().map(mapper::map).collect(toList());
 
     }
 
+    /**
+     * Selects all issues with the specified origin. The matching issues will be ordered by reference.
+     *
+     * @param origin
+     *         origin of the desired issues
+     *
+     * @return the matching ordered list of issues
+     */
     public List<Issues<Issue>> selectByOrigin(final String origin) {
         return issuesRepository.findByIdOriginOrderByIdReference(origin).stream().map(mapper::map).collect(toList());
-
     }
 
     /**
@@ -189,6 +202,11 @@ public class EntityService {
         return result;
     }
 
+    /**
+     * Returns a list of the references of all persisted reports.
+     *
+     * @return list of references
+     */
     public List<String> findAllReferences() {
         TypedQuery<String> query = manager.createQuery(
                 "SELECT i.id.reference FROM IssuesEntity AS i", String.class);

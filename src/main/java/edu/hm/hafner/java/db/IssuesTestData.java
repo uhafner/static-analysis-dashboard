@@ -19,6 +19,7 @@ import edu.hm.hafner.java.uc.AnalysisTool;
 @Component
 public class IssuesTestData {
     private static final String TEST_PMD_FILE = "/test/pmd.xml";
+    /** Reference value of the test report. */
     public static final String NO_REFERENCE = "N/A";
 
     private final EntityService entityService;

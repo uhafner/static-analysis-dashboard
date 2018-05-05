@@ -3,6 +3,9 @@ package edu.hm.hafner.java.uc;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Model of a data set for line charts using Chart.js.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection"}) // Will be converted to Json
 public class LineChartDataSet {
     private final List<Integer> data = new ArrayList<>();
@@ -19,5 +22,5 @@ public class LineChartDataSet {
         this.borderColor = borderColor;
         this.backgroundColor = backgroundColor;
     }
-    }
+}
 

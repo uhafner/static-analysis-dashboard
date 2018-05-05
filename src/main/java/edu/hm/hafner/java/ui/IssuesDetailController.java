@@ -112,6 +112,9 @@ public class IssuesDetailController {
     }
 
     /**
+     * Returns a model for a chart that shows the distribution of issues by priority.
+     *
+     * @return the model that can be used in the data property of a line chart
      */
     @RequestMapping(path = "/ajax/priorityAggregation", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -122,6 +125,9 @@ public class IssuesDetailController {
     }
 
     /**
+     * Returns a model for a chart that shows the number of issues per tool (i.e. origin).
+     *
+     * @return the model that can be used in the data property of a line chart
      */
     @RequestMapping(path = "/ajax/originAggregation", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody

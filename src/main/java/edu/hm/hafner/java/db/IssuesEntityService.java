@@ -75,10 +75,23 @@ public class IssuesEntityService {
         return entityService.selectAllIssues();
     }
 
+    /**
+     * Returns a list of the references of all persisted reports.
+     *
+     * @return list of references
+     */
     public List<String> findAllReferences() {
         return entityService.findAllReferences();
     }
 
+    /**
+     * Selects all issues with the specified reference. The matching issues will be ordered by origin.
+     *
+     * @param reference
+     *         reference of the desired issues
+     *
+     * @return the matching ordered list of issues
+     */
     public List<Issues<Issue>> findByReference(final String reference) {
         return entityService.selectByReference(reference);
     }

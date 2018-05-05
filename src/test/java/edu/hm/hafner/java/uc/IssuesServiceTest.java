@@ -212,9 +212,6 @@ class IssuesServiceTest {
         return new IssuesService(entityService);
     }
 
-    /**
-     * FIXME: write comment.
-     */
     // FIXME: Issues should be called Report
     @Test
     void shouldCreateMappingOfPriorities() {

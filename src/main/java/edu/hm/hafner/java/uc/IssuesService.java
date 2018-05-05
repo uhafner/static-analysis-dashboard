@@ -119,8 +119,9 @@ public class IssuesService {
      *         id of the static analysis tool
      * @param file
      *         the file to parse
-     *
      * @param reference
+     *         the reference for this report
+     *
      * @return the issues of the specified report
      */
     public Issues<Issue> parse(final String id, final InputStream file, final String reference) {
@@ -174,6 +175,14 @@ public class IssuesService {
         return issuesEntityService.findByPrimaryKey(origin, reference);
     }
 
+    /**
+     * Creates a mapping for a property to a value for each build.
+     *
+     * @param mapper
+     *         the mapper to use
+     *
+     * @return the mapping
+     */
     public Map<String, MutableList<Integer>> createPriorityMap(
             final Function<List<Issues<Issue>>, MutableMap<String, Integer>> mapper) {
         List<String> references = issuesEntityService.findAllReferences();
@@ -193,12 +202,23 @@ public class IssuesService {
         return result;
     }
 
+    /**
+     * Creates a model for a chart that shows the number of issues per tool (i.e. origin).
+     *
+     * @return the model that can be used in the data property of a line chart
+     */
+    // TODO: part of UI?
     public OriginChartModel createOriginAggregation() {
-        return new OriginChartModel(createPriorityMap(issues -> createOrigins(issues)));
+        return new OriginChartModel(createPriorityMap(this::createOrigins));
     }
 
-    public LineChartModel createPriorityAggregation() {
-        return new LineChartModel(createPriorityMap(issues -> createPriorities(issues)));
+    /**
+     * Creates a model for a chart that shows the distribution of issues by priority.
+     *
+     * @return the model that can be used in the data property of a line chart
+     */
+    public PriorityChartModel createPriorityAggregation() {
+        return new PriorityChartModel(createPriorityMap(this::createPriorities));
     }
 
     MutableMap<String, Integer> createPriorities(final List<Issues<Issue>> allReports) {
@@ -212,11 +232,15 @@ public class IssuesService {
     }
 
     MutableMap<String, Integer> createOrigins(final List<Issues<Issue>> allReports) {
+        List<AnalysisTool> tools = findAllTools();
         MutableMap<String, Integer> origins = Maps.mutable.empty();
         for (Issues<Issue> issues : allReports) {
-            origins.put(issues.getOrigin(), issues.size());
+            for (AnalysisTool tool : tools) {
+                if (tool.getId().equals(issues.getOrigin())) {
+                    origins.put(tool.getName(), issues.size());
+                }
+            }
         }
         return origins;
     }
-
 }

@@ -7,15 +7,16 @@ import java.util.Map;
 import org.eclipse.collections.api.list.MutableList;
 
 /**
- * FIXME: write comment.
+ * Model for a chart that shows the distribution of issues by priority.
  *
  * @author Ullrich Hafner
  */
-public class LineChartModel {
+@SuppressWarnings({"FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection"}) // Will be converted to Json
+public class PriorityChartModel {
     private final List<String> labels = new ArrayList<>();
     private final List<LineChartDataSet> datasets = new ArrayList<>();
 
-    public LineChartModel(final Map<String, MutableList<Integer>> values) {
+    public PriorityChartModel(final Map<String, MutableList<Integer>> values) {
         datasets.add(new LineChartDataSet(values.get("low"), "Low Priority", true,
                 "#b8daff", "#a8caef"));
         datasets.add(new LineChartDataSet(values.get("normal"), "Normal Priority", true,
