@@ -1,0 +1,12 @@
+@startuml
+
+skinparam componentStyle uml2
+
+package "Präsentation" {}
+package "Anwendungslogik" {}
+package "Datenhaltung" {}
+
+Präsentation ..> Anwendungslogik
+Anwendungslogik ..> Datenhaltung
+
+@enduml
