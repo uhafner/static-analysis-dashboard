@@ -1,0 +1,25 @@
+@startuml
+
+skinparam componentStyle uml2
+
+[Dashboard View] -..> [Spring Web]
+[Dashboard View] -..> [GSon]
+
+[Dashboard View] -..> [Spring Context]
+[Dashboard View] -..> [Spring Beans]
+[Dashboard View] .> [Issues Service]
+[Dashboard View] ..> [Static Analysis Model and Parsers]
+
+[Issues Service] -..> [Apache Commons IO]
+[Issues Service] -..> [Spring Context]
+[Issues Service] -..> [Spring Beans]
+[Issues Service] ..> [Static Analysis Model and Parsers]
+
+[Issues Service] .> [Database Gateway]
+[Database Gateway] -..> [Spring Context]
+[Database Gateway] -..> [Static Analysis Model and Parsers]
+[Database Gateway] -..> [Spring Data JPA]
+[Database Gateway] -..> [Model Mapper]
+[Database Gateway] -..> [Java Persistence API]
+
+@enduml

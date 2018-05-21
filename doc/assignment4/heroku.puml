@@ -7,6 +7,9 @@ node Heroku <<server>>  {
         node Tomcat <<execution environment>> {
              artifact "analysis-dashboard.jar"
         }
+        database PostgreSQL <<device>> {
+        }
+        Tomcat --- PostgreSQL
     }
 }
 

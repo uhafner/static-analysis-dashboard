@@ -1,0 +1,21 @@
+@startuml
+
+skinparam componentStyle uml2
+
+node Laptop <<device>>  {
+    node macOS <<execution environment>> {
+        node Safari <<execution environment>> {
+
+        }
+        node Tomcat <<execution environment>> {
+             artifact "analysis-dashboard.jar"
+        }
+        database H2 <<device>> {
+        }
+        Tomcat --- H2
+    }
+    Safari --- Tomcat
+}
+
+
+@enduml
