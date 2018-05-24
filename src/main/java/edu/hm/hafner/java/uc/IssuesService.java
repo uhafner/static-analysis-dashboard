@@ -28,7 +28,6 @@ import edu.hm.hafner.analysis.ParsingException;
 import edu.hm.hafner.analysis.parser.checkstyle.CheckStyleParser;
 import edu.hm.hafner.analysis.parser.pmd.PmdParser;
 import edu.hm.hafner.java.db.IssuesEntityService;
-import edu.hm.hafner.java.db.IssuesTestData;
 import edu.hm.hafner.util.NoSuchElementException;
 
 /**

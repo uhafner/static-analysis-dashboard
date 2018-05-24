@@ -20,7 +20,6 @@ import edu.hm.hafner.analysis.Issue;
 import edu.hm.hafner.analysis.Issues;
 import edu.hm.hafner.java.db.EntityService;
 import edu.hm.hafner.java.db.IssuesEntityService;
-import edu.hm.hafner.java.db.IssuesTestData;
 import static java.util.Arrays.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -83,7 +82,7 @@ class IssuesServiceTest {
                 + "[\"pmd\",\"N/A\",\"12\",\"4\",\"8\",\"0\"]]}");
     }
 
-    @Test
+    @Test @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     void shouldCreateCategoryDistribution() {
         // Given
         IssuesService service = createService();
@@ -97,7 +96,7 @@ class IssuesServiceTest {
                 asList(15, 3, 20, 6, 53, 12));
     }
 
-    @Test
+    @Test @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     void shouldCreateTypeDistribution() {
         // Given
         IssuesService service = createService();
@@ -130,7 +129,7 @@ class IssuesServiceTest {
         return JsonPath.parse(asJson(distribution));
     }
 
-    @Test
+    @Test @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     void shouldCreatePriorityDistribution() {
         // Given
         IssuesService service = createService();
@@ -227,7 +226,8 @@ class IssuesServiceTest {
     }
 
     @SuppressWarnings("unchecked")
-    private Issues<Issue> createReport(final int highPrioritySize, final int normalPrioritySize, final int lowPrioritySize) {
+    private Issues<Issue> createReport(final int highPrioritySize, final int normalPrioritySize,
+            final int lowPrioritySize) {
         Issues<Issue> report = mock(Issues.class);
         when(report.getHighPrioritySize()).thenReturn(highPrioritySize);
         when(report.getNormalPrioritySize()).thenReturn(normalPrioritySize);
