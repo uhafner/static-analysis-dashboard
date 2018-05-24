@@ -1,5 +1,6 @@
 package edu.hm.hafner.java.uc;
 
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -161,11 +162,14 @@ class IssuesServiceTest {
         IssuesService service = createService();
 
         // When
-        Issues<Issue> issues = service.parse("pmd", IssuesServiceTest.class.getResourceAsStream("/test/pmd.xml"),
-                REFERENCE);
+        Issues<Issue> issues = service.parse("pmd", readPmdFile(), REFERENCE);
 
         // Then
         assertThat(issues).hasSize(109);
+    }
+
+    private InputStream readPmdFile() {
+        return IssuesServiceTest.class.getResourceAsStream("/test/pmd.xml");
     }
 
     @Test
@@ -175,8 +179,8 @@ class IssuesServiceTest {
 
         // When
         String notExistingId = "notExistingId";
-        assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() ->
-                service.parse(notExistingId, IssuesServiceTest.class.getResourceAsStream("/test/pmd.xml"), REFERENCE))
+        assertThatExceptionOfType(NoSuchElementException.class)
+                .isThrownBy(() -> service.parse(notExistingId, readPmdFile(), REFERENCE))
                 .withMessageContaining(notExistingId);
     }
 
