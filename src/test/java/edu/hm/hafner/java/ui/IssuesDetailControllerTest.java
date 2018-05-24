@@ -7,14 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
 import edu.hm.hafner.java.uc.DataSetAssertions;
 import edu.hm.hafner.java.uc.IssuePropertyDistribution;
 import edu.hm.hafner.java.uc.IssuesService;
 import static java.util.Collections.*;
-import net.minidev.json.JSONArray;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -61,23 +59,6 @@ class IssuesDetailControllerTest {
 
         DataSetAssertions assertions = new DataSetAssertions();
         assertions.assertThatChartModelIsCorrect(expectedLabels, expectedSizes, JsonPath.parse(response.getBody()));
-    }
-
-    private void bla(final List<String> expectedLabels, final List<Integer> expectedSizes,
-            final DocumentContext documentContext) {
-        JSONArray actualLabels = documentContext.read("$.labels[*]", JSONArray.class);
-        assertThat(actualLabels).containsExactlyElementsOf(expectedLabels);
-
-        assertThat(documentContext.read("$.datasets[*]", JSONArray.class)).hasSize(1);
-
-        JSONArray actualSizes = documentContext.read("$.datasets[0].data", JSONArray.class);
-        assertThat(actualSizes).containsExactlyElementsOf(expectedSizes);
-
-        JSONArray backgroundColors = documentContext.read("$.datasets[0].backgroundColor[*]", JSONArray.class);
-        assertThat(backgroundColors).hasSize(expectedSizes.size());
-
-        JSONArray borderColors = documentContext.read("$.datasets[0].borderColor[*]", JSONArray.class);
-        assertThat(borderColors).hasSize(expectedSizes.size());
     }
 
     @Test
