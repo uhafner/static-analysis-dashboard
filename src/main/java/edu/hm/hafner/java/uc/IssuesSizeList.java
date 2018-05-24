@@ -29,6 +29,16 @@ public class IssuesSizeList {
         }
     }
 
+    /**
+     * Creates a new instance of {@link IssuesSizeList}.
+     *
+     * @param values
+     *         the elements of the list
+     * @param backgroundColors
+     *         a sequence of background colors to use for the data sets
+     * @param borderColors
+     *         a sequence of border colors to use for the data sets
+     */
     public IssuesSizeList(final List<Integer> values, final List<String> backgroundColors,
             final List<String> borderColors) {
         data.addAll(values);

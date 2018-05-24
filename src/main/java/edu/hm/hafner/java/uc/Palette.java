@@ -23,14 +23,35 @@ enum Palette {
         return color;
     }
 
+    /**
+     * Formats the specified color so that it could be used in JS.
+     *
+     * @param color
+     *         the Java color instance
+     *
+     * @return the color formatted as JS color string
+     */
     public static String toWebColor(final Color color) {
         return String.format("#%6x", color.getRGB() & 0xffffff);
     }
 
+    /**
+     * Formats the specified color so that it could be used in JS.
+     *
+     * @param palette
+     *         the color from the {@link Palette}
+     *
+     * @return the color formatted as JS color string
+     */
     public static String toWebColor(final Palette palette) {
         return toWebColor(palette.color);
     }
 
+    /**
+     * Returns a color that is brighter than this instance.
+     *
+     * @return the new color
+     */
     public Color brighter() {
         return new Color(brighter(color.getRed()), brighter(color.getBlue()), brighter(color.getGreen()));
     }

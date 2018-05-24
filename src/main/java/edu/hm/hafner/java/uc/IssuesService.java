@@ -40,6 +40,12 @@ public class IssuesService {
     @SuppressWarnings("InstanceVariableMayNotBeInitialized")
     private final IssuesEntityService issuesEntityService;
 
+    /**
+     * Creates a new instance of {@link IssuesService}.
+     *
+     * @param issuesEntityService
+     *         service to access the DB layer
+     */
     @Autowired
     public IssuesService(final IssuesEntityService issuesEntityService) {
         this.issuesEntityService = issuesEntityService;
