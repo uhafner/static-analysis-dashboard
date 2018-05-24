@@ -22,7 +22,6 @@ import edu.hm.hafner.java.db.EntityService;
 import edu.hm.hafner.java.db.IssuesEntityService;
 import edu.hm.hafner.java.db.IssuesTestData;
 import static java.util.Arrays.*;
-import net.minidev.json.JSONArray;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -123,19 +122,8 @@ class IssuesServiceTest {
             final List<String> expectedLabels, final List<Integer> expectedSizes) {
         DocumentContext documentContext = asJsonContext(distribution);
 
-        JSONArray actualLabels = documentContext.read("$.labels[*]", JSONArray.class);
-        assertThat(actualLabels).containsExactlyElementsOf(expectedLabels);
-
-        assertThat(documentContext.read("$.datasets[*]", JSONArray.class)).hasSize(1);
-
-        JSONArray actualSizes = documentContext.read("$.datasets[0].data", JSONArray.class);
-        assertThat(actualSizes).containsExactlyElementsOf(expectedSizes);
-
-        JSONArray backgroundColors = documentContext.read("$.datasets[0].backgroundColor[*]", JSONArray.class);
-        assertThat(backgroundColors).hasSize(expectedSizes.size());
-
-        JSONArray borderColors = documentContext.read("$.datasets[0].borderColor[*]", JSONArray.class);
-        assertThat(borderColors).hasSize(expectedSizes.size());
+        DataSetAssertions assertions = new DataSetAssertions();
+        assertions.assertThatChartModelIsCorrect(expectedLabels, expectedSizes, documentContext);
     }
 
     private DocumentContext asJsonContext(final IssuePropertyDistribution distribution) {

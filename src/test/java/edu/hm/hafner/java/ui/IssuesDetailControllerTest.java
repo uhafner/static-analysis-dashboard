@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
+import edu.hm.hafner.java.uc.DataSetAssertions;
 import edu.hm.hafner.java.uc.IssuePropertyDistribution;
 import edu.hm.hafner.java.uc.IssuesService;
 import static java.util.Collections.*;
@@ -58,8 +59,12 @@ class IssuesDetailControllerTest {
             final List<String> expectedLabels, final List<Integer> expectedSizes) {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        DataSetAssertions assertions = new DataSetAssertions();
+        assertions.assertThatChartModelIsCorrect(expectedLabels, expectedSizes, JsonPath.parse(response.getBody()));
+    }
 
+    private void bla(final List<String> expectedLabels, final List<Integer> expectedSizes,
+            final DocumentContext documentContext) {
         JSONArray actualLabels = documentContext.read("$.labels[*]", JSONArray.class);
         assertThat(actualLabels).containsExactlyElementsOf(expectedLabels);
 
