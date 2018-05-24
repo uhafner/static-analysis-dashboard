@@ -279,7 +279,7 @@
             </rulesets>
             <targetJdk>${java.version}</targetJdk>
             <includeTests>true</includeTests>
-            <minimumTokens>50</minimumTokens>
+            <minimumTokens>75</minimumTokens>
           </configuration>
           <dependencies>
             <dependency>
