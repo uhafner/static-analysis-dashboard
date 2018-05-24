@@ -13,14 +13,14 @@ enum Palette {
     RED(new Color(0xf5, 0xc6, 0xcb)),
     GREY(new Color(0xd9, 0xd8, 0xd6));
 
-    private final Color color;
+    private final int colorRgb;
 
     Palette(final Color color) {
-        this.color = color;
+        colorRgb = color.getRGB();
     }
 
     public Color getColor() {
-        return color;
+        return new Color(colorRgb);
     }
 
     /**
@@ -44,7 +44,7 @@ enum Palette {
      * @return the color formatted as JS color string
      */
     public static String toWebColor(final Palette palette) {
-        return toWebColor(palette.color);
+        return toWebColor(palette.getColor());
     }
 
     /**
@@ -53,6 +53,7 @@ enum Palette {
      * @return the new color
      */
     public Color brighter() {
+        Color color = new Color(colorRgb);
         return new Color(brighter(color.getRed()), brighter(color.getBlue()), brighter(color.getGreen()));
     }
 

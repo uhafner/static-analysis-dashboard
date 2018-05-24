@@ -238,6 +238,7 @@ class IssuesServiceTest {
         assertThat(priorityMap).containsEntry("low", Lists.mutable.of(3, 4));
     }
 
+    @SuppressWarnings("unchecked")
     private Issues<Issue> createReport(final int highPrioritySize, final int normalPrioritySize, final int lowPrioritySize) {
         Issues<Issue> report = mock(Issues.class);
         when(report.getHighPrioritySize()).thenReturn(highPrioritySize);
