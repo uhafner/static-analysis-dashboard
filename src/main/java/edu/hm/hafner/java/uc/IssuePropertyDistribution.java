@@ -29,10 +29,20 @@ public class IssuePropertyDistribution {
         datasets.add(new IssuesSizeList(values));
     }
 
+    /**
+     * Creates a new instance of {@link IssuePropertyDistribution}.
+     *
+     * @param counts
+     *         a mapping of properties to number of issues
+     * @param backgroundColors
+     *         a sequence of background colors to use for the data sets
+     * @param borderColors
+     *         a sequence of border colors to use for the data sets
+     */
     public IssuePropertyDistribution(final Map<String, Integer> counts, final List<String> backgroundColors,
-            final List<String> hooverBorderColors) {
+            final List<String> borderColors) {
         List<Integer> values = createValuesAndSetLabels(counts);
-        datasets.add(new IssuesSizeList(values, backgroundColors, hooverBorderColors));
+        datasets.add(new IssuesSizeList(values, backgroundColors, borderColors));
     }
 
     private List<Integer> createValuesAndSetLabels(final Map<String, Integer> counts) {
