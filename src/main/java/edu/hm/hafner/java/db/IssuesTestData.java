@@ -24,6 +24,12 @@ public class IssuesTestData {
 
     private final EntityService entityService;
 
+    /**
+     * Creates a new instance of {@link IssuesTestData}.
+     *
+     * @param entityService
+     *         the entity service to use to store the issues
+     */
     @Autowired
     public IssuesTestData(final EntityService entityService) {
         this.entityService = entityService;

@@ -58,6 +58,9 @@ public class EntityMapper {
      */
     private final ModelMapper mapper;
 
+    /**
+     * Creates a new instance of {@link EntityMapper}.
+     */
     public EntityMapper() {
         mapper = new ModelMapper();
         mapper.addMappings(ISSUE_PROPERTY_MAP);

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import edu.hm.hafner.analysis.Issues;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Model that provides the sizes of a set of {@link Issues}.
@@ -14,6 +15,7 @@ import edu.hm.hafner.analysis.Issues;
  * @see <a href="http://www.chartjs.org/docs/latest/charts/bar.html#dataset-properties">Bar Chart Dataset</a>
  */
 @SuppressWarnings({"FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection"}) // Will be converted to Json
+@SuppressFBWarnings("URF")
 public class IssuePropertyDistribution {
     private final List<String> labels = new ArrayList<>();
     private final List<IssuesSizeList> datasets = new ArrayList<>();

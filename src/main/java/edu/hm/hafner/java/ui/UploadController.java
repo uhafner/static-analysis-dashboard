@@ -27,6 +27,12 @@ public class UploadController {
     @SuppressWarnings("InstanceVariableMayNotBeInitialized")
     private final IssuesService issuesService;
 
+    /**
+     * Creates a new instance of {@link UploadController}.
+     *
+     * @param issuesService
+     *         service to access the service layer
+     */
     @Autowired
     public UploadController(final IssuesService issuesService) {
         this.issuesService = issuesService;

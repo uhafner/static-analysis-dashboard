@@ -18,15 +18,33 @@ public class IssuesEntityId implements Serializable {
     private String origin;
     private String reference;
 
+    /**
+     * Creates a new instance of {@link IssuesEntityId}. {@code origin} and {@code reference} are set to default
+     * values.
+     */
     public IssuesEntityId() {
         this("-", "-");
     }
 
+    /**
+     * Creates a new instance of {@link IssuesEntityId}.
+     *
+     * @param origin
+     *         the origin (i.e. the tool) for this instance
+     * @param reference
+     *         the reference for this instance
+     */
     public IssuesEntityId(final String origin, final String reference) {
         this.origin = origin;
         this.reference = reference;
     }
 
+    /**
+     * Creates a new instance of {@link IssuesEntityId}.
+     *
+     * @param issues
+     *         the issues instance to extract the key properties from
+     */
     public IssuesEntityId(final Issues<?> issues) {
         this(issues.getOrigin(), issues.getReference());
     }

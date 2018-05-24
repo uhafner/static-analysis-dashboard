@@ -22,6 +22,12 @@ public class IssuesDetailController {
     @SuppressWarnings("InstanceVariableMayNotBeInitialized")
     private final IssuesService issuesService;
 
+    /**
+     * Creates a new instance of {@link IssuesDetailController}.
+     *
+     * @param issuesService
+     *         service to access the service layer
+     */
     @Autowired
     public IssuesDetailController(final IssuesService issuesService) {
         this.issuesService = issuesService;

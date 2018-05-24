@@ -19,6 +19,12 @@ public class AnalysisDashboardController {
     @SuppressWarnings("InstanceVariableMayNotBeInitialized")
     private final IssuesService issuesService;
 
+    /**
+     * Creates a new instance of {@link AnalysisDashboardController}.
+     *
+     * @param issuesService
+     *         service to access the service layer
+     */
     @Autowired
     public AnalysisDashboardController(final IssuesService issuesService) {
         this.issuesService = issuesService;

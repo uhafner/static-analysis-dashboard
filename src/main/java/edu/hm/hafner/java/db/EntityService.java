@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import edu.hm.hafner.analysis.Issue;
 import edu.hm.hafner.analysis.Issues;
+import edu.hm.hafner.analysis.LineRange;
 import static java.util.stream.Collectors.*;
 
 /**
@@ -30,12 +31,26 @@ public class EntityService {
     private final IssuesRepository issuesRepository;
     /** Repository to store and load LineRange objects. */
     private final LineRangeRepository rangesRepository;
-    /** Mapper to convert dto-object to entity-object and reverse. */
+    /** Mapper to convert dto-object to entity-object and vice versa. */
     private final EntityMapper mapper;
 
     @PersistenceContext
     private final EntityManager manager;
 
+    /**
+     * Creates a new instance of {@link EntityService}.
+     *
+     * @param issueRepository
+     *         JPA repository to store and load {@link Issue} objects
+     * @param issuesRepository
+     *         JPA repository to store and load {@link Issues} objects
+     * @param rangesRepository
+     *         JPA repository to store and load {@link LineRange} objects
+     * @param mapper
+     *         OR mapper convert dto-object to entity-object and vice versa
+     * @param manager
+     *         entity manager to use to build custom queries
+     */
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     public EntityService(final IssueRepository issueRepository, final IssuesRepository issuesRepository,

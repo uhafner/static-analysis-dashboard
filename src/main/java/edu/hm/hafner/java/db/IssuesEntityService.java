@@ -19,6 +19,12 @@ import edu.hm.hafner.util.NoSuchElementException;
 public class IssuesEntityService {
     private final EntityService entityService;
 
+    /**
+     * Creates a new instance of {@link IssuesEntityService}.
+     *
+     * @param entityService
+     *         the entity service to use to interact with the data base
+     */
     @Autowired
     public IssuesEntityService(final EntityService entityService) {
         this.entityService = entityService;

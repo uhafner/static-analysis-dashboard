@@ -31,6 +31,14 @@ public final class LineRangeEntity {
         // JPA
     }
 
+    /**
+     * Creates a new instance of {@link LineRangeEntity}.
+     *
+     * @param start
+     *         the first line of the range
+     * @param end
+     *         the last line of the range
+     */
     public LineRangeEntity(final int start, final int end) {
         this.start = start;
         this.end = end;
@@ -44,7 +52,8 @@ public final class LineRangeEntity {
     /**
      * Sets the first line of this range.
      *
-     * @param start the first line
+     * @param start
+     *         the first line
      */
     public void setStart(final int start) {
         this.start = start;
@@ -58,7 +67,8 @@ public final class LineRangeEntity {
     /**
      * Sets the last line of this range.
      *
-     * @param end the last line
+     * @param end
+     *         the last line
      */
     public void setEnd(final int end) {
         this.end = end;
