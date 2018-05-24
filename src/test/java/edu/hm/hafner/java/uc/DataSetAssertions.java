@@ -13,20 +13,30 @@ import static org.assertj.core.api.Assertions.*;
  * @author Ullrich Hafner
  */
 public class DataSetAssertions {
+    /**
+     * Asserts that the specified context contains the expected labels and data values.
+     *
+     * @param expectedLabels
+     *         the expected labels
+     * @param expectedSizes
+     *         the expected data values
+     * @param actualJson
+     *         the JSON object to validate
+     */
     public void assertThatChartModelIsCorrect(final List<String> expectedLabels, final List<Integer> expectedSizes,
-            final DocumentContext documentContext) {
-        JSONArray actualLabels = documentContext.read("$.labels[*]", JSONArray.class);
+            final DocumentContext actualJson) {
+        JSONArray actualLabels = actualJson.read("$.labels[*]", JSONArray.class);
         assertThat(actualLabels).containsExactlyElementsOf(expectedLabels);
 
-        assertThat(documentContext.read("$.datasets[*]", JSONArray.class)).hasSize(1);
+        assertThat(actualJson.read("$.datasets[*]", JSONArray.class)).hasSize(1);
 
-        JSONArray actualSizes = documentContext.read("$.datasets[0].data", JSONArray.class);
+        JSONArray actualSizes = actualJson.read("$.datasets[0].data", JSONArray.class);
         assertThat(actualSizes).containsExactlyElementsOf(expectedSizes);
 
-        JSONArray backgroundColors = documentContext.read("$.datasets[0].backgroundColor[*]", JSONArray.class);
+        JSONArray backgroundColors = actualJson.read("$.datasets[0].backgroundColor[*]", JSONArray.class);
         assertThat(backgroundColors).hasSize(expectedSizes.size());
 
-        JSONArray borderColors = documentContext.read("$.datasets[0].borderColor[*]", JSONArray.class);
+        JSONArray borderColors = actualJson.read("$.datasets[0].borderColor[*]", JSONArray.class);
         assertThat(borderColors).hasSize(expectedSizes.size());
     }
 }
