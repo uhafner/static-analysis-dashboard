@@ -6,12 +6,15 @@ import java.util.Map;
 
 import org.eclipse.collections.api.list.MutableList;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Model for a chart that shows the distribution of issues by priority.
  *
  * @author Ullrich Hafner
  */
 @SuppressWarnings({"FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection", "unused"}) // Will be converted to Json
+@SuppressFBWarnings("URF")
 public class PriorityChartModel {
     private final List<String> labels = new ArrayList<>();
     private final List<LineChartDataSet> datasets = new ArrayList<>();

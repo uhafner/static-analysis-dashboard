@@ -7,12 +7,15 @@ import java.util.Map.Entry;
 
 import org.eclipse.collections.api.list.MutableList;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Model for a chart that shows the number of issues per tool (i.e. origin).
  *
  * @author Ullrich Hafner
  */
 @SuppressWarnings({"FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection", "unused"}) // Will be converted to Json
+@SuppressFBWarnings("URF")
 public class OriginChartModel {
     private final List<String> labels = new ArrayList<>();
     private final List<LineChartDataSet> datasets = new ArrayList<>();

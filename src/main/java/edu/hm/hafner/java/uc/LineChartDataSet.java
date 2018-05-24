@@ -3,10 +3,13 @@ package edu.hm.hafner.java.uc;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Model of a data set for line charts using Chart.js.
  */
-@SuppressWarnings({"FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection", "unused"}) // Will be converted to Json
+@SuppressWarnings({"FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection", "unused", "PMD.SingularField"}) // Will be converted to Json
+@SuppressFBWarnings("URF")
 public class LineChartDataSet {
     private final List<Integer> data = new ArrayList<>();
     private final String backgroundColor;
