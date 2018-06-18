@@ -19,10 +19,10 @@ entity Issues
 control IssueRepository
 entity Issue
 
-Actor -> Dashboard: issues
+Actor -> Dashboard: /issues
 activate Dashboard
 
-Dashboard -> DashboardController : issues
+Dashboard -> DashboardController : createIssues()
 activate DashboardController
 destroy Dashboard
 
@@ -31,50 +31,54 @@ DashboardController -> Table: new / redirect
 activate Table
 deactivate DashboardController
 
-Table -> IssuesDetailController : getIssues
-activate IssuesDetailController
-IssuesDetailController -> IssuesService : createIssuesStatistics
-activate IssuesService
+par
 
-IssuesService -> IssuesEntityService : findAll
-activate IssuesEntityService
+    Actor <-- Table
 
-IssuesEntityService -> EntityService : selectAllIssues
-activate EntityService
+else 
 
-EntityService -> IssuesRepository : findAll
-activate IssuesRepository
-
-loop
-    create Issues
-    IssuesRepository -> Issues : new
+    Table -> IssuesDetailController : getIssues()
+    activate IssuesDetailController
+    IssuesDetailController -> IssuesService : createIssuesStatistics()
+    activate IssuesService
+    
+    IssuesService -> IssuesEntityService : findAll()
+    activate IssuesEntityService
+    
+    IssuesEntityService -> EntityService : selectAllIssues()
+    activate EntityService
+    
+    EntityService -> IssuesRepository : findAll()
+    activate IssuesRepository
     
     loop
-        IssuesRepository -> IssueRepository : findById
-        activate IssueRepository
-        create Issue
-        IssueRepository -> Issue : new
-        IssuesRepository <-- IssueRepository : Issue
-        deactivate IssueRepository
+        create Issues
+        IssuesRepository -> Issues : new
+        
+        loop
+            IssuesRepository -> IssueRepository : findById(id)
+            activate IssueRepository
+            create Issue
+            IssueRepository -> Issue : new
+            IssuesRepository <-- IssueRepository : Issue
+            deactivate IssueRepository
+        end
+    
     end
-
+    EntityService <-- IssuesRepository : Set<Issues>
+    deactivate IssuesRepository
+    
+    IssuesEntityService <-- EntityService : Set<Issues>
+    deactivate EntityService
+    
+    IssuesService <-- IssuesEntityService : Set<Issues>
+    deactivate IssuesEntityService
+    
+    IssuesDetailController <-- IssuesService : IssuesStatistics
+    deactivate IssuesService
+    Table <-- IssuesDetailController : IssuesStatistics
+    deactivate IssuesDetailController
 end
-EntityService <-- IssuesRepository : Set<Issues>
-deactivate IssuesRepository
-
-IssuesEntityService <-- EntityService : Set<Issues>
-deactivate EntityService
-
-IssuesService <-- IssuesEntityService : Set<Issues>
-deactivate IssuesEntityService
-
-IssuesDetailController <-- IssuesService : IssuesStatistics
-deactivate IssuesService
-Table <-- IssuesDetailController : IssuesStatistics
-deactivate IssuesDetailController
-
-
-deactivate DashboardController
 
 Actor -> Table: select report
 
@@ -87,47 +91,52 @@ DashboardController -> Details: new / redirect
 activate Details
 deactivate DashboardController
 
+par
 
-Details -> IssuesDetailController : getCategories
-activate IssuesDetailController
+    Actor <-- Details
 
-IssuesDetailController -> IssuesService : createDistributionByCategory
-activate IssuesService
+else 
 
-IssuesService -> IssuesEntityService : findByPrimaryKey
-activate IssuesEntityService
-
-IssuesEntityService -> EntityService : select
-activate EntityService
-
-EntityService -> IssuesRepository : findById
-activate IssuesRepository
-
-create Issues
-IssuesRepository -> Issues : new
-    loop
-        IssuesRepository -> IssueRepository : findById
-        activate IssueRepository
-        create Issue
-        IssueRepository -> Issue : new
-        IssuesRepository <-- IssueRepository : Issue
-        deactivate IssueRepository
-    end
-EntityService <-- IssuesRepository : Issues
-
-deactivate IssuesRepository
-
-IssuesEntityService <-- EntityService : Issues
-deactivate EntityService
-
-IssuesService <-- IssuesEntityService : Issues
-deactivate IssuesEntityService
-
-IssuesDetailController <-- IssuesService : IssuePropertyDistribution
-deactivate IssuesService
-Details <-- IssuesDetailController : IssuePropertyDistribution
-deactivate IssuesDetailController
-
+    Details -> IssuesDetailController : getCategories
+    activate IssuesDetailController
+    
+    IssuesDetailController -> IssuesService : createDistributionByCategory
+    activate IssuesService
+    
+    IssuesService -> IssuesEntityService : findByPrimaryKey
+    activate IssuesEntityService
+    
+    IssuesEntityService -> EntityService : select
+    activate EntityService
+    
+    EntityService -> IssuesRepository : findById
+    activate IssuesRepository
+    
+    create Issues
+    IssuesRepository -> Issues : new
+        loop
+            IssuesRepository -> IssueRepository : findById
+            activate IssueRepository
+            create Issue
+            IssueRepository -> Issue : new
+            IssuesRepository <-- IssueRepository : Issue
+            deactivate IssueRepository
+        end
+    EntityService <-- IssuesRepository : Issues
+    
+    deactivate IssuesRepository
+    
+    IssuesEntityService <-- EntityService : Issues
+    deactivate EntityService
+    
+    IssuesService <-- IssuesEntityService : Issues
+    deactivate IssuesEntityService
+    
+    IssuesDetailController <-- IssuesService : IssuePropertyDistribution
+    deactivate IssuesService
+    Details <-- IssuesDetailController : IssuePropertyDistribution
+    deactivate IssuesDetailController
+end
 
 
 @enduml

@@ -19,10 +19,10 @@ entity Issue
 control IssuesRepository
 entity Issues
 
-Actor -> Dashboard: upload
+Actor -> Dashboard: /upload
 activate Dashboard
 
-Dashboard -> DashboardController : upload
+Dashboard -> DashboardController : createUpload(model)
 activate DashboardController
 destroy Dashboard
 
@@ -31,14 +31,17 @@ DashboardController -> Upload: new / redirect
 activate Upload
 deactivate DashboardController
 
+Actor <-- Upload
+
 Actor -> Upload: select file
-Actor -> Upload: choose type
+Actor -> Upload: choose tool
+Actor -> Upload: set reference
 Actor -> Upload: upload
 
-Upload -> UploadController: upload
+Upload -> UploadController: upload(file, tool, reference)
 activate UploadController
 
-UploadController -> IssuesService: parse
+UploadController -> IssuesService: parse(file)
 activate IssuesService
 IssuesService -> IssuesService : findAllTools
 IssuesService -> Parser : parse
@@ -46,23 +49,44 @@ activate Parser
 IssuesService <-- Parser : Issues
 deactivate Parser
 
-IssuesService -> IssuesEntityService : save
+IssuesService -> IssuesEntityService : save(issues)
 activate IssuesEntityService
-IssuesEntityService -> EntityService : select
-activate EntityService
 
-EntityService -> IssueRepository : findById
-activate IssueRepository
+loop
 
-create Issue
-IssueRepository -> Issue : new
-EntityService <-- IssueRepository : Issue
-deactivate IssueRepository
+    IssuesEntityService -> EntityService : select(id)
+    activate EntityService
+    
+    EntityService -> IssueRepository : findById(id)
+    activate IssueRepository
+    
+    create Issue
+    IssueRepository -> Issue : new
+    EntityService <-- IssueRepository : Issue
+    deactivate IssueRepository
+    
+    IssuesEntityService <-- EntityService : Issue
+    deactivate EntityService
 
-IssuesEntityService <-- EntityService : duplicates
+end
 
 IssuesEntityService -> EntityService : insert
-EntityService -> IssuesRepository : insert
+
+activate EntityService
+
+
+loop
+EntityService -> IssueRepository : insert(issue)
+activate IssueRepository
+    
+    create Issue
+    IssueRepository -> Issue : new
+    EntityService <-- IssueRepository : Issue
+    deactivate IssueRepository
+    
+end
+
+EntityService -> IssuesRepository : insert(issues)
 activate IssuesRepository
 
 create Issues
