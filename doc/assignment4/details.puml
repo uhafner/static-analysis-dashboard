@@ -97,25 +97,25 @@ par
 
 else 
 
-    Details -> IssuesDetailController : getCategories
+    Details -> IssuesDetailController : getCategories(origin, reference)
     activate IssuesDetailController
     
-    IssuesDetailController -> IssuesService : createDistributionByCategory
+    IssuesDetailController -> IssuesService : createDistributionByCategory(origin, reference)
     activate IssuesService
     
-    IssuesService -> IssuesEntityService : findByPrimaryKey
+    IssuesService -> IssuesEntityService : findByPrimaryKey(origin, reference)
     activate IssuesEntityService
     
-    IssuesEntityService -> EntityService : select
+    IssuesEntityService -> EntityService : select(origin, reference)
     activate EntityService
     
-    EntityService -> IssuesRepository : findById
+    EntityService -> IssuesRepository : findById(origin, reference)
     activate IssuesRepository
     
     create Issues
     IssuesRepository -> Issues : new
         loop
-            IssuesRepository -> IssueRepository : findById
+            IssuesRepository -> IssueRepository : findById(id)
             activate IssueRepository
             create Issue
             IssueRepository -> Issue : new
