@@ -2,11 +2,11 @@
 
 skinparam componentStyle uml2
 
-package "Präsentation" {}
-package "Anwendungslogik" {}
-package "Datenhaltung" {}
+package "User Interface" {}
+package "Service Layer" {}
+package "Persistence" {}
 
-Präsentation ..> Anwendungslogik
-Anwendungslogik ..> Datenhaltung
+"User Interface" ..> "Service Layer"
+"Service Layer" ..> "Persistence"
 
 @enduml

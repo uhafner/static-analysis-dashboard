@@ -1,0 +1,90 @@
+@startuml
+
+hide footbox
+
+actor Actor
+activate Actor
+
+boundary Dashboard
+boundary Upload
+boundary Details
+
+control DashboardController
+control UploadController
+control IssuesService
+control IssuesEntityService
+control EntityService
+control IssueRepository
+entity Issue
+control IssuesRepository
+entity Issues
+
+Actor -> Dashboard: upload
+activate Dashboard
+
+Dashboard -> DashboardController : upload
+activate DashboardController
+destroy Dashboard
+
+create Upload
+DashboardController -> Upload: new / redirect
+activate Upload
+deactivate DashboardController
+
+Actor -> Upload: select file
+Actor -> Upload: choose type
+Actor -> Upload: upload
+
+Upload -> UploadController: upload
+activate UploadController
+
+UploadController -> IssuesService: parse
+activate IssuesService
+IssuesService -> IssuesService : findAllTools
+IssuesService -> Parser : parse
+activate Parser
+IssuesService <-- Parser : Issues
+deactivate Parser
+
+IssuesService -> IssuesEntityService : save
+activate IssuesEntityService
+IssuesEntityService -> EntityService : select
+activate EntityService
+
+EntityService -> IssueRepository : findById
+activate IssueRepository
+
+create Issue
+IssueRepository -> Issue : new
+EntityService <-- IssueRepository : Issue
+deactivate IssueRepository
+
+IssuesEntityService <-- EntityService : duplicates
+
+IssuesEntityService -> EntityService : insert
+EntityService -> IssuesRepository : insert
+activate IssuesRepository
+
+create Issues
+IssuesRepository -> Issues : new
+EntityService <-- IssuesRepository : Issues
+deactivate IssuesRepository
+
+IssuesEntityService <-- EntityService : Issues
+deactivate EntityService
+IssuesService <-- IssuesEntityService : Issues
+deactivate IssuesEntityService
+
+UploadController <-- IssuesService: Issues
+deactivate IssuesService
+
+destroy Upload
+
+create Details
+UploadController -> Details: new / redirect
+activate Details
+
+deactivate UploadController
+
+
+@enduml

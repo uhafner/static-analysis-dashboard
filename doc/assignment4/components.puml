@@ -1,7 +1,5 @@
 @startuml
 
-' Klassendiagramm der am Aufruf der details.html Seite beteiligten Klassen
-
 actor User
 
 package "User Interface" {
