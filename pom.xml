@@ -6,7 +6,7 @@
   <groupId>edu.hm.hafner</groupId>
   <artifactId>analysis-dashboard</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <name>Software Engineering 2 - Static Analysis Dashboard</name>
+  <name>Static Analysis Dashboard</name>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -220,8 +220,6 @@
           <graphFormat>puml</graphFormat>
         </configuration>
       </plugin>
-
-
     </plugins>
 
     <pluginManagement>
