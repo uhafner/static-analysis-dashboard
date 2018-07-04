@@ -86,7 +86,7 @@ public class IssuesService {
     }
 
     /**
-     * Returns the number of issues per type.
+     * Returns the number of issues per priority.
      *
      * @param origin
      *         the origin of the issues instance to show the details for

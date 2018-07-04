@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,7 @@ public class IssuesTestData {
     }
 
     private Issues<?> readReport(final AnalysisTool parser, final InputStream report) {
-        try (InputStreamReader reader = new InputStreamReader(report, StandardCharsets.UTF_8)) {
+        try (Reader reader = new InputStreamReader(report, StandardCharsets.UTF_8)) {
             Issues<?> issues = parser.getParser().parse(reader);
             issues.setReference(NO_REFERENCE);
             issues.setOrigin(parser.getId());
