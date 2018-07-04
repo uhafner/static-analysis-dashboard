@@ -1,0 +1,194 @@
+@startuml
+package edu.hm.hafner.java.ui {
+    class UploadController {
+        upload()
+    }
+    class IssuesDetailController {
+        getIssues()
+        getPriorities()
+        getCategories()
+        getTypes()
+        getPackages()
+        getFiles()
+    }
+    class AnalysisDashboardController {
+        index()
+        createDetails()
+        createIssues()
+        createUpload()
+    }
+}
+
+package edu.hm.hafner.java.uc {
+    class IssuesTable {
+        -data : List
+        addRow()
+    }
+    class IssuesSizeList {
+        -data : List
+    }
+    class IssuesService {
+        createDistributionByPriorities()
+        createDistributionByCategory()
+        createDistributionByType()
+        createDistributionByPackages()
+        createDistributionByFiles()
+        createIssuesStatistics()
+        findAllTools()
+        parse()
+    }
+    class IssuePropertyDistribution {
+        -labels : List
+        -datasets : List
+    }
+    class AnalysisTool {
+        -id : String
+        -name : String
+        -parser : AbstractParser
+        getId()
+        getName()
+        getParser()
+    }
+}
+package edu.hm.hafner.java.db {
+    class EntityMapper {
+        map()
+        getMapper()
+    }
+    class EntityService {
+        insert()
+        selectAllIssuse()
+        select()
+        update()
+    }
+    class IssueEntity {
+        -category : String
+        -type : String
+        -priority : Priority
+        -message : String
+        -lineStart : Int
+        -lineEnd : Int
+        -columnStart : Int
+        -columnEnd : Int
+        -lineRanges : List
+        -id : UUID
+        -description : String
+        -reference : String
+        -origin : String
+        -moduleName : String
+        -packageName : String
+        -fileName : String
+        -fingerprint : String
+        getCategory()
+        setCategory()
+        getType()
+        setType()
+        getPriority()
+        setPriority()
+        getMessage()
+        setMessage()
+        getLineStart()
+        setLineStart()
+        getLineEnd()
+        setLineEnd()
+        getColumnStart()
+        setColumnStart()
+        getColumnEnd()
+        setColumnEnd()
+        getLineRanges()
+        setLineRanges()
+        getId()
+        setId()
+        getDescription()
+        setDescription()
+        getReference()
+        setReference()
+        getOrigin()
+        setOrigin()
+        getModuleName()
+        setModuleName()
+        getPackageName()
+        setPackageName()
+        getFileName()
+        setFileName()
+        getFingerprint()
+        setFingerprint()
+        equals()
+        hashCode()
+    }
+    interface IssueRepository {
+    }
+    class IssuesEntity {
+        -infoMessages : List
+        -errorMessages : List
+        -duplicatesSize : Int
+        getElements()
+        setElements()
+        getInfoMessages()
+        setInfoMessages()
+        getErrorMessages()
+        setErrorMessages()
+        getDuplicatesSize()
+        setDuplicatesSize()
+        getOrigin()
+        setOrigin()
+        getReference()
+        setReference()
+        getId()
+        equals()
+        hashCode()
+    }
+    class IssuesEntityId {
+        -origin : String
+        -reference : String
+        issuesEntityId()
+        getOrigin()
+        setOrigin()
+        getReferences()
+        setReferences()
+    }
+    class IssuesEntityService {
+        save()
+        findByPrimaryKey()
+        findAll()
+    }
+    interface IssuesRepository {
+    }
+    class LineRangeEntity {
+        -id : String
+        -start : Int
+        -end : Int
+        LineRangeEntity()
+        getStart()
+        setStart()
+        getEnd()
+        setEnd()
+        getId()
+        setId()
+        calculateId()
+    }
+    interface LineRangeRepository {
+    }
+}
+
+UploadController ..> IssuesService 
+IssuesDetailController ..> IssuesService 
+AnalysisDashboardController ..> IssuesService 
+
+IssuesService ..> AnalysisTool
+IssuesService ..> IssuesTable
+IssuesService ..> IssuePropertyDistribution
+IssuesService .> IssuesEntityService 
+IssuePropertyDistribution ..> IssuesSizeList
+IssuesEntityService .> EntityService 
+EntityMapper ..> IssueEntity
+EntityMapper ..> IssuesEntity
+EntityMapper ..> LineRangeEntity
+EntityService ..> IssueRepository 
+EntityService ..> LineRangeRepository
+EntityService ..> IssuesRepository
+EntityService .> EntityMapper 
+IssueEntity o- LineRangeEntity
+IssuesEntity *- IssueEntity
+IssuesEntity -- IssuesEntityId : id
+@enduml
